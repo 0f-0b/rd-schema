@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "size": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "clips": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Clip"
+      }
+    },
+    "rowPreviewOffset": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "rowPreviewFrame": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "size",
+    "clips"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "Clip": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "loopStart": {
+          "type": "integer"
+        },
+        "loop": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "onBeat",
+            "no"
+          ]
+        },
+        "fps": {
+          "type": "number"
+        },
+        "portraitOffset": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "portraitSize": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "portraitScale": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "frames",
+        "loop",
+        "fps"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

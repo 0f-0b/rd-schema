@@ -1,0 +1,4217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "settings": {
+      "$ref": "#/definitions/Settings"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Row"
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Event"
+      }
+    },
+    "conditionals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Conditional"
+      }
+    }
+  },
+  "required": [
+    "rows",
+    "events"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "Settings": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "number"
+        },
+        "artist": {
+          "type": "string"
+        },
+        "song": {
+          "type": "string"
+        },
+        "specialArtistType": {
+          "type": "string",
+          "enum": [
+            "None",
+            "AuthorIsArtist",
+            "PublicLicense"
+          ]
+        },
+        "artistPermission": {
+          "type": "string"
+        },
+        "artistLinks": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": [
+            "Easy",
+            "Medium",
+            "Tough",
+            "VeryTough"
+          ]
+        },
+        "seizureWarning": {
+          "type": "boolean"
+        },
+        "previewImage": {
+          "type": "string"
+        },
+        "syringeIcon": {
+          "type": "string"
+        },
+        "previewSong": {
+          "type": "string"
+        },
+        "previewSongStartTime": {
+          "type": "number"
+        },
+        "previewSongDuration": {
+          "type": "number"
+        },
+        "songNameHue": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "string"
+        },
+        "separate2PLevelFilename": {
+          "type": "string"
+        },
+        "canBePlayedOn": {
+          "type": "string",
+          "enum": [
+            "OnePlayerOnly",
+            "TwoPlayerOnly",
+            "BothModes"
+          ]
+        },
+        "firstBeatBehavior": {
+          "type": "string",
+          "enum": [
+            "RunNormally",
+            "RunEventsOnPrebar"
+          ]
+        },
+        "customClass": {
+          "type": "string"
+        },
+        "inkFile": {
+          "type": "string"
+        },
+        "multiplayerAppearance": {
+          "type": "string",
+          "enum": [
+            "HorizontalStrips",
+            "Nothing"
+          ]
+        },
+        "levelVolume": {
+          "type": "number"
+        },
+        "rankMaxMistakes": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "mods": {
+          "type": "string"
+        },
+        "rankDescription": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "version",
+        "artist",
+        "song",
+        "artistPermission",
+        "artistLinks",
+        "author",
+        "difficulty",
+        "previewImage",
+        "syringeIcon",
+        "previewSong",
+        "previewSongStartTime",
+        "previewSongDuration",
+        "description",
+        "tags",
+        "separate2PLevelFilename",
+        "rankMaxMistakes",
+        "rankDescription"
+      ],
+      "additionalProperties": false
+    },
+    "Row": {
+      "type": "object",
+      "properties": {
+        "character": {
+          "type": "string"
+        },
+        "rowType": {
+          "$ref": "#/definitions/RowType"
+        },
+        "row": {
+          "type": "number"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "player": {
+          "$ref": "#/definitions/Player"
+        },
+        "cpuMarker": {
+          "type": "string"
+        },
+        "hideAtStart": {
+          "type": "boolean"
+        },
+        "rowToMimic": {
+          "type": "number"
+        },
+        "muteBeats": {
+          "type": "boolean"
+        },
+        "pulseSound": {
+          "type": "string"
+        },
+        "pulseSoundVolume": {
+          "type": "number"
+        },
+        "pulseSoundPitch": {
+          "type": "number"
+        },
+        "pulseSoundPan": {
+          "type": "number"
+        },
+        "pulseSoundOffset": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "character",
+        "rowType",
+        "row",
+        "pulseSound"
+      ],
+      "additionalProperties": false
+    },
+    "RowType": {
+      "type": "string",
+      "enum": [
+        "Classic",
+        "Oneshot",
+        "Hold",
+        "Scratch",
+        "Split"
+      ]
+    },
+    "Player": {
+      "type": "string",
+      "enum": [
+        "P1",
+        "P2",
+        "CPU"
+      ]
+    },
+    "Event": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SoundEvent"
+        },
+        {
+          "$ref": "#/definitions/RowEvent"
+        },
+        {
+          "$ref": "#/definitions/ActionEvent"
+        },
+        {
+          "$ref": "#/definitions/RoomEvent"
+        }
+      ]
+    },
+    "SoundEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PlaySongEvent"
+        },
+        {
+          "$ref": "#/definitions/SetCrotchetsPerBarEvent"
+        },
+        {
+          "$ref": "#/definitions/PlaySoundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetBeatsPerMinuteEvent"
+        },
+        {
+          "$ref": "#/definitions/SetClapSoundsEvent"
+        },
+        {
+          "$ref": "#/definitions/SetHeartExplodeVolumeEvent"
+        },
+        {
+          "$ref": "#/definitions/SetHeartExplosionIntervalEvent"
+        },
+        {
+          "$ref": "#/definitions/SayReadyGetSetGoEvent"
+        },
+        {
+          "$ref": "#/definitions/SetGameSoundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetBeatSoundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetCountingSoundEvent"
+        }
+      ]
+    },
+    "PlaySongEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PlaySong"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "volume": {
+          "type": "number"
+        },
+        "pitch": {
+          "type": "number"
+        },
+        "pan": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "number"
+        },
+        "bpm": {
+          "type": "number"
+        },
+        "loop": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "bpm",
+        "filename",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetCrotchetsPerBarEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetCrotchetsPerBar"
+        },
+        "crotchetsPerBar": {
+          "type": "number"
+        },
+        "visualBeatMultiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "crotchetsPerBar",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PlaySoundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PlaySound"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "volume": {
+          "type": "number"
+        },
+        "pitch": {
+          "type": "number"
+        },
+        "pan": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "number"
+        },
+        "isCustom": {
+          "type": "boolean"
+        },
+        "customSoundType": {
+          "type": "string",
+          "enum": [
+            "CueSound",
+            "MusicSound",
+            "BeatSound",
+            "HitSound",
+            "OtherSound"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "filename",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetBeatsPerMinuteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetBeatsPerMinute"
+        },
+        "beatsPerMinute": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "beatsPerMinute",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetClapSoundsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetClapSounds"
+        },
+        "rowType": {
+          "$ref": "#/definitions/RowType"
+        },
+        "p1Sound": {
+          "type": "string"
+        },
+        "p1Volume": {
+          "type": "number"
+        },
+        "p1Pitch": {
+          "type": "number"
+        },
+        "p1Pan": {
+          "type": "number"
+        },
+        "p1Offset": {
+          "type": "number"
+        },
+        "p2Sound": {
+          "type": "string"
+        },
+        "p2Volume": {
+          "type": "number"
+        },
+        "p2Pitch": {
+          "type": "number"
+        },
+        "p2Pan": {
+          "type": "number"
+        },
+        "p2Offset": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "p1Sound",
+        "p2Sound",
+        "rowType",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetHeartExplodeVolumeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetHeartExplodeVolume"
+        },
+        "volume": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "volume"
+      ],
+      "additionalProperties": false
+    },
+    "SetHeartExplosionIntervalEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetHeartExplodeInterval"
+        },
+        "intervalType": {
+          "type": "string",
+          "enum": [
+            "OneBeatAfter",
+            "Instant",
+            "GatherNoCeil",
+            "GatherAndCeil"
+          ]
+        },
+        "interval": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "interval",
+        "intervalType",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SayReadyGetSetGoEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SayReadyGetSetGo"
+        },
+        "phraseToSay": {
+          "type": "string",
+          "enum": [
+            "SayReaDyGetSetGoNew",
+            "SayGetSetGo",
+            "SayReaDyGetSetOne",
+            "SayGetSetOne",
+            "JustSayRea",
+            "JustSayDy",
+            "JustSayGet",
+            "JustSaySet",
+            "JustSayAnd",
+            "JustSayGo",
+            "JustSayStop",
+            "JustSayAndStop",
+            "Count1",
+            "SayReadyGetSetGo",
+            "JustSayReady"
+          ]
+        },
+        "voiceSource": {
+          "type": "string",
+          "enum": [
+            "Nurse",
+            "NurseTired",
+            "IanExcited",
+            "IanCalm",
+            "IanSlow",
+            "NoneBottom",
+            "NoneTop"
+          ]
+        },
+        "tick": {
+          "type": "number"
+        },
+        "volume": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "phraseToSay",
+        "tick",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetGameSoundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetGameSound"
+        },
+        "soundType": {
+          "type": "string",
+          "enum": [
+            "ClapSoundP1Classic",
+            "ClapSoundP2Classic",
+            "ClapSoundP1Oneshot",
+            "ClapSoundP2Oneshot",
+            "PulseSoundRow0",
+            "PulseSoundRow1",
+            "PulseSoundRow2",
+            "PulseSoundRow3",
+            "PulseSoundRow4",
+            "PulseSoundRow5",
+            "PulseSoundRow6",
+            "PulseSoundRow7",
+            "PulseSoundRow8",
+            "PulseSoundRow9",
+            "PulseSoundRow10",
+            "PulseSoundRow11",
+            "PulseSoundRow12",
+            "PulseSoundRow13",
+            "PulseSoundRow14",
+            "PulseSoundRow15",
+            "SmallMistake",
+            "BigMistake",
+            "Hand1PopSound",
+            "Hand2PopSound",
+            "HeartExplosion",
+            "HeartExplosion2",
+            "HeartExplosion3",
+            "ClapSoundHoldLongEnd",
+            "ClapSoundHoldLongStart",
+            "ClapSoundHoldShortEnd",
+            "ClapSoundHoldShortStart",
+            "PulseSoundHoldStart",
+            "PulseSoundHoldShortEnd",
+            "PulseSoundHoldEnd",
+            "PulseSoundHoldStartAlt",
+            "PulseSoundHoldShortEndAlt",
+            "PulseSoundHoldEndAlt",
+            "ClapSoundCPUClassic",
+            "ClapSoundCPUOneshot"
+          ]
+        },
+        "filename": {
+          "type": "string"
+        },
+        "volume": {
+          "type": "number"
+        },
+        "pitch": {
+          "type": "number"
+        },
+        "pan": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "filename",
+        "soundType",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetBeatSoundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetBeatSound"
+        },
+        "row": {
+          "type": "number"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "volume": {
+          "type": "number"
+        },
+        "pitch": {
+          "type": "number"
+        },
+        "pan": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "filename",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetCountingSoundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetCountingSound"
+        },
+        "row": {
+          "type": "number"
+        },
+        "voiceSource": {
+          "type": "string",
+          "enum": [
+            "JyiCount",
+            "JyiCountFast",
+            "JyiCountCalm",
+            "JyiCountTired",
+            "JyiCountVeryTired",
+            "JyiCountEnglish",
+            "JyiCountJapanese",
+            "IanCount",
+            "IanCountFast",
+            "IanCountCalm",
+            "IanCountSlow",
+            "IanCountSlower",
+            "IanCountEnglish",
+            "IanCountEnglishFast",
+            "IanCountEnglishCalm",
+            "BirdCount",
+            "OwlCount",
+            "WhistleCount",
+            "JyiCountLegacy"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "volume": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "enabled",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "RowEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/AddClassicBeatEvent"
+        },
+        {
+          "$ref": "#/definitions/SetRowXsEvent"
+        },
+        {
+          "$ref": "#/definitions/AddFreeTimeBeatEvent"
+        },
+        {
+          "$ref": "#/definitions/PulseFreeTimeBeatEvent"
+        },
+        {
+          "$ref": "#/definitions/AddOneshotBeatEvent"
+        }
+      ]
+    },
+    "AddClassicBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "AddClassicBeat"
+        },
+        "row": {
+          "type": "number"
+        },
+        "tick": {
+          "type": "number"
+        },
+        "swing": {
+          "type": "number"
+        },
+        "legacy": {
+          "type": "boolean"
+        },
+        "setXs": {
+          "type": "string",
+          "enum": [
+            "ThreeBeat",
+            "FourBeat"
+          ]
+        },
+        "hold": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "row",
+        "tick",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetRowXsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetRowXs"
+        },
+        "row": {
+          "type": "number"
+        },
+        "pattern": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "pattern",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "AddFreeTimeBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "AddFreeTimeBeat"
+        },
+        "row": {
+          "type": "number"
+        },
+        "hold": {
+          "type": "number"
+        },
+        "pulse": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "pulse",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PulseFreeTimeBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PulseFreeTimeBeat"
+        },
+        "row": {
+          "type": "number"
+        },
+        "hold": {
+          "type": "number"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Increment",
+            "Decrement",
+            "Custom",
+            "Remove"
+          ]
+        },
+        "customPulse": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "action",
+        "bar",
+        "beat",
+        "customPulse",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "AddOneshotBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "AddOneshotBeat"
+        },
+        "row": {
+          "type": "number"
+        },
+        "pulseType": {
+          "type": "string",
+          "enum": [
+            "Wave",
+            "Square",
+            "Heart"
+          ]
+        },
+        "loops": {
+          "type": "number"
+        },
+        "interval": {
+          "type": "number"
+        },
+        "delay": {
+          "type": "number"
+        },
+        "squareSound": {
+          "type": "boolean"
+        },
+        "skipshot": {
+          "type": "boolean"
+        },
+        "tick": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "row",
+        "tick",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ActionEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SetThemeEvent"
+        },
+        {
+          "$ref": "#/definitions/SetVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/SetBackgroundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetForegroundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetSpeedEvent"
+        },
+        {
+          "$ref": "#/definitions/FlashEvent"
+        },
+        {
+          "$ref": "#/definitions/CustomFlashEvent"
+        },
+        {
+          "$ref": "#/definitions/MoveCameraEvent"
+        },
+        {
+          "$ref": "#/definitions/HideRowEvent"
+        },
+        {
+          "$ref": "#/definitions/MoveRowEvent"
+        },
+        {
+          "$ref": "#/definitions/PlayExpressionEvent"
+        },
+        {
+          "$ref": "#/definitions/PaintRowsEvent"
+        },
+        {
+          "$ref": "#/definitions/BassDropEvent"
+        },
+        {
+          "$ref": "#/definitions/ShakeScreenEvent"
+        },
+        {
+          "$ref": "#/definitions/FlipScreenEvent"
+        },
+        {
+          "$ref": "#/definitions/InvertColorsEvent"
+        },
+        {
+          "$ref": "#/definitions/PulseCameraEvent"
+        },
+        {
+          "$ref": "#/definitions/TextExplosionEvent"
+        },
+        {
+          "$ref": "#/definitions/ShowDialogueEvent"
+        },
+        {
+          "$ref": "#/definitions/ShowStatusSignEvent"
+        },
+        {
+          "$ref": "#/definitions/FloatingTextEvent"
+        },
+        {
+          "$ref": "#/definitions/AdvanceFloatingTextEvent"
+        },
+        {
+          "$ref": "#/definitions/ChangePlayersRowsEvent"
+        },
+        {
+          "$ref": "#/definitions/FinishLevelEvent"
+        },
+        {
+          "$ref": "#/definitions/CommentEvent"
+        },
+        {
+          "$ref": "#/definitions/ShowHandsEvent"
+        },
+        {
+          "$ref": "#/definitions/TagActionEvent"
+        },
+        {
+          "$ref": "#/definitions/SetPlayStyleEvent"
+        },
+        {
+          "$ref": "#/definitions/StutterEvent"
+        },
+        {
+          "$ref": "#/definitions/CallCustomMethodEvent"
+        },
+        {
+          "$ref": "#/definitions/WindowDanceEvent"
+        }
+      ]
+    },
+    "SetThemeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetTheme"
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Intimate",
+            "IntimateSimple",
+            "InsomniacDay",
+            "InsomniacNight",
+            "Matrix",
+            "NeonMuseum",
+            "CrossesStraight",
+            "CrossesFalling",
+            "CubesFalling",
+            "CubesFallingNiceBlue",
+            "CubesFallingWithBlueBloomAndCrossesAndMatrix",
+            "OrientalTechno",
+            "Kaleidoscope",
+            "PoliticiansRally",
+            "Rooftop",
+            "BackAlley",
+            "Sky",
+            "NightSky",
+            "HallOfMirrors",
+            "CoffeeShop",
+            "CoffeeShopNight",
+            "Garden",
+            "TrainDay",
+            "TrainNight",
+            "HospitalWard",
+            "HospitalWardNight",
+            "PaigeOffice",
+            "Basement",
+            "ColeWardNight",
+            "ColeWardSunrise",
+            "BoyWard",
+            "GirlWard",
+            "FloatingHeart",
+            "FloatingHeartWithCubes",
+            "FloatingHeartBroken",
+            "FloatingHeartBrokenWithCubes",
+            "ZenGarden",
+            "Space",
+            "Tutorial"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "preset",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetVFXPresetEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SetOrdinaryVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/SetBloomVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/SetScreenVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/SetAberrationVFXPresetEvent"
+        }
+      ]
+    },
+    "SetOrdinaryVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "enable": {
+          "type": "boolean"
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "SilhouettesOnHBeat",
+            "Vignette",
+            "VignetteFlicker",
+            "ColourfulShockwaves",
+            "BassDropOnHit",
+            "ShakeOnHeartBeat",
+            "ShakeOnHit",
+            "WavyRows",
+            "Tile2",
+            "Tile3",
+            "Tile4",
+            "LightStripVert",
+            "VHS",
+            "ScreenScrollX",
+            "ScreenScroll",
+            "ScreenScrollXSansVHS",
+            "ScreenScrollSansVHS",
+            "RowGlowWhite",
+            "RowOutline",
+            "RowShadow",
+            "RowAllWhite",
+            "RowSilhouetteGlow",
+            "RowPlain",
+            "CutsceneMode",
+            "Blackout",
+            "Noise",
+            "GlitchObstruction",
+            "Rain",
+            "Matrix",
+            "MiawMiaw",
+            "FallingPetals",
+            "FallingPetalsInstant",
+            "FallingPetalsSnow",
+            "Snow",
+            "OrangeBloom",
+            "BlueBloom",
+            "HallOfMirrors",
+            "BlackAndWhite",
+            "Sepia",
+            "JPEG",
+            "NumbersAbovePulses",
+            "Mosaic",
+            "ScreenWaves",
+            "Funk",
+            "Grain",
+            "Blizzard",
+            "Drawing"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "enable",
+        "preset",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetBloomVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "enable": {
+          "type": "boolean"
+        },
+        "preset": {
+          "type": "string",
+          "const": "Bloom"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "intensity": {
+          "type": "number"
+        },
+        "color": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "color",
+        "enable",
+        "intensity",
+        "preset",
+        "threshold",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetScreenVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "enable": {
+          "type": "boolean"
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "TileN",
+            "CustomScreenScroll"
+          ]
+        },
+        "floatX": {
+          "type": "number"
+        },
+        "floatY": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "enable",
+        "floatX",
+        "floatY",
+        "preset",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetAberrationVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "enable": {
+          "type": "boolean"
+        },
+        "preset": {
+          "type": "string",
+          "const": "Aberration"
+        },
+        "intensity": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "enable",
+        "intensity",
+        "preset",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetBackgroundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetBackgroundColor"
+        },
+        "backgroundType": {
+          "type": "string",
+          "enum": [
+            "Color",
+            "Image"
+          ]
+        },
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
+        },
+        "color": {
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "fps": {
+          "type": "number"
+        },
+        "filter": {
+          "type": "string",
+          "enum": [
+            "NearestNeighbor",
+            "Bilinear"
+          ]
+        },
+        "scrollX": {
+          "type": "number"
+        },
+        "scrollY": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "backgroundType",
+        "bar",
+        "beat",
+        "color",
+        "contentMode",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ContentMode": {
+      "type": "string",
+      "enum": [
+        "ScaleToFill",
+        "AspectFit",
+        "AspectFill",
+        "Center",
+        "Tiled"
+      ]
+    },
+    "SetForegroundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetForeground"
+        },
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
+        },
+        "color": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "scrollX": {
+          "type": "number"
+        },
+        "scrollY": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "color",
+        "contentMode",
+        "image",
+        "scrollX",
+        "scrollY",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetSpeedEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetSpeed"
+        },
+        "speed": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "speed",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FlashEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "Flash"
+        },
+        "duration": {
+          "type": "string",
+          "enum": [
+            "Short",
+            "Medium",
+            "Long"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "duration",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "CustomFlashEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "CustomFlash"
+        },
+        "background": {
+          "type": "boolean"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "startColor": {
+          "type": "string"
+        },
+        "startOpacity": {
+          "type": "number"
+        },
+        "endColor": {
+          "type": "string"
+        },
+        "endOpacity": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        }
+      },
+      "required": [
+        "background",
+        "bar",
+        "beat",
+        "duration",
+        "endColor",
+        "endOpacity",
+        "startColor",
+        "startOpacity",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Ease": {
+      "type": "string",
+      "enum": [
+        "Unset",
+        "Linear",
+        "InSine",
+        "OutSine",
+        "InOutSine",
+        "InQuad",
+        "OutQuad",
+        "InOutQuad",
+        "InCubic",
+        "OutCubic",
+        "InOutCubic",
+        "InQuart",
+        "OutQuart",
+        "InOutQuart",
+        "InQuint",
+        "OutQuint",
+        "InOutQuint",
+        "InExpo",
+        "OutExpo",
+        "InOutExpo",
+        "InCirc",
+        "OutCirc",
+        "InOutCirc",
+        "InElastic",
+        "OutElastic",
+        "InOutElastic",
+        "InBack",
+        "OutBack",
+        "InOutBack",
+        "InBounce",
+        "OutBounce",
+        "InOutBounce"
+      ]
+    },
+    "MoveCameraEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "MoveCamera"
+        },
+        "cameraPosition": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "zoom": {
+          "type": "number"
+        },
+        "angle": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "duration",
+        "ease",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "HideRowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "HideRow"
+        },
+        "row": {
+          "type": "number"
+        },
+        "show": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "const": "Visible"
+            },
+            {
+              "type": "string",
+              "const": "Hidden"
+            },
+            {
+              "type": "string",
+              "const": "OnlyCharacter"
+            },
+            {
+              "type": "string",
+              "const": "OnlyRow"
+            }
+          ]
+        },
+        "transition": {
+          "type": "string",
+          "enum": [
+            "Smooth",
+            "Instant",
+            "Full"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "row",
+        "show",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "MoveRowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "MoveRow"
+        },
+        "row": {
+          "type": "number"
+        },
+        "customPosition": {
+          "type": "boolean"
+        },
+        "rowPosition": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "angle": {
+          "type": "number"
+        },
+        "pivot": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "duration",
+        "ease",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PlayExpressionEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/OneshotExpressionEvent"
+        },
+        {
+          "$ref": "#/definitions/ReplaceExpressionEvent"
+        }
+      ]
+    },
+    "OneshotExpressionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PlayExpression"
+        },
+        "row": {
+          "type": "number"
+        },
+        "expression": {
+          "type": "string"
+        },
+        "replace": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "bar",
+        "beat",
+        "expression",
+        "row",
+        "type"
+      ]
+    },
+    "ReplaceExpressionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PlayExpression"
+        },
+        "row": {
+          "type": "number"
+        },
+        "expression": {
+          "type": "string"
+        },
+        "replace": {
+          "type": "boolean",
+          "const": true
+        },
+        "target": {
+          "type": "string",
+          "enum": [
+            "Neutral",
+            "Happy",
+            "Barely",
+            "Missed",
+            "Beep"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "expression",
+        "replace",
+        "row",
+        "target",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PaintRowsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "TintRows"
+        },
+        "row": {
+          "type": "number"
+        },
+        "border": {
+          "$ref": "#/definitions/Border"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "borderOpacity": {
+          "type": "number"
+        },
+        "effect": {
+          "type": "string",
+          "enum": [
+            "Electric",
+            "Smoke"
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        },
+        "tint": {
+          "type": "boolean"
+        },
+        "tintColor": {
+          "type": "string"
+        },
+        "tintOpacity": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "border",
+        "borderColor",
+        "borderOpacity",
+        "row",
+        "tint",
+        "tintColor",
+        "tintOpacity",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Border": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Outline",
+        "Glow"
+      ]
+    },
+    "BassDropEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "BassDrop"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ShakeScreenEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "ShakeScreen"
+        },
+        "shakeLevel": {
+          "type": "string",
+          "enum": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "shakeLevel",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FlipScreenEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "FlipScreen"
+        },
+        "flipX": {
+          "type": "boolean"
+        },
+        "flipY": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "flipX",
+        "flipY",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "InvertColorsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "InvertColors"
+        },
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "enable",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PulseCameraEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PulseCamera"
+        },
+        "strength": {
+          "type": "number"
+        },
+        "count": {
+          "type": "number"
+        },
+        "frequency": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "count",
+        "frequency",
+        "strength",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "TextExplosionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "TextExplosion"
+        },
+        "text": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "OneColor",
+            "Random"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "color",
+        "mode",
+        "text",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ShowDialogueEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "ShowDialogue"
+        },
+        "text": {
+          "type": "string"
+        },
+        "localized": {
+          "type": "boolean"
+        },
+        "textEnglish": {
+          "type": "string"
+        },
+        "textSpanish": {
+          "type": "string"
+        },
+        "textPortuguese": {
+          "type": "string"
+        },
+        "textChineseSimplified": {
+          "type": "string"
+        },
+        "textChineseTraditional": {
+          "type": "string"
+        },
+        "textKorean": {
+          "type": "string"
+        },
+        "textPolish": {
+          "type": "string"
+        },
+        "panelSide": {
+          "type": "string",
+          "enum": [
+            "Bottom",
+            "Top"
+          ]
+        },
+        "portraitSide": {
+          "type": "string",
+          "enum": [
+            "Left",
+            "Right"
+          ]
+        },
+        "speed": {
+          "type": "number"
+        },
+        "playTextSounds": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "speed",
+        "text",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ShowStatusSignEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "ShowStatusSign"
+        },
+        "text": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "duration",
+        "text",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FloatingTextEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "FloatingText"
+        },
+        "id": {
+          "type": "number"
+        },
+        "text": {
+          "type": "string"
+        },
+        "times": {
+          "type": "string"
+        },
+        "textPosition": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "size": {
+          "type": "number"
+        },
+        "angle": {
+          "type": "number"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "FadeOut",
+            "HideAbruptly"
+          ]
+        },
+        "showChildren": {
+          "type": "boolean"
+        },
+        "color": {
+          "type": "string"
+        },
+        "outlineColor": {
+          "type": "string"
+        },
+        "anchor": {
+          "type": "string",
+          "enum": [
+            "UpperLeft",
+            "UpperCenter",
+            "UpperRight",
+            "MiddleLeft",
+            "MiddleCenter",
+            "MiddleRight",
+            "LowerLeft",
+            "LowerCenter",
+            "LowerRight"
+          ]
+        },
+        "fadeOutRate": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "color",
+        "id",
+        "showChildren",
+        "text",
+        "textPosition",
+        "times",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "AdvanceFloatingTextEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "AdvanceText"
+        },
+        "id": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "id",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ChangePlayersRowsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "ChangePlayersRows"
+        },
+        "playerMode": {
+          "type": "string",
+          "enum": [
+            "OnePlayer",
+            "TwoPlayers"
+          ]
+        },
+        "flashingOnBeat": {
+          "type": "boolean"
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Player"
+              },
+              {
+                "type": "string",
+                "const": "NoChange"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "players",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FinishLevelEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "FinishLevel"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "CommentEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "Comment"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "text",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ShowHandsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "ShowHands"
+        },
+        "hand": {
+          "$ref": "#/definitions/Hands"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Show",
+            "Hide"
+          ]
+        },
+        "align": {
+          "type": "boolean"
+        },
+        "instant": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "action",
+        "bar",
+        "beat",
+        "hand",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Hands": {
+      "type": "string",
+      "enum": [
+        "Left",
+        "Right",
+        "Both"
+      ]
+    },
+    "TagActionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "TagAction"
+        },
+        "Action": {
+          "type": "string",
+          "enum": [
+            "Run",
+            "RunAll",
+            "Enable",
+            "Disable",
+            "EnableAll",
+            "DisableAll"
+          ]
+        },
+        "Tag": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Action",
+        "Tag",
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetPlayStyleEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetPlayStyle"
+        },
+        "PlayStyle": {
+          "type": "string",
+          "enum": [
+            "Normal",
+            "Loop",
+            "Prolong",
+            "Immediately",
+            "ExtraImmediately",
+            "ProlongOneBar",
+            "Default",
+            "OnNextBar",
+            "BeatLoopOnly",
+            "ScrubToNext",
+            "None"
+          ]
+        },
+        "NextBar": {
+          "type": "number"
+        },
+        "Relative": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "NextBar",
+        "PlayStyle",
+        "Relative",
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "StutterEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "Stutter"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Add",
+            "Cancel"
+          ]
+        },
+        "sourceBeat": {
+          "type": "number"
+        },
+        "length": {
+          "type": "number"
+        },
+        "loops": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "length",
+        "loops",
+        "sourceBeat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "CallCustomMethodEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "CallCustomMethod"
+        },
+        "methodName": {
+          "type": "string"
+        },
+        "executionTime": {
+          "type": "string",
+          "enum": [
+            "OnPrebar",
+            "OnBar"
+          ]
+        },
+        "sortOffset": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "executionTime",
+        "methodName",
+        "sortOffset",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "WindowDanceEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "NewWindowDance"
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Move",
+            "Sway",
+            "Wrap",
+            "Ellipse",
+            "ShakePer"
+          ]
+        },
+        "usePosition": {
+          "type": "string",
+          "enum": [
+            "New",
+            "Current"
+          ]
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "reference": {
+          "type": "string",
+          "enum": [
+            "Center",
+            "Edge"
+          ]
+        },
+        "useCircle": {
+          "type": "boolean"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "amplitude": {
+          "type": "number"
+        },
+        "amplitudeVector": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "angle": {
+          "type": "number"
+        },
+        "frequency": {
+          "type": "number"
+        },
+        "period": {
+          "type": "number"
+        },
+        "easeType": {
+          "type": "string",
+          "enum": [
+            "Repeat",
+            "Mirror"
+          ]
+        },
+        "easingDuration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        }
+      },
+      "required": [
+        "amplitude",
+        "amplitudeVector",
+        "angle",
+        "bar",
+        "beat",
+        "ease",
+        "easeType",
+        "easingDuration",
+        "frequency",
+        "period",
+        "position",
+        "preset",
+        "reference",
+        "speed",
+        "type",
+        "usePosition"
+      ],
+      "additionalProperties": false
+    },
+    "RoomEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ShowRoomsHorizontallyEvent"
+        },
+        {
+          "$ref": "#/definitions/MoveRoomEvent"
+        },
+        {
+          "$ref": "#/definitions/ReorderRoomsEvent"
+        },
+        {
+          "$ref": "#/definitions/SetRoomContentModeEvent"
+        },
+        {
+          "$ref": "#/definitions/MaskRoomEvent"
+        },
+        {
+          "$ref": "#/definitions/FadeRoomEvent"
+        }
+      ]
+    },
+    "ShowRoomsHorizontallyEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "ShowRooms"
+        },
+        "transitionTime": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        },
+        "heights": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "heights",
+        "transitionTime",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "MoveRoomEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "MoveRoom"
+        },
+        "roomPosition": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "angle": {
+          "type": "number"
+        },
+        "pivot": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "duration",
+        "ease",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ReorderRoomsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "ReorderRooms"
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "order",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetRoomContentModeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetRoomContentMode"
+        },
+        "mode": {
+          "$ref": "#/definitions/ContentMode"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "mode",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "MaskRoomEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "MaskRoom"
+        },
+        "maskType": {
+          "type": "string",
+          "enum": [
+            "Image",
+            "Room"
+          ]
+        },
+        "alphaMode": {
+          "type": "string",
+          "enum": [
+            "Normal",
+            "Inverted"
+          ]
+        },
+        "sourceRoom": {
+          "type": "number"
+        },
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
+        },
+        "image": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "contentMode",
+        "image",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FadeRoomEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "FadeRoom"
+        },
+        "opacity": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Ease"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "duration",
+        "ease",
+        "opacity",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Conditional": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LastHitConditional"
+        },
+        {
+          "$ref": "#/definitions/CustomConditional"
+        },
+        {
+          "$ref": "#/definitions/TimesExecutedConditional"
+        },
+        {
+          "$ref": "#/definitions/LanguageConditional"
+        },
+        {
+          "$ref": "#/definitions/PlayerModeConditional"
+        }
+      ]
+    },
+    "LastHitConditional": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "LastHit"
+        },
+        "row": {
+          "type": "number"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "Perfect",
+            "SlightlyEarly",
+            "SlightlyLate",
+            "VeryEarly",
+            "VeryLate",
+            "AnyEarlyOrLate",
+            "Missed"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "result",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "CustomConditional": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "Custom"
+        },
+        "expression": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "expression",
+        "id",
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "TimesExecutedConditional": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "TimesExecuted"
+        },
+        "maxTimes": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "maxTimes",
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "LanguageConditional": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "Language"
+        },
+        "Language": {
+          "$ref": "#/definitions/Language"
+        }
+      },
+      "required": [
+        "Language",
+        "id",
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Language": {
+      "type": "string",
+      "enum": [
+        "English",
+        "Spanish",
+        "Portuguese",
+        "ChineseSimplified",
+        "ChineseTraditional",
+        "Korean",
+        "Polish"
+      ]
+    },
+    "PlayerModeConditional": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "PlayerMode"
+        },
+        "twoPlayerMode": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "twoPlayerMode",
+        "type"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
