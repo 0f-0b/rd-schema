@@ -1393,6 +1393,9 @@
           "$ref": "#/definitions/ShowHandsEvent"
         },
         {
+          "$ref": "#/definitions/PaintHandsEvent"
+        },
+        {
           "$ref": "#/definitions/TagActionEvent"
         },
         {
@@ -3400,6 +3403,79 @@
         "Right",
         "Both"
       ]
+    },
+    "PaintHandsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PaintHands"
+        },
+        "hands": {
+          "$ref": "#/definitions/Hands"
+        },
+        "border": {
+          "$ref": "#/definitions/Border"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "borderOpacity": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "tint": {
+          "type": "boolean"
+        },
+        "tintColor": {
+          "type": "string"
+        },
+        "tintOpacity": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "border",
+        "borderColor",
+        "borderOpacity",
+        "hands",
+        "tint",
+        "tintColor",
+        "tintOpacity",
+        "type"
+      ],
+      "additionalProperties": false
     },
     "TagActionEvent": {
       "type": "object",
