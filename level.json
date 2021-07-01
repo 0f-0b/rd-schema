@@ -1497,20 +1497,23 @@
     "SetVFXPresetEvent": {
       "anyOf": [
         {
-          "$ref": "#/definitions/SetOrdinaryVFXPresetEvent"
+          "$ref": "#/definitions/EnableOrdinaryVFXPresetEvent"
         },
         {
-          "$ref": "#/definitions/SetBloomVFXPresetEvent"
+          "$ref": "#/definitions/EnableBloomVFXPresetEvent"
         },
         {
-          "$ref": "#/definitions/SetScreenVFXPresetEvent"
+          "$ref": "#/definitions/EnableScreenVFXPresetEvent"
         },
         {
-          "$ref": "#/definitions/SetAberrationVFXPresetEvent"
+          "$ref": "#/definitions/EnableAberrationVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/DisableVFXPresetEvent"
         }
       ]
     },
-    "SetOrdinaryVFXPresetEvent": {
+    "EnableOrdinaryVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -1542,59 +1545,11 @@
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean"
+          "type": "boolean",
+          "const": true
         },
         "preset": {
-          "type": "string",
-          "enum": [
-            "SilhouettesOnHBeat",
-            "Vignette",
-            "VignetteFlicker",
-            "ColourfulShockwaves",
-            "BassDropOnHit",
-            "ShakeOnHeartBeat",
-            "ShakeOnHit",
-            "WavyRows",
-            "Tile2",
-            "Tile3",
-            "Tile4",
-            "LightStripVert",
-            "VHS",
-            "ScreenScrollX",
-            "ScreenScroll",
-            "ScreenScrollXSansVHS",
-            "ScreenScrollSansVHS",
-            "RowGlowWhite",
-            "RowOutline",
-            "RowShadow",
-            "RowAllWhite",
-            "RowSilhouetteGlow",
-            "RowPlain",
-            "CutsceneMode",
-            "Blackout",
-            "Noise",
-            "GlitchObstruction",
-            "Rain",
-            "Matrix",
-            "MiawMiaw",
-            "FallingPetals",
-            "FallingPetalsInstant",
-            "FallingPetalsSnow",
-            "Snow",
-            "OrangeBloom",
-            "BlueBloom",
-            "HallOfMirrors",
-            "BlackAndWhite",
-            "Sepia",
-            "JPEG",
-            "NumbersAbovePulses",
-            "Mosaic",
-            "ScreenWaves",
-            "Funk",
-            "Grain",
-            "Blizzard",
-            "Drawing"
-          ]
+          "$ref": "#/definitions/VFXPreset"
         }
       },
       "required": [
@@ -1606,7 +1561,59 @@
       ],
       "additionalProperties": false
     },
-    "SetBloomVFXPresetEvent": {
+    "VFXPreset": {
+      "type": "string",
+      "enum": [
+        "SilhouettesOnHBeat",
+        "Vignette",
+        "VignetteFlicker",
+        "ColourfulShockwaves",
+        "BassDropOnHit",
+        "ShakeOnHeartBeat",
+        "ShakeOnHit",
+        "WavyRows",
+        "Tile2",
+        "Tile3",
+        "Tile4",
+        "LightStripVert",
+        "VHS",
+        "ScreenScrollX",
+        "ScreenScroll",
+        "ScreenScrollXSansVHS",
+        "ScreenScrollSansVHS",
+        "RowGlowWhite",
+        "RowOutline",
+        "RowShadow",
+        "RowAllWhite",
+        "RowSilhouetteGlow",
+        "RowPlain",
+        "CutsceneMode",
+        "Blackout",
+        "Noise",
+        "GlitchObstruction",
+        "Rain",
+        "Matrix",
+        "MiawMiaw",
+        "FallingPetals",
+        "FallingPetalsInstant",
+        "FallingPetalsSnow",
+        "Snow",
+        "OrangeBloom",
+        "BlueBloom",
+        "HallOfMirrors",
+        "BlackAndWhite",
+        "Sepia",
+        "JPEG",
+        "NumbersAbovePulses",
+        "Mosaic",
+        "ScreenWaves",
+        "Funk",
+        "Grain",
+        "Blizzard",
+        "Drawing"
+      ]
+    },
+    "EnableBloomVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -1638,7 +1645,8 @@
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean"
+          "type": "boolean",
+          "const": true
         },
         "preset": {
           "type": "string",
@@ -1666,7 +1674,7 @@
       ],
       "additionalProperties": false
     },
-    "SetScreenVFXPresetEvent": {
+    "EnableScreenVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -1698,7 +1706,8 @@
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean"
+          "type": "boolean",
+          "const": true
         },
         "preset": {
           "type": "string",
@@ -1725,7 +1734,7 @@
       ],
       "additionalProperties": false
     },
-    "SetAberrationVFXPresetEvent": {
+    "EnableAberrationVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -1757,7 +1766,8 @@
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean"
+          "type": "boolean",
+          "const": true
         },
         "preset": {
           "type": "string",
@@ -1772,6 +1782,67 @@
         "beat",
         "enable",
         "intensity",
+        "preset",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "DisableVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "enable": {
+          "type": "boolean",
+          "const": false
+        },
+        "preset": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VFXPreset"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "Bloom",
+                "TileN",
+                "CustomScreenScroll",
+                "Aberration"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "enable",
         "preset",
         "type"
       ],
@@ -2071,7 +2142,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -2087,7 +2158,7 @@
       ],
       "additionalProperties": false
     },
-    "Ease": {
+    "Easing": {
       "type": "string",
       "enum": [
         "Unset",
@@ -2176,7 +2247,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -2329,7 +2400,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -2520,7 +2591,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         },
         "tint": {
           "type": "boolean"
@@ -3662,7 +3733,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -3742,7 +3813,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         },
         "heights": {
           "type": "array",
@@ -3828,7 +3899,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -4031,7 +4102,7 @@
           "type": "number"
         },
         "ease": {
-          "$ref": "#/definitions/Ease"
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
