@@ -37,7 +37,7 @@
       "type": "object",
       "properties": {
         "version": {
-          "type": "number"
+          "type": "integer"
         },
         "artist": {
           "type": "string"
@@ -135,7 +135,7 @@
         "rankMaxMistakes": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           },
           "minItems": 4,
           "maxItems": 4
@@ -183,12 +183,12 @@
           "$ref": "#/definitions/RowType"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "player": {
@@ -201,7 +201,7 @@
           "type": "boolean"
         },
         "rowToMimic": {
-          "type": "number"
+          "type": "integer"
         },
         "muteBeats": {
           "type": "boolean"
@@ -210,16 +210,16 @@
           "type": "string"
         },
         "pulseSoundVolume": {
-          "type": "number"
+          "type": "integer"
         },
         "pulseSoundPitch": {
-          "type": "number"
+          "type": "integer"
         },
         "pulseSoundPan": {
-          "type": "number"
+          "type": "integer"
         },
         "pulseSoundOffset": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -305,13 +305,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -325,7 +325,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -336,16 +336,16 @@
           "type": "string"
         },
         "volume": {
-          "type": "number"
+          "type": "integer"
         },
         "pitch": {
-          "type": "number"
+          "type": "integer"
         },
         "pan": {
-          "type": "number"
+          "type": "integer"
         },
         "offset": {
-          "type": "number"
+          "type": "integer"
         },
         "bpm": {
           "type": "number"
@@ -367,13 +367,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -387,7 +387,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -395,7 +395,7 @@
           "const": "SetCrotchetsPerBar"
         },
         "crotchetsPerBar": {
-          "type": "number"
+          "type": "integer"
         },
         "visualBeatMultiplier": {
           "type": "number"
@@ -413,13 +413,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -433,7 +433,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -444,16 +444,16 @@
           "type": "string"
         },
         "volume": {
-          "type": "number"
+          "type": "integer"
         },
         "pitch": {
-          "type": "number"
+          "type": "integer"
         },
         "pan": {
-          "type": "number"
+          "type": "integer"
         },
         "offset": {
-          "type": "number"
+          "type": "integer"
         },
         "isCustom": {
           "type": "boolean"
@@ -481,13 +481,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -501,7 +501,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -524,13 +524,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -544,7 +544,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -558,31 +558,31 @@
           "type": "string"
         },
         "p1Volume": {
-          "type": "number"
+          "type": "integer"
         },
         "p1Pitch": {
-          "type": "number"
+          "type": "integer"
         },
         "p1Pan": {
-          "type": "number"
+          "type": "integer"
         },
         "p1Offset": {
-          "type": "number"
+          "type": "integer"
         },
         "p2Sound": {
           "type": "string"
         },
         "p2Volume": {
-          "type": "number"
+          "type": "integer"
         },
         "p2Pitch": {
-          "type": "number"
+          "type": "integer"
         },
         "p2Pan": {
-          "type": "number"
+          "type": "integer"
         },
         "p2Offset": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -599,13 +599,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -619,7 +619,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -627,7 +627,7 @@
           "const": "SetHeartExplodeVolume"
         },
         "volume": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -642,13 +642,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -662,7 +662,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -695,13 +695,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -715,7 +715,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -758,7 +758,7 @@
           "type": "number"
         },
         "volume": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -774,13 +774,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -794,7 +794,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -849,16 +849,16 @@
           "type": "string"
         },
         "volume": {
-          "type": "number"
+          "type": "integer"
         },
         "pitch": {
-          "type": "number"
+          "type": "integer"
         },
         "pan": {
-          "type": "number"
+          "type": "integer"
         },
         "offset": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -874,13 +874,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -894,7 +894,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -902,22 +902,22 @@
           "const": "SetBeatSound"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "filename": {
           "type": "string"
         },
         "volume": {
-          "type": "number"
+          "type": "integer"
         },
         "pitch": {
-          "type": "number"
+          "type": "integer"
         },
         "pan": {
-          "type": "number"
+          "type": "integer"
         },
         "offset": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -933,13 +933,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -953,7 +953,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -961,7 +961,7 @@
           "const": "SetCountingSound"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "voiceSource": {
           "type": "string",
@@ -991,7 +991,7 @@
           "type": "boolean"
         },
         "volume": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -1026,13 +1026,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1046,7 +1046,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1054,7 +1054,7 @@
           "const": "AddClassicBeat"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "tick": {
           "type": "number"
@@ -1089,13 +1089,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1109,7 +1109,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1117,7 +1117,7 @@
           "const": "SetRowXs"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "pattern": {
           "type": "string"
@@ -1136,13 +1136,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1156,7 +1156,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1164,13 +1164,13 @@
           "const": "AddFreeTimeBeat"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "hold": {
           "type": "number"
         },
         "pulse": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -1186,13 +1186,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1206,7 +1206,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1214,7 +1214,7 @@
           "const": "PulseFreeTimeBeat"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "hold": {
           "type": "number"
@@ -1229,7 +1229,7 @@
           ]
         },
         "customPulse": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -1246,13 +1246,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1266,7 +1266,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1274,7 +1274,7 @@
           "const": "AddOneshotBeat"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "pulseType": {
           "type": "string",
@@ -1285,7 +1285,7 @@
           ]
         },
         "loops": {
-          "type": "number"
+          "type": "integer"
         },
         "interval": {
           "type": "number"
@@ -1416,13 +1416,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1436,7 +1436,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1520,13 +1520,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1540,7 +1540,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1620,13 +1620,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1640,7 +1640,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1681,13 +1681,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1701,7 +1701,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1741,13 +1741,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1761,7 +1761,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1777,7 +1777,7 @@
           "const": "Aberration"
         },
         "intensity": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -1794,13 +1794,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1814,7 +1814,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1855,13 +1855,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1875,7 +1875,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -1949,13 +1949,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -1969,7 +1969,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2008,13 +2008,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2028,7 +2028,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2051,13 +2051,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2071,7 +2071,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2099,13 +2099,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2119,7 +2119,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2136,13 +2136,13 @@
           "type": "string"
         },
         "startOpacity": {
-          "type": "number"
+          "type": "integer"
         },
         "endColor": {
           "type": "string"
         },
         "endOpacity": {
-          "type": "number"
+          "type": "integer"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
@@ -2202,13 +2202,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2222,7 +2222,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2241,7 +2241,7 @@
           "maxItems": 2
         },
         "zoom": {
-          "type": "number"
+          "type": "integer"
         },
         "angle": {
           "type": "number"
@@ -2266,13 +2266,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2286,7 +2286,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2294,7 +2294,7 @@
           "const": "HideRow"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "show": {
           "anyOf": [
@@ -2341,13 +2341,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2361,7 +2361,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2369,7 +2369,7 @@
           "const": "MoveRow"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "customPosition": {
           "type": "boolean"
@@ -2430,13 +2430,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2450,7 +2450,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2458,7 +2458,7 @@
           "const": "PlayExpression"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "expression": {
           "type": "string"
@@ -2481,13 +2481,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2501,7 +2501,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2509,7 +2509,7 @@
           "const": "PlayExpression"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "expression": {
           "type": "string"
@@ -2544,13 +2544,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2564,7 +2564,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2572,7 +2572,7 @@
           "const": "TintRows"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "border": {
           "$ref": "#/definitions/Border"
@@ -2581,7 +2581,7 @@
           "type": "string"
         },
         "borderOpacity": {
-          "type": "number"
+          "type": "integer"
         },
         "effect": {
           "type": "string",
@@ -2603,7 +2603,7 @@
           "type": "string"
         },
         "tintOpacity": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -2632,13 +2632,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2652,7 +2652,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2671,13 +2671,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2691,7 +2691,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2719,13 +2719,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2739,7 +2739,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2766,13 +2766,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2786,7 +2786,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2809,13 +2809,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2829,7 +2829,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2837,10 +2837,10 @@
           "const": "PulseCamera"
         },
         "strength": {
-          "type": "number"
+          "type": "integer"
         },
         "count": {
-          "type": "number"
+          "type": "integer"
         },
         "frequency": {
           "type": "number"
@@ -2860,13 +2860,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2880,7 +2880,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -2915,13 +2915,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -2935,7 +2935,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3003,13 +3003,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3023,7 +3023,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3050,13 +3050,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3070,7 +3070,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3078,7 +3078,7 @@
           "const": "FloatingText"
         },
         "id": {
-          "type": "number"
+          "type": "integer"
         },
         "text": {
           "type": "string"
@@ -3095,7 +3095,7 @@
           "maxItems": 2
         },
         "size": {
-          "type": "number"
+          "type": "integer"
         },
         "angle": {
           "type": "number"
@@ -3151,13 +3151,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3171,7 +3171,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3179,7 +3179,7 @@
           "const": "AdvanceText"
         },
         "id": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -3194,13 +3194,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3214,7 +3214,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3258,13 +3258,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3278,7 +3278,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3297,13 +3297,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3317,7 +3317,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3343,13 +3343,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3363,7 +3363,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3408,13 +3408,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3428,7 +3428,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3445,7 +3445,7 @@
           "type": "string"
         },
         "borderOpacity": {
-          "type": "number"
+          "type": "integer"
         },
         "duration": {
           "type": "number"
@@ -3460,7 +3460,7 @@
           "type": "string"
         },
         "tintOpacity": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -3481,13 +3481,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3501,7 +3501,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3536,13 +3536,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3556,7 +3556,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3580,7 +3580,7 @@
           ]
         },
         "NextBar": {
-          "type": "number"
+          "type": "integer"
         },
         "Relative": {
           "type": "boolean"
@@ -3600,13 +3600,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3620,7 +3620,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3641,7 +3641,7 @@
           "type": "number"
         },
         "loops": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -3658,13 +3658,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3678,7 +3678,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3696,7 +3696,7 @@
           ]
         },
         "sortOffset": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -3713,13 +3713,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3733,7 +3733,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3858,13 +3858,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3878,7 +3878,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3894,7 +3894,7 @@
         "heights": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         }
       },
@@ -3911,13 +3911,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -3931,7 +3931,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -3991,13 +3991,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -4011,7 +4011,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -4021,7 +4021,7 @@
         "order": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         }
       },
@@ -4037,13 +4037,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -4057,7 +4057,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -4080,13 +4080,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -4100,7 +4100,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -4122,7 +4122,7 @@
           ]
         },
         "sourceRoom": {
-          "type": "number"
+          "type": "integer"
         },
         "contentMode": {
           "$ref": "#/definitions/ContentMode"
@@ -4144,13 +4144,13 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "number"
+          "type": "integer"
         },
         "beat": {
           "type": "number"
         },
         "y": {
-          "type": "number"
+          "type": "integer"
         },
         "if": {
           "type": "string"
@@ -4164,7 +4164,7 @@
         "rooms": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "integer"
           }
         },
         "type": {
@@ -4172,7 +4172,7 @@
           "const": "FadeRoom"
         },
         "opacity": {
-          "type": "number"
+          "type": "integer"
         },
         "duration": {
           "type": "number"
@@ -4214,7 +4214,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "number"
+          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -4224,7 +4224,7 @@
           "const": "LastHit"
         },
         "row": {
-          "type": "number"
+          "type": "integer"
         },
         "result": {
           "type": "string",
@@ -4252,7 +4252,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "number"
+          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -4277,7 +4277,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "number"
+          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -4287,7 +4287,7 @@
           "const": "TimesExecuted"
         },
         "maxTimes": {
-          "type": "number"
+          "type": "integer"
         }
       },
       "required": [
@@ -4302,7 +4302,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "number"
+          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -4339,7 +4339,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "number"
+          "type": "integer"
         },
         "name": {
           "type": "string"
