@@ -3377,7 +3377,9 @@
           "type": "string",
           "enum": [
             "Show",
-            "Hide"
+            "Hide",
+            "Raise",
+            "Lower"
           ]
         },
         "align": {
