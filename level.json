@@ -2371,6 +2371,14 @@
         "row": {
           "type": "integer"
         },
+        "target": {
+          "type": "string",
+          "enum": [
+            "WholeRow",
+            "Character",
+            "Heart"
+          ]
+        },
         "customPosition": {
           "type": "boolean"
         },
