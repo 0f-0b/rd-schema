@@ -4121,7 +4121,8 @@
           "type": "string",
           "enum": [
             "Image",
-            "Room"
+            "Room",
+            "None"
           ]
         },
         "alphaMode": {
