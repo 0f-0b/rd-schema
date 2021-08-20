@@ -2711,6 +2711,14 @@
         "type": {
           "type": "string",
           "const": "BassDrop"
+        },
+        "strength": {
+          "type": "string",
+          "enum": [
+            "Low",
+            "Medium",
+            "High"
+          ]
         }
       },
       "required": [
