@@ -1509,7 +1509,7 @@
           "$ref": "#/definitions/EnableScreenVFXPresetEvent"
         },
         {
-          "$ref": "#/definitions/EnableAberrationVFXPresetEvent"
+          "$ref": "#/definitions/EnableEaseableVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/DisableVFXPresetEvent"
@@ -1552,7 +1552,49 @@
           "const": true
         },
         "preset": {
-          "$ref": "#/definitions/VFXPreset"
+          "type": "string",
+          "enum": [
+            "SilhouettesOnHBeat",
+            "Vignette",
+            "VignetteFlicker",
+            "ColourfulShockwaves",
+            "BassDropOnHit",
+            "ShakeOnHeartBeat",
+            "ShakeOnHit",
+            "WavyRows",
+            "Tile2",
+            "Tile3",
+            "Tile4",
+            "LightStripVert",
+            "VHS",
+            "ScreenScrollX",
+            "ScreenScroll",
+            "ScreenScrollXSansVHS",
+            "ScreenScrollSansVHS",
+            "RowGlowWhite",
+            "RowOutline",
+            "RowShadow",
+            "RowAllWhite",
+            "RowSilhouetteGlow",
+            "RowPlain",
+            "CutsceneMode",
+            "Blackout",
+            "Noise",
+            "GlitchObstruction",
+            "Matrix",
+            "MiawMiaw",
+            "FallingPetals",
+            "FallingPetalsInstant",
+            "FallingPetalsSnow",
+            "Snow",
+            "OrangeBloom",
+            "BlueBloom",
+            "HallOfMirrors",
+            "BlackAndWhite",
+            "Sepia",
+            "NumbersAbovePulses",
+            "Funk"
+          ]
         }
       },
       "required": [
@@ -1563,58 +1605,6 @@
         "type"
       ],
       "additionalProperties": false
-    },
-    "VFXPreset": {
-      "type": "string",
-      "enum": [
-        "SilhouettesOnHBeat",
-        "Vignette",
-        "VignetteFlicker",
-        "ColourfulShockwaves",
-        "BassDropOnHit",
-        "ShakeOnHeartBeat",
-        "ShakeOnHit",
-        "WavyRows",
-        "Tile2",
-        "Tile3",
-        "Tile4",
-        "LightStripVert",
-        "VHS",
-        "ScreenScrollX",
-        "ScreenScroll",
-        "ScreenScrollXSansVHS",
-        "ScreenScrollSansVHS",
-        "RowGlowWhite",
-        "RowOutline",
-        "RowShadow",
-        "RowAllWhite",
-        "RowSilhouetteGlow",
-        "RowPlain",
-        "CutsceneMode",
-        "Blackout",
-        "Noise",
-        "GlitchObstruction",
-        "Rain",
-        "Matrix",
-        "MiawMiaw",
-        "FallingPetals",
-        "FallingPetalsInstant",
-        "FallingPetalsSnow",
-        "Snow",
-        "OrangeBloom",
-        "BlueBloom",
-        "HallOfMirrors",
-        "BlackAndWhite",
-        "Sepia",
-        "JPEG",
-        "NumbersAbovePulses",
-        "Mosaic",
-        "ScreenWaves",
-        "Funk",
-        "Grain",
-        "Blizzard",
-        "Drawing"
-      ]
     },
     "EnableBloomVFXPresetEvent": {
       "type": "object",
@@ -1737,7 +1727,7 @@
       ],
       "additionalProperties": false
     },
-    "EnableAberrationVFXPresetEvent": {
+    "EnableEaseableVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -1774,10 +1764,25 @@
         },
         "preset": {
           "type": "string",
-          "const": "Aberration"
+          "enum": [
+            "Rain",
+            "JPEG",
+            "Mosaic",
+            "ScreenWaves",
+            "Grain",
+            "Blizzard",
+            "Drawing",
+            "Aberration"
+          ]
         },
         "intensity": {
           "type": "integer"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -1826,19 +1831,59 @@
           "const": false
         },
         "preset": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/VFXPreset"
-            },
-            {
-              "type": "string",
-              "enum": [
-                "Bloom",
-                "TileN",
-                "CustomScreenScroll",
-                "Aberration"
-              ]
-            }
+          "type": "string",
+          "enum": [
+            "SilhouettesOnHBeat",
+            "Vignette",
+            "VignetteFlicker",
+            "ColourfulShockwaves",
+            "BassDropOnHit",
+            "ShakeOnHeartBeat",
+            "ShakeOnHit",
+            "WavyRows",
+            "Tile2",
+            "Tile3",
+            "Tile4",
+            "LightStripVert",
+            "VHS",
+            "ScreenScrollX",
+            "ScreenScroll",
+            "ScreenScrollXSansVHS",
+            "ScreenScrollSansVHS",
+            "RowGlowWhite",
+            "RowOutline",
+            "RowShadow",
+            "RowAllWhite",
+            "RowSilhouetteGlow",
+            "RowPlain",
+            "CutsceneMode",
+            "Blackout",
+            "Noise",
+            "GlitchObstruction",
+            "Rain",
+            "Matrix",
+            "MiawMiaw",
+            "FallingPetals",
+            "FallingPetalsInstant",
+            "FallingPetalsSnow",
+            "Snow",
+            "Bloom",
+            "OrangeBloom",
+            "BlueBloom",
+            "HallOfMirrors",
+            "TileN",
+            "BlackAndWhite",
+            "Sepia",
+            "CustomScreenScroll",
+            "JPEG",
+            "NumbersAbovePulses",
+            "Mosaic",
+            "ScreenWaves",
+            "Funk",
+            "Grain",
+            "Blizzard",
+            "Drawing",
+            "Aberration"
           ]
         }
       },
