@@ -738,6 +738,7 @@
             "JustSayStop",
             "JustSayAndStop",
             "Count1",
+            "Count2",
             "SayReadyGetSetGo",
             "JustSayReady"
           ]
@@ -1281,7 +1282,8 @@
           "enum": [
             "Wave",
             "Square",
-            "Heart"
+            "Heart",
+            "Triangle"
           ]
         },
         "loops": {
@@ -1489,7 +1491,9 @@
             "FloatingHeartBrokenWithCubes",
             "ZenGarden",
             "Space",
-            "Tutorial"
+            "Tutorial",
+            "RollerDisco",
+            "Vaporwave"
           ]
         }
       },
@@ -1587,6 +1591,7 @@
             "GlitchObstruction",
             "Matrix",
             "MiawMiaw",
+            "Confetti",
             "FallingPetals",
             "FallingPetalsInstant",
             "FallingPetalsSnow",
@@ -1867,6 +1872,7 @@
             "Rain",
             "Matrix",
             "MiawMiaw",
+            "Confetti",
             "FallingPetals",
             "FallingPetalsInstant",
             "FallingPetalsSnow",
