@@ -1398,6 +1398,9 @@
           "$ref": "#/definitions/PaintHandsEvent"
         },
         {
+          "$ref": "#/definitions/AssignHandsEvent"
+        },
+        {
           "$ref": "#/definitions/TagActionEvent"
         },
         {
@@ -2969,6 +2972,13 @@
             "OneColor",
             "Random"
           ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "Left",
+            "Right"
+          ]
         }
       },
       "required": [
@@ -3314,6 +3324,12 @@
               }
             ]
           }
+        },
+        "cpuMarkers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
@@ -3545,6 +3561,53 @@
         "tint",
         "tintColor",
         "tintOpacity",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "AssignHandsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetHandOwner"
+        },
+        "hand": {
+          "$ref": "#/definitions/Hands"
+        },
+        "character": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "character",
+        "hand",
         "type"
       ],
       "additionalProperties": false
