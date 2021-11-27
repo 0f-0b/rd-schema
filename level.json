@@ -2444,6 +2444,7 @@
           "items": {
             "type": [
               "number",
+              "string",
               "null"
             ]
           },
