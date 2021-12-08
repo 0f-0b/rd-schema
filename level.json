@@ -3988,6 +3988,9 @@
         },
         {
           "$ref": "#/definitions/FadeRoomEvent"
+        },
+        {
+          "$ref": "#/definitions/SetRoomPerspectiveEvent"
         }
       ]
     },
@@ -4325,6 +4328,70 @@
         "duration",
         "ease",
         "opacity",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetRoomPerspectiveEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetRoomPerspective"
+        },
+        "cornerPositions": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "cornerPositions",
+        "duration",
+        "ease",
         "type"
       ],
       "additionalProperties": false
