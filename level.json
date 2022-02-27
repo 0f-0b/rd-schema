@@ -14,6 +14,12 @@
         "$ref": "#/definitions/Row"
       }
     },
+    "decorations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Decoration"
+      }
+    },
     "events": {
       "type": "array",
       "items": {
@@ -248,6 +254,40 @@
         "CPU"
       ]
     },
+    "Decoration": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "filename": {
+          "type": "string"
+        },
+        "depth": {
+          "type": "integer"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "depth",
+        "filename",
+        "id",
+        "row",
+        "visible"
+      ],
+      "additionalProperties": false
+    },
     "Event": {
       "anyOf": [
         {
@@ -258,6 +298,9 @@
         },
         {
           "$ref": "#/definitions/ActionEvent"
+        },
+        {
+          "$ref": "#/definitions/DecorationEvent"
         },
         {
           "$ref": "#/definitions/RoomEvent"
@@ -2443,11 +2486,7 @@
         "rowPosition": {
           "type": "array",
           "items": {
-            "type": [
-              "number",
-              "string",
-              "null"
-            ]
+            "$ref": "#/definitions/Expression"
           },
           "minItems": 2,
           "maxItems": 2
@@ -2455,13 +2494,13 @@
         "scale": {
           "type": "array",
           "items": {
-            "type": "number"
+            "$ref": "#/definitions/Expression"
           },
           "minItems": 2,
           "maxItems": 2
         },
         "angle": {
-          "type": "number"
+          "$ref": "#/definitions/Expression"
         },
         "pivot": {
           "type": "number"
@@ -2482,6 +2521,13 @@
         "type"
       ],
       "additionalProperties": false
+    },
+    "Expression": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ]
     },
     "PlayExpressionEvent": {
       "anyOf": [
@@ -3966,6 +4012,270 @@
         "speed",
         "type",
         "usePosition"
+      ],
+      "additionalProperties": false
+    },
+    "DecorationEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/MoveSpriteEvent"
+        },
+        {
+          "$ref": "#/definitions/PaintSpriteEvent"
+        },
+        {
+          "$ref": "#/definitions/PlayAnimationEvent"
+        },
+        {
+          "$ref": "#/definitions/HideSpriteEvent"
+        }
+      ]
+    },
+    "MoveSpriteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "Move"
+        },
+        "target": {
+          "type": "string"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expression"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expression"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "angle": {
+          "$ref": "#/definitions/Expression"
+        },
+        "pivot": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "duration",
+        "ease",
+        "target",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PaintSpriteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "Tint"
+        },
+        "target": {
+          "type": "string"
+        },
+        "border": {
+          "$ref": "#/definitions/Border"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "borderOpacity": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "tint": {
+          "type": "boolean"
+        },
+        "tintColor": {
+          "type": "string"
+        },
+        "tintOpacity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "border",
+        "borderColor",
+        "borderOpacity",
+        "target",
+        "tint",
+        "tintColor",
+        "tintOpacity",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PlayAnimationEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "PlayAnimation"
+        },
+        "target": {
+          "type": "string"
+        },
+        "expression": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "bar",
+        "beat",
+        "expression",
+        "target",
+        "type"
+      ]
+    },
+    "HideSpriteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVisible"
+        },
+        "target": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "target",
+        "type",
+        "visible"
       ],
       "additionalProperties": false
     },
