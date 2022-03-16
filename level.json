@@ -2084,7 +2084,20 @@
           "type": "string"
         },
         "image": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "fps": {
+          "type": "number"
         },
         "scrollX": {
           "type": "number"
@@ -4575,11 +4588,24 @@
         "sourceRoom": {
           "type": "integer"
         },
+        "image": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "fps": {
+          "type": "number"
+        },
         "contentMode": {
           "$ref": "#/definitions/ContentMode"
-        },
-        "image": {
-          "type": "string"
         }
       },
       "required": [
