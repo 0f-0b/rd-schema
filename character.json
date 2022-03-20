@@ -8,6 +8,9 @@
     "name": {
       "type": "string"
     },
+    "voice": {
+      "type": "string"
+    },
     "size": {
       "type": "array",
       "items": {
