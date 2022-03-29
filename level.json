@@ -4581,6 +4581,7 @@
           "enum": [
             "Image",
             "Room",
+            "Color",
             "None"
           ]
         },
@@ -4609,6 +4610,15 @@
         },
         "fps": {
           "type": "number"
+        },
+        "keyColor": {
+          "type": "string"
+        },
+        "colorCutoff": {
+          "type": "integer"
+        },
+        "colorFeathering": {
+          "type": "integer"
         },
         "contentMode": {
           "$ref": "#/definitions/ContentMode"
