@@ -626,6 +626,30 @@
         },
         "p2Offset": {
           "type": "integer"
+        },
+        "cpuSound": {
+          "type": "string"
+        },
+        "cpuVolume": {
+          "type": "integer"
+        },
+        "cpuPitch": {
+          "type": "integer"
+        },
+        "cpuPan": {
+          "type": "integer"
+        },
+        "cpuOffset": {
+          "type": "integer"
+        },
+        "p1Used": {
+          "type": "boolean"
+        },
+        "p2Used": {
+          "type": "boolean"
+        },
+        "cpuUsed": {
+          "type": "boolean"
         }
       },
       "required": [
