@@ -3137,6 +3137,9 @@
         "textPolish": {
           "type": "string"
         },
+        "textJapanese": {
+          "type": "string"
+        },
         "panelSide": {
           "type": "string",
           "enum": [
@@ -4913,7 +4916,8 @@
         "ChineseSimplified",
         "ChineseTraditional",
         "Korean",
-        "Polish"
+        "Polish",
+        "Japanese"
       ]
     },
     "PlayerModeConditional": {
