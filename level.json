@@ -1,9 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sjx233.github.io/rd-schema/level.json",
   "type": "object",
   "properties": {
     "$schema": {
-      "type": "string"
+      "type": "string",
+      "format": "uri"
     },
     "settings": {
       "$ref": "#/definitions/Settings"
@@ -52,7 +54,6 @@
           "type": "string"
         },
         "specialArtistType": {
-          "type": "string",
           "enum": [
             "None",
             "AuthorIsArtist",
@@ -69,7 +70,6 @@
           "type": "string"
         },
         "difficulty": {
-          "type": "string",
           "enum": [
             "Easy",
             "Medium",
@@ -108,7 +108,6 @@
           "type": "string"
         },
         "canBePlayedOn": {
-          "type": "string",
           "enum": [
             "OnePlayerOnly",
             "TwoPlayerOnly",
@@ -116,7 +115,6 @@
           ]
         },
         "firstBeatBehavior": {
-          "type": "string",
           "enum": [
             "RunNormally",
             "RunEventsOnPrebar"
@@ -129,7 +127,6 @@
           "type": "string"
         },
         "multiplayerAppearance": {
-          "type": "string",
           "enum": [
             "HorizontalStrips",
             "Nothing"
@@ -237,7 +234,6 @@
       "additionalProperties": false
     },
     "RowType": {
-      "type": "string",
       "enum": [
         "Classic",
         "Oneshot",
@@ -247,7 +243,6 @@
       ]
     },
     "Player": {
-      "type": "string",
       "enum": [
         "P1",
         "P2",
@@ -372,7 +367,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PlaySong"
         },
         "filename": {
@@ -434,7 +428,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetCrotchetsPerBar"
         },
         "crotchetsPerBar": {
@@ -480,7 +473,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PlaySound"
         },
         "filename": {
@@ -502,7 +494,6 @@
           "type": "boolean"
         },
         "customSoundType": {
-          "type": "string",
           "enum": [
             "CueSound",
             "MusicSound",
@@ -548,7 +539,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetBeatsPerMinute"
         },
         "beatsPerMinute": {
@@ -591,7 +581,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetClapSounds"
         },
         "rowType": {
@@ -690,7 +679,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetHeartExplodeVolume"
         },
         "volume": {
@@ -733,11 +721,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetHeartExplodeInterval"
         },
         "intervalType": {
-          "type": "string",
           "enum": [
             "OneBeatAfter",
             "Instant",
@@ -786,11 +772,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SayReadyGetSetGo"
         },
         "phraseToSay": {
-          "type": "string",
           "enum": [
             "SayReaDyGetSetGoNew",
             "SayGetSetGo",
@@ -811,7 +795,6 @@
           ]
         },
         "voiceSource": {
-          "type": "string",
           "enum": [
             "Nurse",
             "NurseTired",
@@ -866,11 +849,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetGameSound"
         },
         "soundType": {
-          "type": "string",
           "enum": [
             "ClapSoundP1Classic",
             "ClapSoundP2Classic",
@@ -966,7 +947,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetBeatSound"
         },
         "row": {
@@ -1025,14 +1005,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetCountingSound"
         },
         "row": {
           "type": "integer"
         },
         "voiceSource": {
-          "type": "string",
           "enum": [
             "JyiCount",
             "JyiCountFast",
@@ -1118,7 +1096,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "AddClassicBeat"
         },
         "row": {
@@ -1134,7 +1111,6 @@
           "type": "boolean"
         },
         "setXs": {
-          "type": "string",
           "enum": [
             "ThreeBeat",
             "FourBeat"
@@ -1181,7 +1157,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetRowXs"
         },
         "row": {
@@ -1228,7 +1203,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "AddFreeTimeBeat"
         },
         "row": {
@@ -1278,7 +1252,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PulseFreeTimeBeat"
         },
         "row": {
@@ -1288,7 +1261,6 @@
           "type": "number"
         },
         "action": {
-          "type": "string",
           "enum": [
             "Increment",
             "Decrement",
@@ -1338,14 +1310,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "AddOneshotBeat"
         },
         "row": {
           "type": "integer"
         },
         "pulseType": {
-          "type": "string",
           "enum": [
             "Wave",
             "Square",
@@ -1512,11 +1482,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetTheme"
         },
         "preset": {
-          "type": "string",
           "enum": [
             "None",
             "Intimate",
@@ -1623,15 +1591,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean",
           "const": true
         },
         "preset": {
-          "type": "string",
           "enum": [
             "SilhouettesOnHBeat",
             "Vignette",
@@ -1714,15 +1679,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean",
           "const": true
         },
         "preset": {
-          "type": "string",
           "const": "Bloom"
         },
         "threshold": {
@@ -1775,15 +1737,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean",
           "const": true
         },
         "preset": {
-          "type": "string",
           "enum": [
             "TileN",
             "CustomScreenScroll"
@@ -1835,15 +1794,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean",
           "const": true
         },
         "preset": {
-          "type": "string",
           "enum": [
             "Rain",
             "JPEG",
@@ -1902,15 +1858,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetVFXPreset"
         },
         "enable": {
-          "type": "boolean",
           "const": false
         },
         "preset": {
-          "type": "string",
           "enum": [
             "SilhouettesOnHBeat",
             "Vignette",
@@ -2004,11 +1957,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetBackgroundColor"
         },
         "backgroundType": {
-          "type": "string",
           "enum": [
             "Color",
             "Image"
@@ -2037,7 +1988,6 @@
           "type": "number"
         },
         "filter": {
-          "type": "string",
           "enum": [
             "NearestNeighbor",
             "Bilinear"
@@ -2061,7 +2011,6 @@
       "additionalProperties": false
     },
     "ContentMode": {
-      "type": "string",
       "enum": [
         "ScaleToFill",
         "AspectFit",
@@ -2098,7 +2047,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetForeground"
         },
         "contentMode": {
@@ -2170,7 +2118,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetSpeed"
         },
         "speed": {
@@ -2213,11 +2160,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "Flash"
         },
         "duration": {
-          "type": "string",
           "enum": [
             "Short",
             "Medium",
@@ -2261,7 +2206,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "CustomFlash"
         },
         "background": {
@@ -2300,7 +2244,6 @@
       "additionalProperties": false
     },
     "Easing": {
-      "type": "string",
       "enum": [
         "Unset",
         "Linear",
@@ -2364,7 +2307,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "MoveCamera"
         },
         "cameraPosition": {
@@ -2428,7 +2370,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "HideRow"
         },
         "row": {
@@ -2440,25 +2381,20 @@
               "type": "boolean"
             },
             {
-              "type": "string",
               "const": "Visible"
             },
             {
-              "type": "string",
               "const": "Hidden"
             },
             {
-              "type": "string",
               "const": "OnlyCharacter"
             },
             {
-              "type": "string",
               "const": "OnlyRow"
             }
           ]
         },
         "transition": {
-          "type": "string",
           "enum": [
             "Smooth",
             "Instant",
@@ -2503,14 +2439,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "MoveRow"
         },
         "row": {
           "type": "integer"
         },
         "target": {
-          "type": "string",
           "enum": [
             "WholeRow",
             "Character",
@@ -2604,7 +2538,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PlayExpression"
         },
         "row": {
@@ -2614,7 +2547,6 @@
           "type": "string"
         },
         "replace": {
-          "type": "boolean",
           "const": false
         }
       },
@@ -2655,7 +2587,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PlayExpression"
         },
         "row": {
@@ -2665,11 +2596,9 @@
           "type": "string"
         },
         "replace": {
-          "type": "boolean",
           "const": true
         },
         "target": {
-          "type": "string",
           "enum": [
             "Neutral",
             "Happy",
@@ -2718,7 +2647,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "TintRows"
         },
         "row": {
@@ -2737,7 +2665,6 @@
           "type": "integer"
         },
         "effect": {
-          "type": "string",
           "enum": [
             "Electric",
             "Smoke"
@@ -2774,7 +2701,6 @@
       "additionalProperties": false
     },
     "Border": {
-      "type": "string",
       "enum": [
         "None",
         "Outline",
@@ -2809,11 +2735,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "BassDrop"
         },
         "strength": {
-          "type": "string",
           "enum": [
             "Low",
             "Medium",
@@ -2856,11 +2780,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "ShakeScreen"
         },
         "shakeLevel": {
-          "type": "string",
           "enum": [
             "Low",
             "Medium",
@@ -2904,7 +2826,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "FlipScreen"
         },
         "flipX": {
@@ -2951,7 +2872,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "InvertColors"
         },
         "enable": {
@@ -2994,7 +2914,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PulseCamera"
         },
         "strength": {
@@ -3045,7 +2964,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "TextExplosion"
         },
         "text": {
@@ -3055,14 +2973,12 @@
           "type": "string"
         },
         "mode": {
-          "type": "string",
           "enum": [
             "OneColor",
             "Random"
           ]
         },
         "direction": {
-          "type": "string",
           "enum": [
             "Left",
             "Right"
@@ -3107,7 +3023,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "ShowDialogue"
         },
         "text": {
@@ -3141,14 +3056,12 @@
           "type": "string"
         },
         "panelSide": {
-          "type": "string",
           "enum": [
             "Bottom",
             "Top"
           ]
         },
         "portraitSide": {
-          "type": "string",
           "enum": [
             "Left",
             "Right"
@@ -3198,7 +3111,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "ShowStatusSign"
         },
         "text": {
@@ -3245,7 +3157,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "FloatingText"
         },
         "id": {
@@ -3272,7 +3183,6 @@
           "type": "number"
         },
         "mode": {
-          "type": "string",
           "enum": [
             "FadeOut",
             "HideAbruptly"
@@ -3288,7 +3198,6 @@
           "type": "string"
         },
         "anchor": {
-          "type": "string",
           "enum": [
             "UpperLeft",
             "UpperCenter",
@@ -3346,7 +3255,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "AdvanceText"
         },
         "id": {
@@ -3389,11 +3297,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "ChangePlayersRows"
         },
         "playerMode": {
-          "type": "string",
           "enum": [
             "OnePlayer",
             "TwoPlayers"
@@ -3410,7 +3316,6 @@
                 "$ref": "#/definitions/Player"
               },
               {
-                "type": "string",
                 "const": "NoChange"
               }
             ]
@@ -3459,7 +3364,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "FinishLevel"
         }
       },
@@ -3498,7 +3402,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "Comment"
         },
         "show": {
@@ -3544,14 +3447,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "ShowHands"
         },
         "hand": {
           "$ref": "#/definitions/Hands"
         },
         "action": {
-          "type": "string",
           "enum": [
             "Show",
             "Hide",
@@ -3576,7 +3477,6 @@
       "additionalProperties": false
     },
     "Hands": {
-      "type": "string",
       "enum": [
         "Left",
         "Right",
@@ -3611,7 +3511,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PaintHands"
         },
         "hands": {
@@ -3684,7 +3583,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetHandOwner"
         },
         "hand": {
@@ -3731,11 +3629,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "TagAction"
         },
         "Action": {
-          "type": "string",
           "enum": [
             "Run",
             "RunAll",
@@ -3786,11 +3682,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetPlayStyle"
         },
         "PlayStyle": {
-          "type": "string",
           "enum": [
             "Normal",
             "Loop",
@@ -3850,11 +3744,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "Stutter"
         },
         "action": {
-          "type": "string",
           "enum": [
             "Add",
             "Cancel"
@@ -3908,14 +3800,12 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "CallCustomMethod"
         },
         "methodName": {
           "type": "string"
         },
         "executionTime": {
-          "type": "string",
           "enum": [
             "OnPrebar",
             "OnBar"
@@ -3963,11 +3853,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "NewWindowDance"
         },
         "preset": {
-          "type": "string",
           "enum": [
             "Move",
             "Sway",
@@ -3977,7 +3865,6 @@
           ]
         },
         "usePosition": {
-          "type": "string",
           "enum": [
             "New",
             "Current"
@@ -3992,7 +3879,6 @@
           "maxItems": 2
         },
         "reference": {
-          "type": "string",
           "enum": [
             "Center",
             "Edge"
@@ -4025,7 +3911,6 @@
           "type": "number"
         },
         "easeType": {
-          "type": "string",
           "enum": [
             "Repeat",
             "Mirror"
@@ -4102,7 +3987,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "Move"
         },
         "target": {
@@ -4183,7 +4067,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "Tint"
         },
         "target": {
@@ -4259,7 +4142,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "PlayAnimation"
         },
         "target": {
@@ -4306,7 +4188,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetVisible"
         },
         "target": {
@@ -4378,7 +4259,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "ShowRooms"
         },
         "transitionTime": {
@@ -4431,7 +4311,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "MoveRoom"
         },
         "roomPosition": {
@@ -4511,7 +4390,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "ReorderRooms"
         },
         "order": {
@@ -4557,7 +4435,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetRoomContentMode"
         },
         "mode": {
@@ -4600,11 +4477,9 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "MaskRoom"
         },
         "maskType": {
-          "type": "string",
           "enum": [
             "Image",
             "Room",
@@ -4613,7 +4488,6 @@
           ]
         },
         "alphaMode": {
-          "type": "string",
           "enum": [
             "Normal",
             "Inverted"
@@ -4688,7 +4562,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "FadeRoom"
         },
         "opacity": {
@@ -4739,7 +4612,6 @@
           }
         },
         "type": {
-          "type": "string",
           "const": "SetRoomPerspective"
         },
         "cornerPositions": {
@@ -4804,14 +4676,12 @@
           "type": "string"
         },
         "type": {
-          "type": "string",
           "const": "LastHit"
         },
         "row": {
           "type": "integer"
         },
         "result": {
-          "type": "string",
           "enum": [
             "Perfect",
             "SlightlyEarly",
@@ -4842,7 +4712,6 @@
           "type": "string"
         },
         "type": {
-          "type": "string",
           "const": "Custom"
         },
         "expression": {
@@ -4867,7 +4736,6 @@
           "type": "string"
         },
         "type": {
-          "type": "string",
           "const": "TimesExecuted"
         },
         "maxTimes": {
@@ -4892,7 +4760,6 @@
           "type": "string"
         },
         "type": {
-          "type": "string",
           "const": "Language"
         },
         "Language": {
@@ -4908,7 +4775,6 @@
       "additionalProperties": false
     },
     "Language": {
-      "type": "string",
       "enum": [
         "English",
         "Spanish",
@@ -4930,7 +4796,6 @@
           "type": "string"
         },
         "type": {
-          "type": "string",
           "const": "PlayerMode"
         },
         "twoPlayerMode": {
