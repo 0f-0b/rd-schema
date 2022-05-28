@@ -322,6 +322,9 @@
         },
         {
           "$ref": "#/definitions/SetCountingSoundEvent"
+        },
+        {
+          "$ref": "#/definitions/ReadNarrationEvent"
         }
       ]
     },
@@ -1034,6 +1037,63 @@
         "type"
       ],
       "additionalProperties": false
+    },
+    "ReadNarrationEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "const": "ReadNarration"
+        },
+        "text": {
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/definitions/NarrationCategory"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "text",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "NarrationCategory": {
+      "enum": [
+        "Fallback",
+        "Navigation",
+        "Instruction",
+        "DialogueActive",
+        "Notification",
+        "Dialogue",
+        "Description",
+        "Subtitles"
+      ]
     },
     "RowEvent": {
       "anyOf": [
@@ -1816,6 +1876,42 @@
       ],
       "additionalProperties": false
     },
+    "Easing": {
+      "enum": [
+        "Unset",
+        "Linear",
+        "InSine",
+        "OutSine",
+        "InOutSine",
+        "InQuad",
+        "OutQuad",
+        "InOutQuad",
+        "InCubic",
+        "OutCubic",
+        "InOutCubic",
+        "InQuart",
+        "OutQuart",
+        "InOutQuart",
+        "InQuint",
+        "OutQuint",
+        "InOutQuint",
+        "InExpo",
+        "OutExpo",
+        "InOutExpo",
+        "InCirc",
+        "OutCirc",
+        "InOutCirc",
+        "InElastic",
+        "OutElastic",
+        "InOutElastic",
+        "InBack",
+        "OutBack",
+        "InOutBack",
+        "InBounce",
+        "OutBounce",
+        "InOutBounce"
+      ]
+    },
     "DisableVFXPresetEvent": {
       "type": "object",
       "properties": {
@@ -2228,42 +2324,6 @@
         "type"
       ],
       "additionalProperties": false
-    },
-    "Easing": {
-      "enum": [
-        "Unset",
-        "Linear",
-        "InSine",
-        "OutSine",
-        "InOutSine",
-        "InQuad",
-        "OutQuad",
-        "InOutQuad",
-        "InCubic",
-        "OutCubic",
-        "InOutCubic",
-        "InQuart",
-        "OutQuart",
-        "InOutQuart",
-        "InQuint",
-        "OutQuint",
-        "InOutQuint",
-        "InExpo",
-        "OutExpo",
-        "InOutExpo",
-        "InCirc",
-        "OutCirc",
-        "InOutCirc",
-        "InElastic",
-        "OutElastic",
-        "InOutElastic",
-        "InBack",
-        "OutBack",
-        "InOutBack",
-        "InBounce",
-        "OutBounce",
-        "InOutBounce"
-      ]
     },
     "MoveCameraEvent": {
       "type": "object",
@@ -3104,6 +3164,12 @@
         },
         "duration": {
           "type": "number"
+        },
+        "useBeats": {
+          "type": "boolean"
+        },
+        "narrate": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -3198,6 +3264,12 @@
         },
         "fadeOutRate": {
           "type": "number"
+        },
+        "narrate": {
+          "type": "boolean"
+        },
+        "narrationCategory": {
+          "$ref": "#/definitions/NarrationCategory"
         }
       },
       "required": [
