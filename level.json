@@ -325,6 +325,9 @@
         },
         {
           "$ref": "#/definitions/ReadNarrationEvent"
+        },
+        {
+          "$ref": "#/definitions/NarrateRowInfoEvent"
         }
       ]
     },
@@ -1088,12 +1091,80 @@
         "Fallback",
         "Navigation",
         "Instruction",
-        "DialogueActive",
         "Notification",
         "Dialogue",
+        "DialogueActive",
         "Description",
-        "Subtitles"
+        "Subtitles",
+        "InstructionActive"
       ]
+    },
+    "NarrateRowInfoEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "const": "NarrateRowInfo"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "infoType": {
+          "enum": [
+            "Connect",
+            "Update",
+            "Disconnect",
+            "Online",
+            "Offline"
+          ]
+        },
+        "soundOnly": {
+          "type": "boolean"
+        },
+        "narrateSkipBeats": {
+          "enum": [
+            "on",
+            "custom",
+            "off"
+          ]
+        },
+        "customPattern": {
+          "type": "string"
+        },
+        "skipsUnstable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "row",
+        "type"
+      ],
+      "additionalProperties": false
     },
     "RowEvent": {
       "anyOf": [
