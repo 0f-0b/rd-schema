@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://sjx233.github.io/rd-schema/character.json",
+  "$id": "https://0f-0b.github.io/rd-schema/character.json",
   "type": "object",
   "properties": {
     "$schema": {
