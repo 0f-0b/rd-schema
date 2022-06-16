@@ -4552,9 +4552,6 @@
         },
         {
           "$ref": "#/definitions/PlayerModeConditional"
-        },
-        {
-          "$ref": "#/definitions/CompositeConditional"
         }
       ]
     },
@@ -4713,33 +4710,6 @@
         "id",
         "name",
         "twoPlayerMode",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "CompositeConditional": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "const": "Composite"
-        },
-        "compositeExpression": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "compositeExpression",
-        "id",
-        "name",
         "type"
       ],
       "additionalProperties": false
