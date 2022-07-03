@@ -3236,6 +3236,9 @@
         "type": {
           "const": "AdvanceText"
         },
+        "fadeOutDuration": {
+          "type": "number"
+        },
         "id": {
           "type": "integer"
         }
