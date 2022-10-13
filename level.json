@@ -33,6 +33,12 @@
       "items": {
         "$ref": "#/definitions/Conditional"
       }
+    },
+    "bookmarks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Bookmark"
+      }
     }
   },
   "required": [
@@ -97,6 +103,9 @@
         },
         "songNameHue": {
           "type": "number"
+        },
+        "songLabelGrayscale": {
+          "type": "boolean"
         },
         "description": {
           "type": "string"
@@ -956,7 +965,9 @@
             "BirdCount",
             "OwlCount",
             "WhistleCount",
-            "JyiCountLegacy"
+            "JyiCountLegacy",
+            "ParrotCount",
+            "OrioleCount"
           ]
         },
         "enabled": {
@@ -1021,10 +1032,8 @@
         "Instruction",
         "Notification",
         "Dialogue",
-        "DialogueActive",
         "Description",
-        "Subtitles",
-        "InstructionActive"
+        "Subtitles"
       ]
     },
     "NarrateRowInfoEvent": {
@@ -1191,6 +1200,12 @@
         },
         "pattern": {
           "type": "string"
+        },
+        "syncoBeat": {
+          "type": "integer"
+        },
+        "syncoSwing": {
+          "type": "number"
         }
       },
       "required": [
@@ -1704,6 +1719,12 @@
         },
         "color": {
           "type": "string"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -1817,7 +1838,9 @@
             "Grain",
             "Blizzard",
             "Drawing",
-            "Aberration"
+            "Aberration",
+            "Blur",
+            "RadialBlur"
           ]
         },
         "intensity": {
@@ -1961,7 +1984,9 @@
             "Grain",
             "Blizzard",
             "Drawing",
-            "Aberration"
+            "Aberration",
+            "Blur",
+            "RadialBlur"
           ]
         }
       },
@@ -2043,6 +2068,12 @@
         },
         "scrollY": {
           "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -2121,6 +2152,12 @@
         },
         "scrollY": {
           "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -3368,10 +3405,21 @@
         "type": {
           "const": "Comment"
         },
+        "tab": {
+          "enum": [
+            "Song",
+            "Actions",
+            "Rooms",
+            "Sprites"
+          ]
+        },
         "show": {
           "type": "boolean"
         },
         "text": {
+          "type": "string"
+        },
+        "color": {
           "type": "string"
         }
       },
@@ -3429,6 +3477,12 @@
         },
         "instant": {
           "type": "boolean"
+        },
+        "extent": {
+          "enum": [
+            "Full",
+            "Short"
+          ]
         }
       },
       "required": [
@@ -4714,6 +4768,26 @@
         "name",
         "twoPlayerMode",
         "type"
+      ],
+      "additionalProperties": false
+    },
+    "Bookmark": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "color": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "color"
       ],
       "additionalProperties": false
     }
