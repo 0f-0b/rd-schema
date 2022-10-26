@@ -1840,7 +1840,8 @@
             "Drawing",
             "Aberration",
             "Blur",
-            "RadialBlur"
+            "RadialBlur",
+            "HueShift"
           ]
         },
         "intensity": {
@@ -1986,7 +1987,8 @@
             "Drawing",
             "Aberration",
             "Blur",
-            "RadialBlur"
+            "RadialBlur",
+            "HueShift"
           ]
         }
       },
