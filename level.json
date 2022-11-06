@@ -1200,12 +1200,6 @@
         },
         "pattern": {
           "type": "string"
-        },
-        "syncoBeat": {
-          "type": "integer"
-        },
-        "syncoSwing": {
-          "type": "number"
         }
       },
       "required": [
