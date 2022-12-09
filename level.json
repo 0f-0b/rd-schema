@@ -39,6 +39,13 @@
       "items": {
         "$ref": "#/definitions/Bookmark"
       }
+    },
+    "colorPalette": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 21
     }
   },
   "required": [
@@ -838,7 +845,17 @@
             "PulseSoundHoldShortEndAlt",
             "PulseSoundHoldEndAlt",
             "ClapSoundCPUClassic",
-            "ClapSoundCPUOneshot"
+            "ClapSoundCPUOneshot",
+            "ClapSoundHoldLongEndP2",
+            "ClapSoundHoldLongStartP2",
+            "ClapSoundHoldShortEndP2",
+            "ClapSoundHoldShortStartP2",
+            "PulseSoundHoldStartP2",
+            "PulseSoundHoldShortEndP2",
+            "PulseSoundHoldEndP2",
+            "PulseSoundHoldStartAltP2",
+            "PulseSoundHoldShortEndAltP2",
+            "PulseSoundHoldEndAltP2"
           ]
         },
         "filename": {
@@ -967,7 +984,9 @@
             "WhistleCount",
             "JyiCountLegacy",
             "ParrotCount",
-            "OrioleCount"
+            "OrioleCount",
+            "WrenCount",
+            "CanaryCount"
           ]
         },
         "enabled": {
@@ -1113,6 +1132,9 @@
         },
         {
           "$ref": "#/definitions/AddOneshotBeatEvent"
+        },
+        {
+          "$ref": "#/definitions/SetOneshotWaveEvent"
         }
       ]
     },
@@ -1200,6 +1222,12 @@
         },
         "pattern": {
           "type": "string"
+        },
+        "syncoBeat": {
+          "type": "integer"
+        },
+        "syncoSwing": {
+          "type": "number"
         }
       },
       "required": [
@@ -1366,6 +1394,61 @@
         "row",
         "tick",
         "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetOneshotWaveEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer"
+        },
+        "beat": {
+          "type": "number"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "if": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "type": {
+          "const": "SetOneshotWave"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "waveType": {
+          "enum": [
+            "BoomAndRush",
+            "Ball",
+            "Spring",
+            "Spike",
+            "SpikeHuge",
+            "Single"
+          ]
+        },
+        "height": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "height",
+        "row",
+        "type",
+        "waveType",
+        "width"
       ],
       "additionalProperties": false
     },
@@ -3543,6 +3626,9 @@
           "type": "string"
         },
         "borderOpacity": {
+          "type": "integer"
+        },
+        "opacity": {
           "type": "integer"
         },
         "duration": {
