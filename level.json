@@ -1194,7 +1194,8 @@
           "type": "integer"
         },
         "pattern": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[-xudbr]{6}$"
         },
         "syncoBeat": {
           "type": "integer"
