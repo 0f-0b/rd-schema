@@ -43,7 +43,7 @@
     "colorPalette": {
       "type": "array",
       "items": {
-        "type": "string"
+        "$ref": "#/definitions/Color"
       },
       "maxItems": 21
     }
@@ -234,22 +234,6 @@
         "pulseSound"
       ],
       "additionalProperties": false
-    },
-    "RowType": {
-      "enum": [
-        "Classic",
-        "Oneshot",
-        "Hold",
-        "Scratch",
-        "Split"
-      ]
-    },
-    "Player": {
-      "enum": [
-        "P1",
-        "P2",
-        "CPU"
-      ]
     },
     "Decoration": {
       "type": "object",
@@ -1044,17 +1028,6 @@
       ],
       "additionalProperties": false
     },
-    "NarrationCategory": {
-      "enum": [
-        "Fallback",
-        "Navigation",
-        "Instruction",
-        "Notification",
-        "Dialogue",
-        "Description",
-        "Subtitles"
-      ]
-    },
     "NarrateRowInfoEvent": {
       "type": "object",
       "properties": {
@@ -1795,7 +1768,7 @@
           "type": "number"
         },
         "color": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "duration": {
           "type": "number"
@@ -1940,42 +1913,6 @@
       ],
       "additionalProperties": false
     },
-    "Easing": {
-      "enum": [
-        "Unset",
-        "Linear",
-        "InSine",
-        "OutSine",
-        "InOutSine",
-        "InQuad",
-        "OutQuad",
-        "InOutQuad",
-        "InCubic",
-        "OutCubic",
-        "InOutCubic",
-        "InQuart",
-        "OutQuart",
-        "InOutQuart",
-        "InQuint",
-        "OutQuint",
-        "InOutQuint",
-        "InExpo",
-        "OutExpo",
-        "InOutExpo",
-        "InCirc",
-        "OutCirc",
-        "InOutCirc",
-        "InElastic",
-        "OutElastic",
-        "InOutElastic",
-        "InBack",
-        "OutBack",
-        "InOutBack",
-        "InBounce",
-        "OutBounce",
-        "InOutBounce"
-      ]
-    },
     "DisableVFXPresetEvent": {
       "type": "object",
       "properties": {
@@ -2118,7 +2055,7 @@
           "$ref": "#/definitions/ContentMode"
         },
         "color": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "image": {
           "anyOf": [
@@ -2165,15 +2102,6 @@
       ],
       "additionalProperties": false
     },
-    "ContentMode": {
-      "enum": [
-        "ScaleToFill",
-        "AspectFit",
-        "AspectFill",
-        "Center",
-        "Tiled"
-      ]
-    },
     "SetForegroundEvent": {
       "type": "object",
       "properties": {
@@ -2208,7 +2136,7 @@
           "$ref": "#/definitions/ContentMode"
         },
         "color": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "image": {
           "anyOf": [
@@ -2376,13 +2304,13 @@
           "type": "number"
         },
         "startColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "startOpacity": {
           "type": "integer"
         },
         "endColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "endOpacity": {
           "type": "integer"
@@ -2500,16 +2428,12 @@
               "type": "boolean"
             },
             {
-              "const": "Visible"
-            },
-            {
-              "const": "Hidden"
-            },
-            {
-              "const": "OnlyCharacter"
-            },
-            {
-              "const": "OnlyRow"
+              "enum": [
+                "Visible",
+                "Hidden",
+                "OnlyCharacter",
+                "OnlyRow"
+              ]
             }
           ]
         },
@@ -2763,7 +2687,7 @@
           "$ref": "#/definitions/Border"
         },
         "borderColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "borderOpacity": {
           "type": "integer"
@@ -2787,7 +2711,7 @@
           "type": "boolean"
         },
         "tintColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "tintOpacity": {
           "type": "integer"
@@ -2806,13 +2730,6 @@
         "type"
       ],
       "additionalProperties": false
-    },
-    "Border": {
-      "enum": [
-        "None",
-        "Outline",
-        "Glow"
-      ]
     },
     "BassDropEvent": {
       "type": "object",
@@ -3077,7 +2994,7 @@
           "type": "string"
         },
         "color": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "mode": {
           "enum": [
@@ -3293,10 +3210,10 @@
           "type": "boolean"
         },
         "color": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "outlineColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "anchor": {
           "enum": [
@@ -3505,7 +3422,7 @@
           "type": "string"
         },
         "color": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         }
       },
       "required": [
@@ -3579,13 +3496,6 @@
       ],
       "additionalProperties": false
     },
-    "Hands": {
-      "enum": [
-        "Left",
-        "Right",
-        "Both"
-      ]
-    },
     "PaintHandsEvent": {
       "type": "object",
       "properties": {
@@ -3623,7 +3533,7 @@
           "$ref": "#/definitions/Border"
         },
         "borderColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "borderOpacity": {
           "type": "integer"
@@ -3641,7 +3551,7 @@
           "type": "boolean"
         },
         "tintColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "tintOpacity": {
           "type": "integer"
@@ -4152,7 +4062,7 @@
           "$ref": "#/definitions/Border"
         },
         "borderColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "borderOpacity": {
           "type": "integer"
@@ -4170,7 +4080,7 @@
           "type": "boolean"
         },
         "tintColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "tintOpacity": {
           "type": "integer"
@@ -4559,7 +4469,7 @@
           "type": "number"
         },
         "keyColor": {
-          "type": "string"
+          "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "colorCutoff": {
           "type": "integer"
@@ -4820,18 +4730,6 @@
       ],
       "additionalProperties": false
     },
-    "Language": {
-      "enum": [
-        "English",
-        "Spanish",
-        "Portuguese",
-        "ChineseSimplified",
-        "ChineseTraditional",
-        "Korean",
-        "Polish",
-        "Japanese"
-      ]
-    },
     "PlayerModeConditional": {
       "type": "object",
       "properties": {
@@ -4878,6 +4776,112 @@
         "color"
       ],
       "additionalProperties": false
+    },
+    "Color": {
+      "type": "string",
+      "pattern": "^(?:[0-9A-Fa-f]{2}){3,4}$"
+    },
+    "ColorOrPaletteIndex": {
+      "type": "string",
+      "pattern": "^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\\d+)$"
+    },
+    "Border": {
+      "enum": [
+        "None",
+        "Outline",
+        "Glow"
+      ]
+    },
+    "ContentMode": {
+      "enum": [
+        "ScaleToFill",
+        "AspectFit",
+        "AspectFill",
+        "Center",
+        "Tiled"
+      ]
+    },
+    "Easing": {
+      "enum": [
+        "Unset",
+        "Linear",
+        "InSine",
+        "OutSine",
+        "InOutSine",
+        "InQuad",
+        "OutQuad",
+        "InOutQuad",
+        "InCubic",
+        "OutCubic",
+        "InOutCubic",
+        "InQuart",
+        "OutQuart",
+        "InOutQuart",
+        "InQuint",
+        "OutQuint",
+        "InOutQuint",
+        "InExpo",
+        "OutExpo",
+        "InOutExpo",
+        "InCirc",
+        "OutCirc",
+        "InOutCirc",
+        "InElastic",
+        "OutElastic",
+        "InOutElastic",
+        "InBack",
+        "OutBack",
+        "InOutBack",
+        "InBounce",
+        "OutBounce",
+        "InOutBounce"
+      ]
+    },
+    "Hands": {
+      "enum": [
+        "Left",
+        "Right",
+        "Both"
+      ]
+    },
+    "Language": {
+      "enum": [
+        "English",
+        "Spanish",
+        "Portuguese",
+        "ChineseSimplified",
+        "ChineseTraditional",
+        "Korean",
+        "Polish",
+        "Japanese"
+      ]
+    },
+    "NarrationCategory": {
+      "enum": [
+        "Fallback",
+        "Navigation",
+        "Instruction",
+        "Notification",
+        "Dialogue",
+        "Description",
+        "Subtitles"
+      ]
+    },
+    "Player": {
+      "enum": [
+        "P1",
+        "P2",
+        "CPU"
+      ]
+    },
+    "RowType": {
+      "enum": [
+        "Classic",
+        "Oneshot",
+        "Hold",
+        "Scratch",
+        "Split"
+      ]
     }
   }
 }
