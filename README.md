@@ -4,7 +4,7 @@ JSON schemas for [Rhythm Doctor](https://rhythmdr.com/) levels.
 
 They can be used with [Visual Studio Code](https://code.visualstudio.com/) to
 provide validation and completion suggestions. For `rdlevel` files, add the
-following to your `settings.json`:
+following to the top level object of your `settings.json`:
 
 ```json
 {
