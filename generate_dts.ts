@@ -1,10 +1,12 @@
-#!/usr/bin/env -S deno run --no-prompt --allow-write=character.d.ts,level.d.ts
+#!/usr/bin/env -S deno run --unstable --no-prompt --allow-write=character.d.ts,level.d.ts --allow-run=deno
 
 import { ts, withGetType, zodToTs } from "./deps/zod_to_ts.ts";
 
 import { characterTypedefs } from "./character.ts";
 import { levelTypedefs } from "./level.ts";
 
+const decoder = new TextDecoder();
+const encoder = new TextEncoder();
 const sourceFile = ts.createSourceFile("", "", ts.ScriptTarget.Latest);
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
 const exportModifier = ts.factory.createModifier(ts.SyntaxKind.ExportKeyword);
@@ -30,7 +32,24 @@ async function generate(
     ) + "\n";
     withGetType(type, () => ident);
   }
-  await Deno.writeTextFile(path, sourceText);
+  const sourceReadable = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(sourceText));
+      controller.close();
+    },
+  });
+  const child = new Deno.Command("deno", {
+    args: ["fmt", "-"],
+    stdin: "piped",
+    stdout: "piped",
+    stderr: "piped",
+  }).spawn();
+  sourceReadable.pipeTo(child.stdin).catch(() => {});
+  const { success, stdout, stderr } = await child.output();
+  if (!success) {
+    throw new Error(decoder.decode(stderr));
+  }
+  await Deno.writeFile(path, stdout);
   return;
 }
 
