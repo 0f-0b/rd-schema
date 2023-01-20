@@ -1,49 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://0f-0b.github.io/rd-schema/character.json",
-  "type": "object",
-  "properties": {
-    "$schema": {
-      "type": "string",
-      "format": "uri"
-    },
-    "name": {
-      "type": "string"
-    },
-    "voice": {
-      "type": "string"
-    },
-    "size": {
-      "type": "array",
-      "items": {
-        "type": "integer"
-      },
-      "minItems": 2,
-      "maxItems": 2
-    },
-    "clips": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Clip"
-      }
-    },
-    "rowPreviewOffset": {
-      "type": "array",
-      "items": {
-        "type": "integer"
-      },
-      "minItems": 2,
-      "maxItems": 2
-    },
-    "rowPreviewFrame": {
-      "type": "integer"
-    }
-  },
-  "required": [
-    "size",
-    "clips"
-  ],
-  "additionalProperties": false,
+  "$ref": "#/definitions/Character",
   "definitions": {
     "Clip": {
       "type": "object",
@@ -61,6 +17,7 @@
           "type": "integer"
         },
         "loop": {
+          "type": "string",
           "enum": [
             "yes",
             "onBeat",
@@ -97,6 +54,53 @@
         "fps"
       ],
       "additionalProperties": false
+    },
+    "Character": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "name": {
+          "type": "string"
+        },
+        "voice": {
+          "type": "string"
+        },
+        "size": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "clips": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Clip"
+          }
+        },
+        "rowPreviewOffset": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "rowPreviewFrame": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "size",
+        "clips"
+      ],
+      "additionalProperties": false
     }
-  }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://0f-0b.github.io/rd-schema/character.json"
 }

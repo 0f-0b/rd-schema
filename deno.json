@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "lint": "deno fmt --check && deno lint && deno check --all generate_json_schemas.ts"
+  }
+}

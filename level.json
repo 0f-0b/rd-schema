@@ -1,58 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://0f-0b.github.io/rd-schema/level.json",
-  "type": "object",
-  "properties": {
-    "$schema": {
-      "type": "string",
-      "format": "uri"
-    },
-    "settings": {
-      "$ref": "#/definitions/Settings"
-    },
-    "rows": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Row"
-      }
-    },
-    "decorations": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Decoration"
-      }
-    },
-    "events": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Event"
-      }
-    },
-    "conditionals": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Conditional"
-      }
-    },
-    "bookmarks": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Bookmark"
-      }
-    },
-    "colorPalette": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Color"
-      },
-      "maxItems": 21
-    }
-  },
-  "required": [
-    "rows",
-    "events"
-  ],
-  "additionalProperties": false,
+  "$ref": "#/definitions/Level",
   "definitions": {
     "Settings": {
       "type": "object",
@@ -61,12 +8,15 @@
           "type": "integer"
         },
         "artist": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 256
         },
         "song": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 256
         },
         "specialArtistType": {
+          "type": "string",
           "enum": [
             "None",
             "AuthorIsArtist",
@@ -80,9 +30,11 @@
           "type": "string"
         },
         "author": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 256
         },
         "difficulty": {
+          "type": "string",
           "enum": [
             "Easy",
             "Medium",
@@ -115,7 +67,8 @@
           "type": "boolean"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "tags": {
           "type": "string"
@@ -124,6 +77,7 @@
           "type": "string"
         },
         "canBePlayedOn": {
+          "type": "string",
           "enum": [
             "OnePlayerOnly",
             "TwoPlayerOnly",
@@ -131,6 +85,7 @@
           ]
         },
         "firstBeatBehavior": {
+          "type": "string",
           "enum": [
             "RunNormally",
             "RunEventsOnPrebar"
@@ -143,6 +98,7 @@
           "type": "string"
         },
         "multiplayerAppearance": {
+          "type": "string",
           "enum": [
             "HorizontalStrips",
             "Nothing"
@@ -160,7 +116,17 @@
           "maxItems": 4
         },
         "mods": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
         },
         "rankDescription": {
           "type": "array",
@@ -177,6 +143,24 @@
         "rankDescription"
       ],
       "additionalProperties": false
+    },
+    "RowType": {
+      "type": "string",
+      "enum": [
+        "Classic",
+        "Oneshot",
+        "Hold",
+        "Scratch",
+        "Split"
+      ]
+    },
+    "Player": {
+      "type": "string",
+      "enum": [
+        "P1",
+        "P2",
+        "CPU"
+      ]
     },
     "Row": {
       "type": "object",
@@ -229,11 +213,23 @@
       },
       "required": [
         "character",
-        "rowType",
         "row",
         "pulseSound"
       ],
       "additionalProperties": false
+    },
+    "ConditionExpression": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      ]
     },
     "Decoration": {
       "type": "object",
@@ -261,100 +257,17 @@
         }
       },
       "required": [
-        "depth",
-        "filename",
         "id",
         "row",
+        "filename",
+        "depth",
         "visible"
       ],
       "additionalProperties": false
     },
-    "Event": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SoundEvent"
-        },
-        {
-          "$ref": "#/definitions/RowEvent"
-        },
-        {
-          "$ref": "#/definitions/ActionEvent"
-        },
-        {
-          "$ref": "#/definitions/DecorationEvent"
-        },
-        {
-          "$ref": "#/definitions/RoomEvent"
-        }
-      ]
-    },
-    "SoundEvent": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/PlaySongEvent"
-        },
-        {
-          "$ref": "#/definitions/SetCrotchetsPerBarEvent"
-        },
-        {
-          "$ref": "#/definitions/PlaySoundEvent"
-        },
-        {
-          "$ref": "#/definitions/SetBeatsPerMinuteEvent"
-        },
-        {
-          "$ref": "#/definitions/SetClapSoundsEvent"
-        },
-        {
-          "$ref": "#/definitions/SetHeartExplodeVolumeEvent"
-        },
-        {
-          "$ref": "#/definitions/SetHeartExplosionIntervalEvent"
-        },
-        {
-          "$ref": "#/definitions/SayReadyGetSetGoEvent"
-        },
-        {
-          "$ref": "#/definitions/SetGameSoundEvent"
-        },
-        {
-          "$ref": "#/definitions/SetBeatSoundEvent"
-        },
-        {
-          "$ref": "#/definitions/SetCountingSoundEvent"
-        },
-        {
-          "$ref": "#/definitions/ReadNarrationEvent"
-        },
-        {
-          "$ref": "#/definitions/NarrateRowInfoEvent"
-        }
-      ]
-    },
-    "PlaySongEvent": {
+    "Sound": {
       "type": "object",
       "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "PlaySong"
-        },
         "filename": {
           "type": "string"
         },
@@ -369,9 +282,64 @@
         },
         "offset": {
           "type": "integer"
+        }
+      },
+      "required": [
+        "filename"
+      ],
+      "additionalProperties": false
+    },
+    "PlaySongEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "PlaySong"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "sound": {
+          "type": "string"
+        },
+        "offset": {
+          "type": "integer"
+        },
+        "volume": {
+          "type": "integer"
+        },
+        "pitch": {
+          "type": "integer"
+        },
+        "pan": {
+          "type": "integer"
+        },
+        "song": {
+          "$ref": "#/definitions/Sound"
         },
         "bpm": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "loop": {
           "type": "boolean"
@@ -380,8 +348,6 @@
       "required": [
         "bar",
         "beat",
-        "bpm",
-        "filename",
         "type"
       ],
       "additionalProperties": false
@@ -390,16 +356,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetCrotchetsPerBar"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -407,20 +379,18 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetCrotchetsPerBar"
-        },
         "crotchetsPerBar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "visualBeatMultiplier": {
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         }
       },
       "required": [
         "bar",
         "beat",
-        "crotchetsPerBar",
         "type"
       ],
       "additionalProperties": false
@@ -429,16 +399,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "PlaySound"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -446,11 +422,21 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "PlaySound"
-        },
         "filename": {
           "type": "string"
+        },
+        "sound": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sound"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "offset": {
+          "type": "integer"
         },
         "volume": {
           "type": "integer"
@@ -461,13 +447,11 @@
         "pan": {
           "type": "integer"
         },
-        "offset": {
-          "type": "integer"
-        },
         "isCustom": {
           "type": "boolean"
         },
         "customSoundType": {
+          "type": "string",
           "enum": [
             "CueSound",
             "MusicSound",
@@ -480,7 +464,6 @@
       "required": [
         "bar",
         "beat",
-        "filename",
         "type"
       ],
       "additionalProperties": false
@@ -489,16 +472,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetBeatsPerMinute"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -506,17 +495,15 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetBeatsPerMinute"
-        },
         "beatsPerMinute": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1000
         }
       },
       "required": [
         "bar",
         "beat",
-        "beatsPerMinute",
         "type"
       ],
       "additionalProperties": false
@@ -525,16 +512,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetClapSounds"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -542,14 +535,24 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetClapSounds"
-        },
         "rowType": {
           "$ref": "#/definitions/RowType"
         },
-        "p1Sound": {
+        "p1Filename": {
           "type": "string"
+        },
+        "p1Sound": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sound"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "p1Offset": {
+          "type": "integer"
         },
         "p1Volume": {
           "type": "integer"
@@ -560,11 +563,21 @@
         "p1Pan": {
           "type": "integer"
         },
-        "p1Offset": {
-          "type": "integer"
+        "p2Filename": {
+          "type": "string"
         },
         "p2Sound": {
-          "type": "string"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sound"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "p2Offset": {
+          "type": "integer"
         },
         "p2Volume": {
           "type": "integer"
@@ -575,11 +588,21 @@
         "p2Pan": {
           "type": "integer"
         },
-        "p2Offset": {
-          "type": "integer"
+        "cpuFilename": {
+          "type": "string"
         },
         "cpuSound": {
-          "type": "string"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sound"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "cpuOffset": {
+          "type": "integer"
         },
         "cpuVolume": {
           "type": "integer"
@@ -588,9 +611,6 @@
           "type": "integer"
         },
         "cpuPan": {
-          "type": "integer"
-        },
-        "cpuOffset": {
           "type": "integer"
         },
         "p1Used": {
@@ -606,9 +626,6 @@
       "required": [
         "bar",
         "beat",
-        "p1Sound",
-        "p2Sound",
-        "rowType",
         "type"
       ],
       "additionalProperties": false
@@ -617,16 +634,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetHeartExplodeVolume"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -634,18 +657,15 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetHeartExplodeVolume"
-        },
         "volume": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "volume"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -653,16 +673,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetHeartExplodeInterval"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -670,10 +696,8 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetHeartExplodeInterval"
-        },
         "intervalType": {
+          "type": "string",
           "enum": [
             "OneBeatAfter",
             "Instant",
@@ -688,8 +712,6 @@
       "required": [
         "bar",
         "beat",
-        "interval",
-        "intervalType",
         "type"
       ],
       "additionalProperties": false
@@ -698,16 +720,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SayReadyGetSetGo"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -715,10 +743,8 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SayReadyGetSetGo"
-        },
         "phraseToSay": {
+          "type": "string",
           "enum": [
             "SayReaDyGetSetGoNew",
             "SayGetSetGo",
@@ -739,6 +765,7 @@
           ]
         },
         "voiceSource": {
+          "type": "string",
           "enum": [
             "Nurse",
             "NurseTired",
@@ -759,9 +786,8 @@
       "required": [
         "bar",
         "beat",
-        "phraseToSay",
-        "tick",
-        "type"
+        "type",
+        "tick"
       ],
       "additionalProperties": false
     },
@@ -769,16 +795,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetGameSound"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -786,10 +818,8 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetGameSound"
-        },
         "soundType": {
+          "type": "string",
           "enum": [
             "ClapSoundP1Classic",
             "ClapSoundP2Classic",
@@ -861,9 +891,8 @@
       "required": [
         "bar",
         "beat",
-        "filename",
-        "soundType",
-        "type"
+        "type",
+        "filename"
       ],
       "additionalProperties": false
     },
@@ -871,16 +900,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetBeatSound"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -888,14 +923,24 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetBeatSound"
-        },
         "row": {
           "type": "integer"
         },
         "filename": {
           "type": "string"
+        },
+        "sound": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sound"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "offset": {
+          "type": "integer"
         },
         "volume": {
           "type": "integer"
@@ -905,17 +950,13 @@
         },
         "pan": {
           "type": "integer"
-        },
-        "offset": {
-          "type": "integer"
         }
       },
       "required": [
         "bar",
         "beat",
-        "filename",
-        "row",
-        "type"
+        "type",
+        "row"
       ],
       "additionalProperties": false
     },
@@ -923,16 +964,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetCountingSound"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -940,13 +987,11 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetCountingSound"
-        },
         "row": {
           "type": "integer"
         },
         "voiceSource": {
+          "type": "string",
           "enum": [
             "JyiCount",
             "JyiCountFast",
@@ -983,35 +1028,50 @@
       "required": [
         "bar",
         "beat",
-        "enabled",
+        "type",
         "row",
-        "type"
+        "enabled"
       ],
       "additionalProperties": false
+    },
+    "NarrationCategory": {
+      "type": "string",
+      "enum": [
+        "Fallback",
+        "Navigation",
+        "Instruction",
+        "Notification",
+        "Dialogue",
+        "Description",
+        "Subtitles"
+      ]
     },
     "ReadNarrationEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "ReadNarration"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
         },
         "active": {
           "type": "boolean"
-        },
-        "type": {
-          "const": "ReadNarration"
         },
         "text": {
           "type": "string"
@@ -1023,8 +1083,8 @@
       "required": [
         "bar",
         "beat",
-        "text",
-        "type"
+        "type",
+        "text"
       ],
       "additionalProperties": false
     },
@@ -1032,16 +1092,22 @@
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "NarrateRowInfo"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -1049,13 +1115,11 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "NarrateRowInfo"
-        },
         "row": {
           "type": "integer"
         },
         "infoType": {
+          "type": "string",
           "enum": [
             "Connect",
             "Update",
@@ -1068,6 +1132,7 @@
           "type": "boolean"
         },
         "narrateSkipBeats": {
+          "type": "string",
           "enum": [
             "on",
             "custom",
@@ -1075,7 +1140,8 @@
           ]
         },
         "customPattern": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[-x]{6}$"
         },
         "skipsUnstable": {
           "type": "boolean"
@@ -1084,8 +1150,395 @@
       "required": [
         "bar",
         "beat",
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "SoundEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PlaySongEvent"
+        },
+        {
+          "$ref": "#/definitions/SetCrotchetsPerBarEvent"
+        },
+        {
+          "$ref": "#/definitions/PlaySoundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetBeatsPerMinuteEvent"
+        },
+        {
+          "$ref": "#/definitions/SetClapSoundsEvent"
+        },
+        {
+          "$ref": "#/definitions/SetHeartExplodeVolumeEvent"
+        },
+        {
+          "$ref": "#/definitions/SetHeartExplosionIntervalEvent"
+        },
+        {
+          "$ref": "#/definitions/SayReadyGetSetGoEvent"
+        },
+        {
+          "$ref": "#/definitions/SetGameSoundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetBeatSoundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetCountingSoundEvent"
+        },
+        {
+          "$ref": "#/definitions/ReadNarrationEvent"
+        },
+        {
+          "$ref": "#/definitions/NarrateRowInfoEvent"
+        }
+      ]
+    },
+    "AddClassicBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "AddClassicBeat"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "tick": {
+          "type": "number",
+          "minimum": 0
+        },
+        "swing": {
+          "type": "number",
+          "minimum": 0
+        },
+        "legacy": {
+          "type": "boolean"
+        },
+        "setXs": {
+          "type": "string",
+          "enum": [
+            "ThreeBeat",
+            "FourBeat"
+          ]
+        },
+        "hold": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
         "row",
-        "type"
+        "tick"
+      ],
+      "additionalProperties": false
+    },
+    "SetRowXsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetRowXs"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "pattern": {
+          "type": "string",
+          "pattern": "^[-xudbr]{6}$"
+        },
+        "syncoBeat": {
+          "type": "integer"
+        },
+        "syncoSwing": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row",
+        "pattern"
+      ],
+      "additionalProperties": false
+    },
+    "AddFreeTimeBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "AddFreeTimeBeat"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "hold": {
+          "type": "number"
+        },
+        "pulse": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row",
+        "pulse"
+      ],
+      "additionalProperties": false
+    },
+    "PulseFreeTimeBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "PulseFreeTimeBeat"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "hold": {
+          "type": "number"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Increment",
+            "Decrement",
+            "Custom",
+            "Remove"
+          ]
+        },
+        "customPulse": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row",
+        "customPulse"
+      ],
+      "additionalProperties": false
+    },
+    "AddOneshotBeatEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "AddOneshotBeat"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "pulseType": {
+          "type": "string",
+          "enum": [
+            "Wave",
+            "Square",
+            "Heart",
+            "Triangle"
+          ]
+        },
+        "loops": {
+          "type": "integer"
+        },
+        "interval": {
+          "type": "number",
+          "minimum": 0
+        },
+        "delay": {
+          "type": "number",
+          "minimum": 0
+        },
+        "squareSound": {
+          "type": "boolean"
+        },
+        "skipshot": {
+          "type": "boolean"
+        },
+        "tick": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row",
+        "tick"
+      ],
+      "additionalProperties": false
+    },
+    "SetOneshotWaveEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetOneshotWave"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "waveType": {
+          "type": "string",
+          "enum": [
+            "BoomAndRush",
+            "Ball",
+            "Spring",
+            "Spike",
+            "SpikeHuge",
+            "Single"
+          ]
+        },
+        "height": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row",
+        "height",
+        "width"
       ],
       "additionalProperties": false
     },
@@ -1111,20 +1564,26 @@
         }
       ]
     },
-    "AddClassicBeatEvent": {
+    "SetThemeEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetTheme"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -1132,101 +1591,296 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "AddClassicBeat"
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
         },
-        "row": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Intimate",
+            "IntimateSimple",
+            "InsomniacDay",
+            "InsomniacNight",
+            "Matrix",
+            "NeonMuseum",
+            "CrossesStraight",
+            "CrossesFalling",
+            "CubesFalling",
+            "CubesFallingNiceBlue",
+            "CubesFallingWithBlueBloomAndCrossesAndMatrix",
+            "OrientalTechno",
+            "Kaleidoscope",
+            "PoliticiansRally",
+            "Rooftop",
+            "BackAlley",
+            "Sky",
+            "NightSky",
+            "HallOfMirrors",
+            "CoffeeShop",
+            "CoffeeShopNight",
+            "Garden",
+            "GardenNight",
+            "TrainDay",
+            "TrainNight",
+            "DesertDay",
+            "DesertNight",
+            "HospitalWard",
+            "HospitalWardNight",
+            "PaigeOffice",
+            "Basement",
+            "ColeWardNight",
+            "ColeWardSunrise",
+            "BoyWard",
+            "GirlWard",
+            "Skyline",
+            "SkylineBlue",
+            "FloatingHeart",
+            "FloatingHeartWithCubes",
+            "FloatingHeartBroken",
+            "FloatingHeartBrokenWithCubes",
+            "ZenGarden",
+            "Space",
+            "Tutorial",
+            "RollerDisco",
+            "Vaporwave"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "EnableOrdinaryVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
           "type": "integer"
         },
-        "tick": {
-          "type": "number"
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
         },
-        "swing": {
-          "type": "number"
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
         },
-        "legacy": {
+        "tag": {
+          "type": "string"
+        },
+        "active": {
           "type": "boolean"
         },
-        "setXs": {
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "preset": {
+          "type": "string",
           "enum": [
-            "ThreeBeat",
-            "FourBeat"
+            "SilhouettesOnHBeat",
+            "Vignette",
+            "VignetteFlicker",
+            "ColourfulShockwaves",
+            "BassDropOnHit",
+            "ShakeOnHeartBeat",
+            "ShakeOnHit",
+            "WavyRows",
+            "Tile2",
+            "Tile3",
+            "Tile4",
+            "LightStripVert",
+            "VHS",
+            "ScreenScrollX",
+            "ScreenScroll",
+            "ScreenScrollXSansVHS",
+            "ScreenScrollSansVHS",
+            "RowGlowWhite",
+            "RowOutline",
+            "RowShadow",
+            "RowAllWhite",
+            "RowSilhouetteGlow",
+            "RowPlain",
+            "CutsceneMode",
+            "Blackout",
+            "Noise",
+            "GlitchObstruction",
+            "Matrix",
+            "MiawMiaw",
+            "Confetti",
+            "FallingPetals",
+            "FallingPetalsInstant",
+            "FallingPetalsSnow",
+            "Snow",
+            "OrangeBloom",
+            "BlueBloom",
+            "HallOfMirrors",
+            "BlackAndWhite",
+            "Sepia",
+            "NumbersAbovePulses",
+            "Funk"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "enable"
+      ],
+      "additionalProperties": false
+    },
+    "ColorOrPaletteIndex": {
+      "type": "string",
+      "pattern": "^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\\d+)$"
+    },
+    "Easing": {
+      "type": "string",
+      "enum": [
+        "Unset",
+        "Linear",
+        "InSine",
+        "OutSine",
+        "InOutSine",
+        "InQuad",
+        "OutQuad",
+        "InOutQuad",
+        "InCubic",
+        "OutCubic",
+        "InOutCubic",
+        "InQuart",
+        "OutQuart",
+        "InOutQuart",
+        "InQuint",
+        "OutQuint",
+        "InOutQuint",
+        "InExpo",
+        "OutExpo",
+        "InOutExpo",
+        "InCirc",
+        "OutCirc",
+        "InOutCirc",
+        "InElastic",
+        "OutElastic",
+        "InOutElastic",
+        "InBack",
+        "OutBack",
+        "InOutBack",
+        "InBounce",
+        "OutBounce",
+        "InOutBounce"
+      ]
+    },
+    "EnableBloomVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Bloom"
           ]
         },
-        "hold": {
+        "threshold": {
           "type": "number"
+        },
+        "intensity": {
+          "type": "number"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
         "bar",
         "beat",
-        "row",
-        "tick",
-        "type"
+        "type",
+        "enable",
+        "preset",
+        "threshold",
+        "intensity",
+        "color"
       ],
       "additionalProperties": false
     },
-    "SetRowXsEvent": {
+    "EnableScreenVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
         "type": {
-          "const": "SetRowXs"
-        },
-        "row": {
-          "type": "integer"
-        },
-        "pattern": {
           "type": "string",
-          "pattern": "^[-xudbr]{6}$"
-        },
-        "syncoBeat": {
-          "type": "integer"
-        },
-        "syncoSwing": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "pattern",
-        "row",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "AddFreeTimeBeatEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
+          "const": "SetVFXPreset"
         },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -1234,42 +1888,61 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "AddFreeTimeBeat"
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
         },
-        "row": {
-          "type": "integer"
+        "enable": {
+          "type": "boolean",
+          "const": true
         },
-        "hold": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "TileN",
+            "CustomScreenScroll"
+          ]
+        },
+        "floatX": {
           "type": "number"
         },
-        "pulse": {
-          "type": "integer"
+        "floatY": {
+          "type": "number"
         }
       },
       "required": [
         "bar",
         "beat",
-        "pulse",
-        "row",
-        "type"
+        "type",
+        "enable",
+        "preset",
+        "floatX",
+        "floatY"
       ],
       "additionalProperties": false
     },
-    "PulseFreeTimeBeatEvent": {
+    "EnableEaseableVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -1277,51 +1950,1789 @@
         "active": {
           "type": "boolean"
         },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Rain",
+            "JPEG",
+            "Mosaic",
+            "ScreenWaves",
+            "Grain",
+            "Blizzard",
+            "Drawing",
+            "Aberration",
+            "Blur",
+            "RadialBlur",
+            "HueShift"
+          ]
+        },
+        "intensity": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "enable",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "DisableVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
         "type": {
-          "const": "PulseFreeTimeBeat"
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "enable": {
+          "type": "boolean",
+          "const": false
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "SilhouettesOnHBeat",
+            "Vignette",
+            "VignetteFlicker",
+            "ColourfulShockwaves",
+            "BassDropOnHit",
+            "ShakeOnHeartBeat",
+            "ShakeOnHit",
+            "WavyRows",
+            "Tile2",
+            "Tile3",
+            "Tile4",
+            "LightStripVert",
+            "VHS",
+            "ScreenScrollX",
+            "ScreenScroll",
+            "ScreenScrollXSansVHS",
+            "ScreenScrollSansVHS",
+            "RowGlowWhite",
+            "RowOutline",
+            "RowShadow",
+            "RowAllWhite",
+            "RowSilhouetteGlow",
+            "RowPlain",
+            "CutsceneMode",
+            "Blackout",
+            "Noise",
+            "GlitchObstruction",
+            "Matrix",
+            "MiawMiaw",
+            "Confetti",
+            "FallingPetals",
+            "FallingPetalsInstant",
+            "FallingPetalsSnow",
+            "Snow",
+            "OrangeBloom",
+            "BlueBloom",
+            "HallOfMirrors",
+            "BlackAndWhite",
+            "Sepia",
+            "NumbersAbovePulses",
+            "Funk",
+            "Bloom",
+            "TileN",
+            "CustomScreenScroll",
+            "Rain",
+            "JPEG",
+            "Mosaic",
+            "ScreenWaves",
+            "Grain",
+            "Blizzard",
+            "Drawing",
+            "Aberration",
+            "Blur",
+            "RadialBlur",
+            "HueShift"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "enable"
+      ],
+      "additionalProperties": false
+    },
+    "SetVFXPresetEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EnableOrdinaryVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableBloomVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableScreenVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableEaseableVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/DisableVFXPresetEvent"
+        }
+      ]
+    },
+    "ImageSequence": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "ContentMode": {
+      "type": "string",
+      "enum": [
+        "ScaleToFill",
+        "AspectFit",
+        "AspectFill",
+        "Center",
+        "Tiled"
+      ]
+    },
+    "SetBackgroundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetBackgroundColor"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "backgroundType": {
+          "type": "string",
+          "enum": [
+            "Color",
+            "Image"
+          ]
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "image": {
+          "$ref": "#/definitions/ImageSequence"
+        },
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
+        },
+        "filter": {
+          "type": "string",
+          "enum": [
+            "NearestNeighbor",
+            "Bilinear"
+          ]
+        },
+        "scrollX": {
+          "type": "number"
+        },
+        "scrollY": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "fps": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetForegroundEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetForeground"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "image": {
+          "$ref": "#/definitions/ImageSequence"
+        },
+        "fps": {
+          "type": "number"
+        },
+        "scrollX": {
+          "type": "number"
+        },
+        "scrollY": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "color",
+        "image",
+        "scrollX",
+        "scrollY"
+      ],
+      "additionalProperties": false
+    },
+    "SetSpeedEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetSpeed"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "speed": {
+          "type": "number",
+          "minimum": 0
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FlashEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "Flash"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "duration": {
+          "type": "string",
+          "enum": [
+            "Short",
+            "Medium",
+            "Long"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "CustomFlashEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "CustomFlash"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "background": {
+          "type": "boolean"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "startColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "endColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "startOpacity": {
+          "type": "integer"
+        },
+        "endOpacity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "MoveCameraEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "MoveCamera"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "cameraPosition": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": -100,
+                "maximum": 200
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "zoom": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9999
+        },
+        "angle": {
+          "type": "number",
+          "minimum": -9999,
+          "maximum": 9999
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "duration"
+      ],
+      "additionalProperties": false
+    },
+    "HideRowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "HideRow"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
         },
         "row": {
           "type": "integer"
         },
-        "hold": {
+        "show": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "Visible",
+                "Hidden",
+                "OnlyCharacter",
+                "OnlyRow"
+              ]
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "transition": {
+          "type": "string",
+          "enum": [
+            "Smooth",
+            "Instant",
+            "Full"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "Expression": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ]
+    },
+    "MoveRowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "MoveRow"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "target": {
+          "type": "string",
+          "enum": [
+            "WholeRow",
+            "Character",
+            "Heart"
+          ]
+        },
+        "customPosition": {
+          "type": "boolean"
+        },
+        "rowPosition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expression"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expression"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "angle": {
+          "$ref": "#/definitions/Expression"
+        },
+        "pivot": {
           "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row",
+        "duration"
+      ],
+      "additionalProperties": false
+    },
+    "PlayExpressionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "PlayExpression"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "expression": {
+          "type": "string"
+        },
+        "replace": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string",
+          "enum": [
+            "Neutral",
+            "Happy",
+            "Barely",
+            "Missed",
+            "Beep"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "Border": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Outline",
+        "Glow"
+      ]
+    },
+    "PaintRowsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "TintRows"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "border": {
+          "$ref": "#/definitions/Border"
+        },
+        "borderColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "tint": {
+          "type": "boolean"
+        },
+        "tintColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "opacity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "effect": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Electric"
+          ]
+        },
+        "borderOpacity": {
+          "type": "integer"
+        },
+        "tintOpacity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "Strength": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    },
+    "BassDropEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "BassDrop"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "strength": {
+          "$ref": "#/definitions/Strength"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ShakeScreenEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ShakeScreen"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "shakeLevel": {
+          "$ref": "#/definitions/Strength"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FlipScreenEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "const": "FlipScreen"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "flipX": {
+          "type": "boolean"
+        },
+        "flipY": {
+          "type": "boolean"
+        },
+        "x": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "InvertColorsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "InvertColors"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PulseCameraEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "PulseCamera"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "strength": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "frequency": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "TextExplosionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "TextExplosion"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "text": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "OneColor",
+            "Random"
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "Left",
+            "Right"
+          ]
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Language": {
+      "type": "string",
+      "enum": [
+        "English",
+        "Spanish",
+        "Portuguese",
+        "ChineseSimplified",
+        "ChineseTraditional",
+        "Korean",
+        "Polish",
+        "Japanese"
+      ]
+    },
+    "ShowDialogueEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ShowDialogue"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        },
+        "localized": {
+          "type": "boolean"
+        },
+        "textEnglish": {
+          "type": "string"
+        },
+        "textSpanish": {
+          "type": "string"
+        },
+        "textPortuguese": {
+          "type": "string"
+        },
+        "textChineseSimplified": {
+          "type": "string"
+        },
+        "textChineseTraditional": {
+          "type": "string"
+        },
+        "textKorean": {
+          "type": "string"
+        },
+        "textPolish": {
+          "type": "string"
+        },
+        "textJapanese": {
+          "type": "string"
+        },
+        "panelSide": {
+          "type": "string",
+          "enum": [
+            "Bottom",
+            "Top"
+          ]
+        },
+        "portraitSide": {
+          "type": "string",
+          "enum": [
+            "Left",
+            "Right"
+          ]
+        },
+        "speed": {
+          "type": "number"
+        },
+        "playTextSounds": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "text",
+        "speed"
+      ],
+      "additionalProperties": false
+    },
+    "ShowStatusSignEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ShowStatusSign"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "useBeats": {
+          "type": "boolean"
+        },
+        "narrate": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FloatingTextEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "FloatingText"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "id": {
+          "type": "integer"
+        },
+        "text": {
+          "type": "string"
+        },
+        "times": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "outlineColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "textPosition": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "angle": {
+          "type": "number"
+        },
+        "showChildren": {
+          "type": "boolean"
+        },
+        "fadeOutRate": {
+          "type": "number",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "FadeOut",
+            "HideAbruptly"
+          ]
+        },
+        "anchor": {
+          "type": "string",
+          "enum": [
+            "UpperLeft",
+            "UpperCenter",
+            "UpperRight",
+            "MiddleLeft",
+            "MiddleCenter",
+            "MiddleRight",
+            "LowerLeft",
+            "LowerCenter",
+            "LowerRight"
+          ]
+        },
+        "narrate": {
+          "type": "boolean"
+        },
+        "narrationCategory": {
+          "$ref": "#/definitions/NarrationCategory"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "text",
+        "times"
+      ],
+      "additionalProperties": false
+    },
+    "AdvanceFloatingTextEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "AdvanceText"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "fadeOutDuration": {
+          "type": "number"
+        },
+        "id": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "ChangePlayersRowsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ChangePlayersRows"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "playerMode": {
+          "type": "string",
+          "enum": [
+            "OnePlayer",
+            "TwoPlayers"
+          ]
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "P1",
+              "P2",
+              "CPU",
+              "NoChange"
+            ]
+          }
+        },
+        "cpuMarkers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flashingOnBeat": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FinishLevelEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "FinishLevel"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "OrdinaryCommentEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "Comment"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "tab": {
+          "type": "string",
+          "enum": [
+            "Song",
+            "Actions",
+            "Rooms"
+          ]
+        },
+        "target": {
+          "type": "string"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "target",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "SpriteCommentEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "Comment"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "tab": {
+          "type": "string",
+          "const": "Sprites"
+        },
+        "target": {
+          "type": "string"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "tab",
+        "target",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "CommentEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/OrdinaryCommentEvent"
+        },
+        {
+          "$ref": "#/definitions/SpriteCommentEvent"
+        }
+      ]
+    },
+    "Hands": {
+      "type": "string",
+      "enum": [
+        "Left",
+        "Right",
+        "Both"
+      ]
+    },
+    "ShowHandsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ShowHands"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "hand": {
+          "$ref": "#/definitions/Hands"
         },
         "action": {
+          "type": "string",
           "enum": [
-            "Increment",
-            "Decrement",
-            "Custom",
-            "Remove"
+            "Show",
+            "Hide",
+            "Raise",
+            "Lower"
           ]
         },
-        "customPulse": {
-          "type": "integer"
+        "align": {
+          "type": "boolean"
+        },
+        "instant": {
+          "type": "boolean"
+        },
+        "extent": {
+          "type": "string",
+          "enum": [
+            "Full",
+            "Short"
+          ]
         }
       },
       "required": [
-        "action",
         "bar",
         "beat",
-        "customPulse",
-        "row",
         "type"
       ],
       "additionalProperties": false
     },
-    "AddOneshotBeatEvent": {
+    "PaintHandsEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "PaintHands"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -1329,62 +3740,290 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "AddOneshotBeat"
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
         },
-        "row": {
+        "hands": {
+          "$ref": "#/definitions/Hands"
+        },
+        "border": {
+          "$ref": "#/definitions/Border"
+        },
+        "borderColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "tint": {
+          "type": "boolean"
+        },
+        "tintColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "borderOpacity": {
           "type": "integer"
         },
-        "pulseType": {
+        "tintOpacity": {
+          "type": "integer"
+        },
+        "opacity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "borderColor",
+        "tint",
+        "tintColor"
+      ],
+      "additionalProperties": false
+    },
+    "AssignHandsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetHandOwner"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "hand": {
+          "$ref": "#/definitions/Hands"
+        },
+        "character": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "TagActionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "TagAction"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "Action": {
+          "type": "string",
           "enum": [
-            "Wave",
-            "Square",
-            "Heart",
-            "Triangle"
+            "Run",
+            "RunAll",
+            "Enable",
+            "Disable",
+            "EnableAll",
+            "DisableAll"
           ]
+        },
+        "Tag": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "Tag"
+      ],
+      "additionalProperties": false
+    },
+    "SetPlayStyleEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetPlayStyle"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "PlayStyle": {
+          "type": "string",
+          "enum": [
+            "Normal",
+            "Loop",
+            "Prolong",
+            "Immediately",
+            "ExtraImmediately",
+            "ProlongOneBar",
+            "Default",
+            "OnNextBar",
+            "BeatLoopOnly",
+            "ScrubToNext",
+            "None"
+          ]
+        },
+        "NextBar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "Relative": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "StutterEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "Stutter"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "sourceBeat": {
+          "type": "number",
+          "minimum": 0
+        },
+        "length": {
+          "type": "number",
+          "minimum": 0
         },
         "loops": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
-        "interval": {
-          "type": "number"
-        },
-        "delay": {
-          "type": "number"
-        },
-        "squareSound": {
-          "type": "boolean"
-        },
-        "skipshot": {
-          "type": "boolean"
-        },
-        "tick": {
-          "type": "number"
+        "action": {
+          "type": "string",
+          "enum": [
+            "Add",
+            "Cancel"
+          ]
         }
       },
       "required": [
         "bar",
         "beat",
-        "row",
-        "tick",
         "type"
       ],
       "additionalProperties": false
     },
-    "SetOneshotWaveEvent": {
+    "CallCustomMethodEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "CallCustomMethod"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -1392,37 +4031,146 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "SetOneshotWave"
+        "methodName": {
+          "type": "string"
         },
-        "row": {
-          "type": "integer"
-        },
-        "waveType": {
+        "executionTime": {
+          "type": "string",
           "enum": [
-            "BoomAndRush",
-            "Ball",
-            "Spring",
-            "Spike",
-            "SpikeHuge",
-            "Single"
+            "OnPrebar",
+            "OnBar"
           ]
         },
-        "height": {
-          "type": "integer"
-        },
-        "width": {
+        "sortOffset": {
           "type": "integer"
         }
       },
       "required": [
         "bar",
         "beat",
-        "height",
-        "row",
         "type",
-        "waveType",
-        "width"
+        "methodName",
+        "sortOffset"
+      ],
+      "additionalProperties": false
+    },
+    "WindowDanceEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "NewWindowDance"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Move",
+            "Sway",
+            "Wrap",
+            "Ellipse",
+            "ShakePer"
+          ]
+        },
+        "usePosition": {
+          "type": "string",
+          "enum": [
+            "New",
+            "Current"
+          ]
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "reference": {
+          "type": "string",
+          "enum": [
+            "Center",
+            "Edge"
+          ]
+        },
+        "useCircle": {
+          "type": "boolean"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "amplitude": {
+          "type": "number"
+        },
+        "amplitudeVector": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "angle": {
+          "type": "number"
+        },
+        "frequency": {
+          "type": "number"
+        },
+        "period": {
+          "type": "number"
+        },
+        "easeType": {
+          "type": "string",
+          "enum": [
+            "Repeat",
+            "Mirror"
+          ]
+        },
+        "easingDuration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "position",
+        "speed",
+        "amplitude",
+        "amplitudeVector",
+        "angle",
+        "frequency",
+        "period",
+        "easingDuration"
       ],
       "additionalProperties": false
     },
@@ -1529,970 +4277,37 @@
         }
       ]
     },
-    "SetThemeEvent": {
+    "MoveSpriteEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "Move"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
         },
         "active": {
           "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetTheme"
-        },
-        "preset": {
-          "enum": [
-            "None",
-            "Intimate",
-            "IntimateSimple",
-            "InsomniacDay",
-            "InsomniacNight",
-            "Matrix",
-            "NeonMuseum",
-            "CrossesStraight",
-            "CrossesFalling",
-            "CubesFalling",
-            "CubesFallingNiceBlue",
-            "CubesFallingWithBlueBloomAndCrossesAndMatrix",
-            "OrientalTechno",
-            "Kaleidoscope",
-            "PoliticiansRally",
-            "Rooftop",
-            "BackAlley",
-            "Sky",
-            "NightSky",
-            "HallOfMirrors",
-            "CoffeeShop",
-            "CoffeeShopNight",
-            "Garden",
-            "GardenNight",
-            "TrainDay",
-            "TrainNight",
-            "DesertDay",
-            "DesertNight",
-            "HospitalWard",
-            "HospitalWardNight",
-            "PaigeOffice",
-            "Basement",
-            "ColeWardNight",
-            "ColeWardSunrise",
-            "BoyWard",
-            "GirlWard",
-            "Skyline",
-            "SkylineBlue",
-            "FloatingHeart",
-            "FloatingHeartWithCubes",
-            "FloatingHeartBroken",
-            "FloatingHeartBrokenWithCubes",
-            "ZenGarden",
-            "Space",
-            "Tutorial",
-            "RollerDisco",
-            "Vaporwave"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "preset",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "SetVFXPresetEvent": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/EnableOrdinaryVFXPresetEvent"
-        },
-        {
-          "$ref": "#/definitions/EnableBloomVFXPresetEvent"
-        },
-        {
-          "$ref": "#/definitions/EnableScreenVFXPresetEvent"
-        },
-        {
-          "$ref": "#/definitions/EnableEaseableVFXPresetEvent"
-        },
-        {
-          "$ref": "#/definitions/DisableVFXPresetEvent"
-        }
-      ]
-    },
-    "EnableOrdinaryVFXPresetEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetVFXPreset"
-        },
-        "enable": {
-          "const": true
-        },
-        "preset": {
-          "enum": [
-            "SilhouettesOnHBeat",
-            "Vignette",
-            "VignetteFlicker",
-            "ColourfulShockwaves",
-            "BassDropOnHit",
-            "ShakeOnHeartBeat",
-            "ShakeOnHit",
-            "WavyRows",
-            "Tile2",
-            "Tile3",
-            "Tile4",
-            "LightStripVert",
-            "VHS",
-            "ScreenScrollX",
-            "ScreenScroll",
-            "ScreenScrollXSansVHS",
-            "ScreenScrollSansVHS",
-            "RowGlowWhite",
-            "RowOutline",
-            "RowShadow",
-            "RowAllWhite",
-            "RowSilhouetteGlow",
-            "RowPlain",
-            "CutsceneMode",
-            "Blackout",
-            "Noise",
-            "GlitchObstruction",
-            "Matrix",
-            "MiawMiaw",
-            "Confetti",
-            "FallingPetals",
-            "FallingPetalsInstant",
-            "FallingPetalsSnow",
-            "Snow",
-            "OrangeBloom",
-            "BlueBloom",
-            "HallOfMirrors",
-            "BlackAndWhite",
-            "Sepia",
-            "NumbersAbovePulses",
-            "Funk"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "enable",
-        "preset",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "EnableBloomVFXPresetEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetVFXPreset"
-        },
-        "enable": {
-          "const": true
-        },
-        "preset": {
-          "const": "Bloom"
-        },
-        "threshold": {
-          "type": "number"
-        },
-        "intensity": {
-          "type": "number"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "color",
-        "enable",
-        "intensity",
-        "preset",
-        "threshold",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "EnableScreenVFXPresetEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetVFXPreset"
-        },
-        "enable": {
-          "const": true
-        },
-        "preset": {
-          "enum": [
-            "TileN",
-            "CustomScreenScroll"
-          ]
-        },
-        "floatX": {
-          "type": "number"
-        },
-        "floatY": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "enable",
-        "floatX",
-        "floatY",
-        "preset",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "EnableEaseableVFXPresetEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetVFXPreset"
-        },
-        "enable": {
-          "const": true
-        },
-        "preset": {
-          "enum": [
-            "Rain",
-            "JPEG",
-            "Mosaic",
-            "ScreenWaves",
-            "Grain",
-            "Blizzard",
-            "Drawing",
-            "Aberration",
-            "Blur",
-            "RadialBlur",
-            "HueShift"
-          ]
-        },
-        "intensity": {
-          "type": "integer"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "enable",
-        "preset",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "DisableVFXPresetEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetVFXPreset"
-        },
-        "enable": {
-          "const": false
-        },
-        "preset": {
-          "enum": [
-            "SilhouettesOnHBeat",
-            "Vignette",
-            "VignetteFlicker",
-            "ColourfulShockwaves",
-            "BassDropOnHit",
-            "ShakeOnHeartBeat",
-            "ShakeOnHit",
-            "WavyRows",
-            "Tile2",
-            "Tile3",
-            "Tile4",
-            "LightStripVert",
-            "VHS",
-            "ScreenScrollX",
-            "ScreenScroll",
-            "ScreenScrollXSansVHS",
-            "ScreenScrollSansVHS",
-            "RowGlowWhite",
-            "RowOutline",
-            "RowShadow",
-            "RowAllWhite",
-            "RowSilhouetteGlow",
-            "RowPlain",
-            "CutsceneMode",
-            "Blackout",
-            "Noise",
-            "GlitchObstruction",
-            "Rain",
-            "Matrix",
-            "MiawMiaw",
-            "Confetti",
-            "FallingPetals",
-            "FallingPetalsInstant",
-            "FallingPetalsSnow",
-            "Snow",
-            "Bloom",
-            "OrangeBloom",
-            "BlueBloom",
-            "HallOfMirrors",
-            "TileN",
-            "BlackAndWhite",
-            "Sepia",
-            "CustomScreenScroll",
-            "JPEG",
-            "NumbersAbovePulses",
-            "Mosaic",
-            "ScreenWaves",
-            "Funk",
-            "Grain",
-            "Blizzard",
-            "Drawing",
-            "Aberration",
-            "Blur",
-            "RadialBlur",
-            "HueShift"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "enable",
-        "preset",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "SetBackgroundEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetBackgroundColor"
-        },
-        "backgroundType": {
-          "enum": [
-            "Color",
-            "Image"
-          ]
-        },
-        "contentMode": {
-          "$ref": "#/definitions/ContentMode"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "image": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ]
-        },
-        "fps": {
-          "type": "number"
-        },
-        "filter": {
-          "enum": [
-            "NearestNeighbor",
-            "Bilinear"
-          ]
-        },
-        "scrollX": {
-          "type": "number"
-        },
-        "scrollY": {
-          "type": "number"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "backgroundType",
-        "bar",
-        "beat",
-        "color",
-        "contentMode",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "SetForegroundEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetForeground"
-        },
-        "contentMode": {
-          "$ref": "#/definitions/ContentMode"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "image": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ]
-        },
-        "fps": {
-          "type": "number"
-        },
-        "scrollX": {
-          "type": "number"
-        },
-        "scrollY": {
-          "type": "number"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "color",
-        "contentMode",
-        "image",
-        "scrollX",
-        "scrollY",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "SetSpeedEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "SetSpeed"
-        },
-        "speed": {
-          "type": "number"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "speed",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "FlashEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "Flash"
-        },
-        "duration": {
-          "enum": [
-            "Short",
-            "Medium",
-            "Long"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "duration",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "CustomFlashEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "CustomFlash"
-        },
-        "background": {
-          "type": "boolean"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "startColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "startOpacity": {
-          "type": "integer"
-        },
-        "endColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "endOpacity": {
-          "type": "integer"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "background",
-        "bar",
-        "beat",
-        "duration",
-        "endColor",
-        "endOpacity",
-        "startColor",
-        "startOpacity",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "MoveCameraEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "MoveCamera"
-        },
-        "cameraPosition": {
-          "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
-          "minItems": 2,
-          "maxItems": 2
-        },
-        "zoom": {
-          "type": "integer"
-        },
-        "angle": {
-          "type": "number"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "duration",
-        "ease",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "HideRowEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "HideRow"
-        },
-        "row": {
-          "type": "integer"
-        },
-        "show": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "enum": [
-                "Visible",
-                "Hidden",
-                "OnlyCharacter",
-                "OnlyRow"
-              ]
-            }
-          ]
-        },
-        "transition": {
-          "enum": [
-            "Smooth",
-            "Instant",
-            "Full"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "row",
-        "show",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "MoveRowEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "MoveRow"
-        },
-        "row": {
-          "type": "integer"
         },
         "target": {
-          "enum": [
-            "WholeRow",
-            "Character",
-            "Heart"
-          ]
+          "type": "string"
         },
-        "customPosition": {
-          "type": "boolean"
-        },
-        "rowPosition": {
+        "position": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Expression"
@@ -2512,7 +4327,15 @@
           "$ref": "#/definitions/Expression"
         },
         "pivot": {
-          "type": "number"
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
         },
         "duration": {
           "type": "number"
@@ -2524,165 +4347,41 @@
       "required": [
         "bar",
         "beat",
-        "duration",
-        "ease",
-        "row",
-        "type"
+        "type",
+        "target",
+        "duration"
       ],
       "additionalProperties": false
     },
-    "Expression": {
-      "type": [
-        "number",
-        "string",
-        "null"
-      ]
-    },
-    "PlayExpressionEvent": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/OneshotExpressionEvent"
-        },
-        {
-          "$ref": "#/definitions/ReplaceExpressionEvent"
-        }
-      ]
-    },
-    "OneshotExpressionEvent": {
+    "PaintSpriteEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "Tint"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
         },
         "active": {
           "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "PlayExpression"
-        },
-        "row": {
-          "type": "integer"
-        },
-        "expression": {
-          "type": "string"
-        },
-        "replace": {
-          "const": false
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "bar",
-        "beat",
-        "expression",
-        "row",
-        "type"
-      ]
-    },
-    "ReplaceExpressionEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "PlayExpression"
-        },
-        "row": {
-          "type": "integer"
-        },
-        "expression": {
-          "type": "string"
-        },
-        "replace": {
-          "const": true
         },
         "target": {
-          "enum": [
-            "Neutral",
-            "Happy",
-            "Barely",
-            "Missed",
-            "Beep"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "expression",
-        "replace",
-        "row",
-        "target",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "PaintRowsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
           "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "TintRows"
-        },
-        "row": {
-          "type": "integer"
         },
         "border": {
           "$ref": "#/definitions/Border"
@@ -2690,1255 +4389,124 @@
         "borderColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
-        "borderOpacity": {
-          "type": "integer"
-        },
-        "opacity": {
-          "type": "integer"
-        },
-        "effect": {
-          "enum": [
-            "Electric",
-            "Smoke"
-          ]
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        },
         "tint": {
           "type": "boolean"
         },
         "tintColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
-        "tintOpacity": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "border",
-        "borderColor",
-        "borderOpacity",
-        "row",
-        "tint",
-        "tintColor",
-        "tintOpacity",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "BassDropEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "BassDrop"
-        },
-        "strength": {
-          "enum": [
-            "Low",
-            "Medium",
-            "High"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "ShakeScreenEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "ShakeScreen"
-        },
-        "shakeLevel": {
-          "enum": [
-            "Low",
-            "Medium",
-            "High"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "shakeLevel",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "FlipScreenEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "FlipScreen"
-        },
-        "flipX": {
-          "type": "boolean"
-        },
-        "flipY": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "flipX",
-        "flipY",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "InvertColorsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "InvertColors"
-        },
-        "enable": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "enable",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "PulseCameraEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "PulseCamera"
-        },
-        "strength": {
-          "type": "integer"
-        },
-        "count": {
-          "type": "integer"
-        },
-        "frequency": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "count",
-        "frequency",
-        "strength",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "TextExplosionEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "TextExplosion"
-        },
-        "text": {
-          "type": "string"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "mode": {
-          "enum": [
-            "OneColor",
-            "Random"
-          ]
-        },
-        "direction": {
-          "enum": [
-            "Left",
-            "Right"
-          ]
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "color",
-        "mode",
-        "text",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "ShowDialogueEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "ShowDialogue"
-        },
-        "text": {
-          "type": "string"
-        },
-        "localized": {
-          "type": "boolean"
-        },
-        "textEnglish": {
-          "type": "string"
-        },
-        "textSpanish": {
-          "type": "string"
-        },
-        "textPortuguese": {
-          "type": "string"
-        },
-        "textChineseSimplified": {
-          "type": "string"
-        },
-        "textChineseTraditional": {
-          "type": "string"
-        },
-        "textKorean": {
-          "type": "string"
-        },
-        "textPolish": {
-          "type": "string"
-        },
-        "textJapanese": {
-          "type": "string"
-        },
-        "panelSide": {
-          "enum": [
-            "Bottom",
-            "Top"
-          ]
-        },
-        "portraitSide": {
-          "enum": [
-            "Left",
-            "Right"
-          ]
-        },
-        "speed": {
-          "type": "number"
-        },
-        "playTextSounds": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "speed",
-        "text",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "ShowStatusSignEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "ShowStatusSign"
-        },
-        "text": {
-          "type": "string"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "useBeats": {
-          "type": "boolean"
-        },
-        "narrate": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "duration",
-        "text",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "FloatingTextEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "FloatingText"
-        },
-        "id": {
-          "type": "integer"
-        },
-        "text": {
-          "type": "string"
-        },
-        "times": {
-          "type": "string"
-        },
-        "textPosition": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          },
-          "minItems": 2,
-          "maxItems": 2
-        },
-        "size": {
-          "type": "integer"
-        },
-        "angle": {
-          "type": "number"
-        },
-        "mode": {
-          "enum": [
-            "FadeOut",
-            "HideAbruptly"
-          ]
-        },
-        "showChildren": {
-          "type": "boolean"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "outlineColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "anchor": {
-          "enum": [
-            "UpperLeft",
-            "UpperCenter",
-            "UpperRight",
-            "MiddleLeft",
-            "MiddleCenter",
-            "MiddleRight",
-            "LowerLeft",
-            "LowerCenter",
-            "LowerRight"
-          ]
-        },
-        "fadeOutRate": {
-          "type": "number"
-        },
-        "narrate": {
-          "type": "boolean"
-        },
-        "narrationCategory": {
-          "$ref": "#/definitions/NarrationCategory"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "color",
-        "id",
-        "showChildren",
-        "text",
-        "textPosition",
-        "times",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "AdvanceFloatingTextEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "AdvanceText"
-        },
-        "fadeOutDuration": {
-          "type": "number"
-        },
-        "id": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "id",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "ChangePlayersRowsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "ChangePlayersRows"
-        },
-        "playerMode": {
-          "enum": [
-            "OnePlayer",
-            "TwoPlayers"
-          ]
-        },
-        "flashingOnBeat": {
-          "type": "boolean"
-        },
-        "players": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Player"
-              },
-              {
-                "const": "NoChange"
-              }
-            ]
-          }
-        },
-        "cpuMarkers": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "players",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "FinishLevelEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "FinishLevel"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "CommentEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "Comment"
-        },
-        "tab": {
-          "enum": [
-            "Song",
-            "Actions",
-            "Rooms",
-            "Sprites"
-          ]
-        },
-        "show": {
-          "type": "boolean"
-        },
-        "text": {
-          "type": "string"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "text",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "ShowHandsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "ShowHands"
-        },
-        "hand": {
-          "$ref": "#/definitions/Hands"
-        },
-        "action": {
-          "enum": [
-            "Show",
-            "Hide",
-            "Raise",
-            "Lower"
-          ]
-        },
-        "align": {
-          "type": "boolean"
-        },
-        "instant": {
-          "type": "boolean"
-        },
-        "extent": {
-          "enum": [
-            "Full",
-            "Short"
-          ]
-        }
-      },
-      "required": [
-        "action",
-        "bar",
-        "beat",
-        "hand",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "PaintHandsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "PaintHands"
-        },
-        "hands": {
-          "$ref": "#/definitions/Hands"
-        },
-        "border": {
-          "$ref": "#/definitions/Border"
-        },
-        "borderColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
         "borderOpacity": {
           "type": "integer"
         },
-        "opacity": {
+        "tintOpacity": {
           "type": "integer"
+        },
+        "opacity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         },
         "duration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
-        },
-        "tint": {
-          "type": "boolean"
-        },
-        "tintColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "tintOpacity": {
-          "type": "integer"
         }
       },
       "required": [
         "bar",
         "beat",
-        "border",
-        "borderColor",
-        "borderOpacity",
-        "hands",
-        "tint",
-        "tintColor",
-        "tintOpacity",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "AssignHandsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "SetHandOwner"
-        },
-        "hand": {
-          "$ref": "#/definitions/Hands"
-        },
-        "character": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "character",
-        "hand",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "TagActionEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "TagAction"
-        },
-        "Action": {
-          "enum": [
-            "Run",
-            "RunAll",
-            "Enable",
-            "Disable",
-            "EnableAll",
-            "DisableAll"
-          ]
-        },
-        "Tag": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "Action",
-        "Tag",
-        "bar",
-        "beat",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "SetPlayStyleEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "SetPlayStyle"
-        },
-        "PlayStyle": {
-          "enum": [
-            "Normal",
-            "Loop",
-            "Prolong",
-            "Immediately",
-            "ExtraImmediately",
-            "ProlongOneBar",
-            "Default",
-            "OnNextBar",
-            "BeatLoopOnly",
-            "ScrubToNext",
-            "None"
-          ]
-        },
-        "NextBar": {
-          "type": "integer"
-        },
-        "Relative": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "NextBar",
-        "PlayStyle",
-        "Relative",
-        "bar",
-        "beat",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "StutterEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "Stutter"
-        },
-        "action": {
-          "enum": [
-            "Add",
-            "Cancel"
-          ]
-        },
-        "sourceBeat": {
-          "type": "number"
-        },
-        "length": {
-          "type": "number"
-        },
-        "loops": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "length",
-        "loops",
-        "sourceBeat",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "CallCustomMethodEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "CallCustomMethod"
-        },
-        "methodName": {
-          "type": "string"
-        },
-        "executionTime": {
-          "enum": [
-            "OnPrebar",
-            "OnBar"
-          ]
-        },
-        "sortOffset": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "executionTime",
-        "methodName",
-        "sortOffset",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "WindowDanceEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "NewWindowDance"
-        },
-        "preset": {
-          "enum": [
-            "Move",
-            "Sway",
-            "Wrap",
-            "Ellipse",
-            "ShakePer"
-          ]
-        },
-        "usePosition": {
-          "enum": [
-            "New",
-            "Current"
-          ]
-        },
-        "position": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          },
-          "minItems": 2,
-          "maxItems": 2
-        },
-        "reference": {
-          "enum": [
-            "Center",
-            "Edge"
-          ]
-        },
-        "useCircle": {
-          "type": "boolean"
-        },
-        "speed": {
-          "type": "number"
-        },
-        "amplitude": {
-          "type": "number"
-        },
-        "amplitudeVector": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          },
-          "minItems": 2,
-          "maxItems": 2
-        },
-        "angle": {
-          "type": "number"
-        },
-        "frequency": {
-          "type": "number"
-        },
-        "period": {
-          "type": "number"
-        },
-        "easeType": {
-          "enum": [
-            "Repeat",
-            "Mirror"
-          ]
-        },
-        "easingDuration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "amplitude",
-        "amplitudeVector",
-        "angle",
-        "bar",
-        "beat",
-        "ease",
-        "easeType",
-        "easingDuration",
-        "frequency",
-        "period",
-        "position",
-        "preset",
-        "reference",
-        "speed",
         "type",
-        "usePosition"
+        "target",
+        "borderColor",
+        "tint",
+        "tintColor"
+      ],
+      "additionalProperties": false
+    },
+    "PlayAnimationEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "PlayAnimation"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "expression": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "target",
+        "expression"
+      ],
+      "additionalProperties": false
+    },
+    "HideSpriteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVisible"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "target",
+        "visible"
       ],
       "additionalProperties": false
     },
@@ -3958,20 +4526,26 @@
         }
       ]
     },
-    "MoveSpriteEvent": {
+    "ShowRoomsHorizontallyEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "ShowRooms"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -3979,16 +4553,72 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "Move"
-        },
-        "target": {
-          "type": "string"
-        },
-        "position": {
+        "rooms": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Expression"
+            "type": "integer"
+          }
+        },
+        "transitionTime": {
+          "type": "number"
+        },
+        "heights": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "MoveRoomEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "MoveRoom"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "roomPosition": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": -10000,
+                "maximum": 10000
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "minItems": 2,
           "maxItems": 2
@@ -3996,13 +4626,18 @@
         "scale": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Expression"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "minItems": 2,
           "maxItems": 2
         },
         "angle": {
-          "$ref": "#/definitions/Expression"
+          "type": "number",
+          "minimum": -9999,
+          "maximum": 9999
         },
         "pivot": {
           "type": "array",
@@ -4025,27 +4660,31 @@
       "required": [
         "bar",
         "beat",
-        "duration",
-        "ease",
-        "target",
-        "type"
+        "type",
+        "duration"
       ],
       "additionalProperties": false
     },
-    "PaintSpriteEvent": {
+    "ReorderRoomsEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "ReorderRooms"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -4053,68 +4692,197 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "Tint"
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetRoomContentModeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
         },
-        "target": {
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetRoomContentMode"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
           "type": "string"
         },
-        "border": {
-          "$ref": "#/definitions/Border"
+        "active": {
+          "type": "boolean"
         },
-        "borderColor": {
+        "mode": {
+          "$ref": "#/definitions/ContentMode"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "MaskRoomEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "MaskRoom"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "maskType": {
+          "type": "string",
+          "enum": [
+            "Image",
+            "Room",
+            "Color",
+            "None"
+          ]
+        },
+        "alphaMode": {
+          "type": "string",
+          "enum": [
+            "Normal",
+            "Inverted"
+          ]
+        },
+        "sourceRoom": {
+          "type": "integer"
+        },
+        "image": {
+          "$ref": "#/definitions/ImageSequence"
+        },
+        "fps": {
+          "type": "number"
+        },
+        "keyColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
-        "borderOpacity": {
+        "colorCutoff": {
           "type": "integer"
         },
-        "opacity": {
+        "colorFeathering": {
           "type": "integer"
+        },
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "image"
+      ],
+      "additionalProperties": false
+    },
+    "FadeRoomEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "FadeRoom"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "opacity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         },
         "duration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
-        },
-        "tint": {
-          "type": "boolean"
-        },
-        "tintColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "tintOpacity": {
-          "type": "integer"
         }
       },
       "required": [
         "bar",
         "beat",
-        "border",
-        "borderColor",
-        "borderOpacity",
-        "target",
-        "tint",
-        "tintColor",
-        "tintOpacity",
         "type"
       ],
       "additionalProperties": false
     },
-    "PlayAnimationEvent": {
+    "SetRoomPerspectiveEvent": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "y": {
           "type": "integer"
         },
+        "type": {
+          "type": "string",
+          "const": "SetRoomPerspective"
+        },
         "if": {
-          "type": "string"
+          "$ref": "#/definitions/ConditionExpression"
         },
         "tag": {
           "type": "string"
@@ -4122,62 +4890,41 @@
         "active": {
           "type": "boolean"
         },
-        "type": {
-          "const": "PlayAnimation"
+        "cornerPositions": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 4,
+          "maxItems": 4
         },
-        "target": {
-          "type": "string"
-        },
-        "expression": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "bar",
-        "beat",
-        "expression",
-        "target",
-        "type"
-      ]
-    },
-    "HideSpriteEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
+        "duration": {
           "type": "number"
         },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "SetVisible"
-        },
-        "target": {
-          "type": "string"
-        },
-        "visible": {
-          "type": "boolean"
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
         "bar",
         "beat",
-        "target",
         "type",
-        "visible"
+        "cornerPositions",
+        "duration"
       ],
       "additionalProperties": false
     },
@@ -4206,389 +4953,171 @@
         }
       ]
     },
-    "ShowRoomsHorizontallyEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
+    "Event": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SoundEvent"
         },
-        "beat": {
-          "type": "number"
+        {
+          "$ref": "#/definitions/RowEvent"
         },
-        "y": {
-          "type": "integer"
+        {
+          "$ref": "#/definitions/ActionEvent"
         },
-        "if": {
-          "type": "string"
+        {
+          "$ref": "#/definitions/DecorationEvent"
         },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "ShowRooms"
-        },
-        "transitionTime": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        },
-        "heights": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
+        {
+          "$ref": "#/definitions/RoomEvent"
         }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "heights",
-        "transitionTime",
-        "type"
-      ],
-      "additionalProperties": false
+      ]
     },
-    "MoveRoomEvent": {
+    "LastHitConditional": {
       "type": "object",
       "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
+        "type": {
+          "type": "string",
+          "const": "LastHit"
         },
         "tag": {
           "type": "string"
         },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "MoveRoom"
-        },
-        "roomPosition": {
-          "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
-          "minItems": 2,
-          "maxItems": 2
-        },
-        "scale": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          },
-          "minItems": 2,
-          "maxItems": 2
-        },
-        "angle": {
-          "type": "number"
-        },
-        "pivot": {
-          "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
-          "minItems": 2,
-          "maxItems": 2
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "duration",
-        "ease",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "ReorderRoomsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
+        "name": {
           "type": "string"
         },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "ReorderRooms"
-        },
-        "order": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "order",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "SetRoomContentModeEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
+        "id": {
           "type": "integer"
         },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
+        "row": {
           "type": "integer"
         },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "type": {
-          "const": "SetRoomContentMode"
-        },
-        "mode": {
-          "$ref": "#/definitions/ContentMode"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "mode",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "MaskRoomEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "const": "MaskRoom"
-        },
-        "maskType": {
+        "result": {
+          "type": "string",
           "enum": [
-            "Image",
-            "Room",
-            "Color",
-            "None"
+            "Perfect",
+            "SlightlyEarly",
+            "SlightlyLate",
+            "VeryEarly",
+            "VeryLate",
+            "AnyEarlyOrLate",
+            "Missed"
           ]
-        },
-        "alphaMode": {
-          "enum": [
-            "Normal",
-            "Inverted"
-          ]
-        },
-        "sourceRoom": {
-          "type": "integer"
-        },
-        "image": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ]
-        },
-        "fps": {
-          "type": "number"
-        },
-        "keyColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "colorCutoff": {
-          "type": "integer"
-        },
-        "colorFeathering": {
-          "type": "integer"
-        },
-        "contentMode": {
-          "$ref": "#/definitions/ContentMode"
         }
       },
       "required": [
-        "bar",
-        "beat",
-        "contentMode",
-        "image",
-        "type"
+        "type",
+        "name",
+        "id"
       ],
       "additionalProperties": false
     },
-    "FadeRoomEvent": {
+    "CustomConditional": {
       "type": "object",
       "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
+        "type": {
+          "type": "string",
+          "const": "Custom"
         },
         "tag": {
           "type": "string"
         },
-        "active": {
-          "type": "boolean"
+        "name": {
+          "type": "string"
         },
-        "type": {
-          "const": "FadeRoom"
-        },
-        "opacity": {
+        "id": {
           "type": "integer"
         },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
+        "expression": {
+          "type": "string"
         }
       },
       "required": [
-        "bar",
-        "beat",
-        "duration",
-        "ease",
-        "opacity",
-        "type"
+        "type",
+        "name",
+        "id",
+        "expression"
       ],
       "additionalProperties": false
     },
-    "SetRoomPerspectiveEvent": {
+    "TimesExecutedConditional": {
       "type": "object",
       "properties": {
-        "bar": {
-          "type": "integer"
-        },
-        "beat": {
-          "type": "number"
-        },
-        "y": {
-          "type": "integer"
-        },
-        "if": {
-          "type": "string"
+        "type": {
+          "type": "string",
+          "const": "TimesExecuted"
         },
         "tag": {
           "type": "string"
         },
-        "active": {
-          "type": "boolean"
+        "name": {
+          "type": "string"
         },
-        "type": {
-          "const": "SetRoomPerspective"
+        "id": {
+          "type": "integer"
         },
-        "cornerPositions": {
-          "type": "array",
-          "items": {
-            "type": "array",
-            "items": {
-              "type": [
-                "number",
-                "null"
-              ]
-            },
-            "minItems": 2,
-            "maxItems": 2
-          },
-          "minItems": 4,
-          "maxItems": 4
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
+        "maxTimes": {
+          "type": "integer"
         }
       },
       "required": [
-        "bar",
-        "beat",
-        "cornerPositions",
-        "duration",
-        "ease",
-        "type"
+        "type",
+        "name",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "LanguageConditional": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Language"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "Language": {
+          "$ref": "#/definitions/Language"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "id",
+        "Language"
+      ],
+      "additionalProperties": false
+    },
+    "PlayerModeConditional": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "PlayerMode"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "twoPlayerMode": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "id"
       ],
       "additionalProperties": false
     },
@@ -4611,161 +5140,16 @@
         }
       ]
     },
-    "LastHitConditional": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "const": "LastHit"
-        },
-        "row": {
-          "type": "integer"
-        },
-        "result": {
-          "enum": [
-            "Perfect",
-            "SlightlyEarly",
-            "SlightlyLate",
-            "VeryEarly",
-            "VeryLate",
-            "AnyEarlyOrLate",
-            "Missed"
-          ]
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "result",
-        "row",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "CustomConditional": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "const": "Custom"
-        },
-        "expression": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "expression",
-        "id",
-        "name",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "TimesExecutedConditional": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "const": "TimesExecuted"
-        },
-        "maxTimes": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "id",
-        "maxTimes",
-        "name",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "LanguageConditional": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "const": "Language"
-        },
-        "Language": {
-          "$ref": "#/definitions/Language"
-        }
-      },
-      "required": [
-        "Language",
-        "id",
-        "name",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "PlayerModeConditional": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "const": "PlayerMode"
-        },
-        "twoPlayerMode": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "twoPlayerMode",
-        "type"
-      ],
-      "additionalProperties": false
-    },
     "Bookmark": {
       "type": "object",
       "properties": {
         "bar": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1
         },
         "beat": {
-          "type": "number"
+          "type": "number",
+          "minimum": 1
         },
         "color": {
           "type": "integer"
@@ -4782,107 +5166,61 @@
       "type": "string",
       "pattern": "^(?:[0-9A-Fa-f]{2}){3,4}$"
     },
-    "ColorOrPaletteIndex": {
-      "type": "string",
-      "pattern": "^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\\d+)$"
-    },
-    "Border": {
-      "enum": [
-        "None",
-        "Outline",
-        "Glow"
-      ]
-    },
-    "ContentMode": {
-      "enum": [
-        "ScaleToFill",
-        "AspectFit",
-        "AspectFill",
-        "Center",
-        "Tiled"
-      ]
-    },
-    "Easing": {
-      "enum": [
-        "Unset",
-        "Linear",
-        "InSine",
-        "OutSine",
-        "InOutSine",
-        "InQuad",
-        "OutQuad",
-        "InOutQuad",
-        "InCubic",
-        "OutCubic",
-        "InOutCubic",
-        "InQuart",
-        "OutQuart",
-        "InOutQuart",
-        "InQuint",
-        "OutQuint",
-        "InOutQuint",
-        "InExpo",
-        "OutExpo",
-        "InOutExpo",
-        "InCirc",
-        "OutCirc",
-        "InOutCirc",
-        "InElastic",
-        "OutElastic",
-        "InOutElastic",
-        "InBack",
-        "OutBack",
-        "InOutBack",
-        "InBounce",
-        "OutBounce",
-        "InOutBounce"
-      ]
-    },
-    "Hands": {
-      "enum": [
-        "Left",
-        "Right",
-        "Both"
-      ]
-    },
-    "Language": {
-      "enum": [
-        "English",
-        "Spanish",
-        "Portuguese",
-        "ChineseSimplified",
-        "ChineseTraditional",
-        "Korean",
-        "Polish",
-        "Japanese"
-      ]
-    },
-    "NarrationCategory": {
-      "enum": [
-        "Fallback",
-        "Navigation",
-        "Instruction",
-        "Notification",
-        "Dialogue",
-        "Description",
-        "Subtitles"
-      ]
-    },
-    "Player": {
-      "enum": [
-        "P1",
-        "P2",
-        "CPU"
-      ]
-    },
-    "RowType": {
-      "enum": [
-        "Classic",
-        "Oneshot",
-        "Hold",
-        "Scratch",
-        "Split"
-      ]
+    "Level": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "settings": {
+          "$ref": "#/definitions/Settings"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Row"
+          }
+        },
+        "decorations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Decoration"
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Event"
+          }
+        },
+        "conditionals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Conditional"
+          }
+        },
+        "bookmarks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Bookmark"
+          }
+        },
+        "colorPalette": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Color"
+          },
+          "maxItems": 21
+        }
+      },
+      "required": [
+        "rows",
+        "events"
+      ],
+      "additionalProperties": false
     }
-  }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://0f-0b.github.io/rd-schema/level.json"
 }
