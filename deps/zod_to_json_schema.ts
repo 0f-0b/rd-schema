@@ -1,4 +1,4 @@
-import { zodToJsonSchema as f } from "https://esm.sh/zod-to-json-schema@3.20.2?pin=v103";
+import { zodToJsonSchema as f } from "https://esm.sh/zod-to-json-schema@3.20.2?deps=zod@3.20.2&target=esnext&pin=v103";
 
 export interface ZodToJsonSchemaOptions {
   name?: string;
@@ -11,7 +11,6 @@ export interface ZodToJsonSchemaOptions {
   errorMessages?: boolean;
 }
 
-// workaround for TS2589: zod types are too complex for tsc
 export type JsonSchema = ReturnType<typeof f<"jsonSchema7">>;
 export const zodToJsonSchema = f as {
   (schema: unknown, name?: string): JsonSchema;

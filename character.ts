@@ -19,3 +19,7 @@ export const Character = z.object({
   rowPreviewOffset: z.number().int().array().min(2).max(2).optional(),
   rowPreviewFrame: z.number().int().optional(),
 });
+export const characterTypedefs = {
+  Clip,
+  Character,
+};
