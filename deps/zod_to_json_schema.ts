@@ -1,18 +1,9 @@
-import { zodToJsonSchema as f } from "https://esm.sh/zod-to-json-schema@3.20.2?deps=zod@3.20.2&target=esnext&pin=v103";
+import { zodToJsonSchema as f } from "https://esm.sh/zod-to-json-schema@3.20.3?deps=zod@3.20.6&target=esnext&pin=v106";
+import type { ZodTypeAny } from "./zod.ts";
 
-export interface ZodToJsonSchemaOptions {
-  name?: string;
-  $refStrategy?: "root" | "relative" | "none";
-  basePath?: string[];
-  effectStrategy?: "input" | "any";
-  strictUnions?: boolean;
-  definitionPath?: string;
-  definitions?: Record<string, unknown>;
-  errorMessages?: boolean;
-}
-
+export type ZodToJsonSchemaOptions = Parameters<typeof f<"jsonSchema7">>[1];
 export type JsonSchema = ReturnType<typeof f<"jsonSchema7">>;
-export const zodToJsonSchema = f as {
-  (schema: unknown, name?: string): JsonSchema;
-  (schema: unknown, options?: ZodToJsonSchemaOptions): JsonSchema;
-};
+export const zodToJsonSchema: {
+  (schema: ZodTypeAny, name?: string): JsonSchema;
+  (schema: ZodTypeAny, options?: ZodToJsonSchemaOptions): JsonSchema;
+} = f<"jsonSchema7">;

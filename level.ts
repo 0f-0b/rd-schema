@@ -738,6 +738,7 @@ export const Language = z.enum([
   "Korean",
   "Polish",
   "Japanese",
+  "German",
 ]);
 export const ShowDialogueEvent = z.object({
   ...makeEventProperties("ShowDialogue"),

@@ -3134,7 +3134,8 @@
         "ChineseTraditional",
         "Korean",
         "Polish",
-        "Japanese"
+        "Japanese",
+        "German"
       ]
     },
     "ShowDialogueEvent": {
@@ -3192,6 +3193,9 @@
           "type": "string"
         },
         "textJapanese": {
+          "type": "string"
+        },
+        "textGerman": {
           "type": "string"
         },
         "panelSide": {

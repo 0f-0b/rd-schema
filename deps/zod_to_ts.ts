@@ -3,9 +3,9 @@ import {
   withGetType as g,
   zodToTs as f,
   type ZodToTsOptions as O,
-} from "https://esm.sh/zod-to-ts@1.1.2?deps=typescript@4.9.4&target=esnext&pin=v103";
+} from "https://esm.sh/zod-to-ts@1.1.2?deps=typescript@4.9.5,zod@3.20.6&target=esnext&pin=v106";
 
-export { default as ts } from "https://esm.sh/typescript@4.9.4?target=esnext&pin=v103";
+export { default as ts } from "https://esm.sh/typescript@4.9.5?target=esnext&pin=v106";
 
 export type ZodToTsOptions = O;
 export const zodToTs = f as {

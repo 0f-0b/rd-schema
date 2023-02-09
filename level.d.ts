@@ -1013,7 +1013,8 @@ export type Language =
   | "ChineseTraditional"
   | "Korean"
   | "Polish"
-  | "Japanese";
+  | "Japanese"
+  | "German";
 export type ShowDialogueEvent = {
   bar: number;
   beat: number;
@@ -1032,6 +1033,7 @@ export type ShowDialogueEvent = {
   textKorean?: string | undefined;
   textPolish?: string | undefined;
   textJapanese?: string | undefined;
+  textGerman?: string | undefined;
   panelSide?: ("Bottom" | "Top") | undefined;
   portraitSide?: ("Left" | "Right") | undefined;
   speed: number;
