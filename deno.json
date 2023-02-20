@@ -1,5 +1,5 @@
 {
   "tasks": {
-    "lint": "deno fmt --check && deno lint && deno check --unstable --all generate_dts.ts && deno check --all generate_json_schemas.ts"
+    "lint": "deno fmt --check && deno lint && deno check --all generate_dts.ts && deno check --all generate_json_schemas.ts"
   }
 }

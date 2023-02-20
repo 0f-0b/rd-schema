@@ -679,6 +679,7 @@ export const Border = z.enum(["None", "Outline", "Glow"]);
 export const PaintRowsEvent = z.object({
   ...makeEventProperties("TintRows"),
   ...makeRowProperty(),
+  ...makeRoomsProperty(),
   border: Border.optional(),
   borderColor: ColorOrPaletteIndex.optional(),
   tint: z.boolean().optional(),

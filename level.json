@@ -2767,6 +2767,12 @@
         "row": {
           "type": "integer"
         },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
         "border": {
           "$ref": "#/definitions/Border"
         },

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --unstable --no-prompt --allow-write=character.d.ts,level.d.ts --allow-run=deno
+#!/usr/bin/env -S deno run --no-prompt --allow-write=character.d.ts,level.d.ts --allow-run=./deno_fmt.sh
 
 import { ts, withGetType, zodToTs } from "./deps/zod_to_ts.ts";
 
@@ -38,8 +38,7 @@ async function generate(
       controller.close();
     },
   });
-  const child = new Deno.Command("deno", {
-    args: ["fmt", "-"],
+  const child = new Deno.Command(new URL("deno_fmt.sh", import.meta.url), {
     stdin: "piped",
     stdout: "piped",
     stderr: "piped",

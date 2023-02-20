@@ -920,6 +920,7 @@ export type PaintRowsEvent = {
   tag?: string | undefined;
   active?: boolean | undefined;
   row: number;
+  rooms?: number[] | undefined;
   border?: Border | undefined;
   borderColor?: ColorOrPaletteIndex | undefined;
   tint?: boolean | undefined;
