@@ -1,9 +1,9 @@
-#!/usr/bin/env -S deno run --no-prompt --allow-write=character.d.ts,level.d.ts --allow-run=./deno_fmt.sh
+#!/usr/bin/env -S deno run --no-prompt --allow-write=character.d.ts,level.d.ts --allow-run=./scripts/deno_fmt.sh
 
-import { ts, withGetType, zodToTs } from "./deps/zod_to_ts.ts";
+import { ts, withGetType, zodToTs } from "../deps/zod_to_ts.ts";
 
-import { characterTypedefs } from "./character.ts";
-import { levelTypedefs } from "./level.ts";
+import { characterTypedefs } from "../character.ts";
+import { levelTypedefs } from "../level.ts";
 
 const decoder = new TextDecoder();
 const encoder = new TextEncoder();

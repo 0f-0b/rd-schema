@@ -541,6 +541,8 @@ export const EnableScreenVFXPresetEvent = z.object({
   preset: ScreenVFXPreset,
   floatX: z.number(),
   floatY: z.number(),
+  duration: z.number().optional(),
+  ease: Easing.optional(),
 });
 export const EaseableVFXPreset = z.enum([
   "Rain",

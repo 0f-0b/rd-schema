@@ -661,6 +661,8 @@ export type EnableScreenVFXPresetEvent = {
   preset: "TileN" | "CustomScreenScroll";
   floatX: number;
   floatY: number;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
 };
 export type EnableEaseableVFXPresetEvent = {
   bar: number;

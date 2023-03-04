@@ -1910,6 +1910,12 @@
         },
         "floatY": {
           "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [

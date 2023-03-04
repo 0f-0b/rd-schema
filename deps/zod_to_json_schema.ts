@@ -1,4 +1,4 @@
-import { zodToJsonSchema as f } from "https://esm.sh/zod-to-json-schema@3.20.3?deps=zod@3.20.6&target=esnext&pin=v106";
+import { zodToJsonSchema as f } from "https://esm.sh/zod-to-json-schema@3.20.3?deps=zod@3.21.0&target=esnext&pin=v108";
 import type { ZodTypeAny } from "./zod.ts";
 
 export type ZodToJsonSchemaOptions = Parameters<typeof f<"jsonSchema7">>[1];
