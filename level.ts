@@ -87,13 +87,18 @@ export const Sound = z.object({
   pan: z.number().int().optional(),
   offset: z.number().int().optional(),
 });
-const makeSoundProperties = (newKey: string, prefix?: string) => {
+const makeSoundProperties = (
+  newKey: string,
+  prefix?: string,
+  nullable?: boolean,
+) => {
   const filenameKey = prefix === undefined ? "filename" : `${prefix}Filename`;
   const soundKey = prefix === undefined ? "sound" : `${prefix}Sound`;
   const offsetKey = prefix === undefined ? "offset" : `${prefix}Offset`;
   const volumeKey = prefix === undefined ? "volume" : `${prefix}Volume`;
   const pitchKey = prefix === undefined ? "pitch" : `${prefix}Pitch`;
   const panKey = prefix === undefined ? "pan" : `${prefix}Pan`;
+  const MaybeSound = nullable ? Sound.nullable() : Sound;
   return {
     [filenameKey]: z.string().optional(),
     [soundKey]: z.string().optional(),
@@ -101,7 +106,8 @@ const makeSoundProperties = (newKey: string, prefix?: string) => {
     [volumeKey]: z.number().int().optional(),
     [pitchKey]: z.number().int().optional(),
     [panKey]: z.number().int().optional(),
-    [newKey]: (soundKey === newKey ? Sound.or(z.string()) : Sound).optional(),
+    [newKey]: (soundKey === newKey ? MaybeSound.or(z.string()) : MaybeSound)
+      .optional(),
   };
 };
 export const PlaySongEvent = z.object({
@@ -134,9 +140,9 @@ export const SetBeatsPerMinuteEvent = z.object({
 export const SetClapSoundsEvent = z.object({
   ...makeEventProperties("SetClapSounds"),
   rowType: RowType.optional(),
-  ...makeSoundProperties("p1Sound", "p1"),
-  ...makeSoundProperties("p2Sound", "p2"),
-  ...makeSoundProperties("cpuSound", "cpu"),
+  ...makeSoundProperties("p1Sound", "p1", true),
+  ...makeSoundProperties("p2Sound", "p2", true),
+  ...makeSoundProperties("cpuSound", "cpu", true),
   p1Used: z.boolean().optional(),
   p2Used: z.boolean().optional(),
   cpuUsed: z.boolean().optional(),
@@ -807,7 +813,6 @@ export const FinishLevelEvent = z.object(makeEventProperties("FinishLevel"));
 export const OrdinaryCommentEvent = z.object({
   ...makeEventProperties("Comment"),
   tab: z.enum(["Song", "Actions", "Rooms"]).optional(),
-  target: z.string(),
   show: z.boolean().optional(),
   text: z.string(),
   color: ColorOrPaletteIndex.optional(),

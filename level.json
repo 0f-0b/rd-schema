@@ -544,7 +544,14 @@
         "p1Sound": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Sound"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Sound"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "string"
@@ -569,7 +576,14 @@
         "p2Sound": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Sound"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Sound"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "string"
@@ -594,7 +608,14 @@
         "cpuSound": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Sound"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Sound"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "string"
@@ -3569,9 +3590,6 @@
             "Rooms"
           ]
         },
-        "target": {
-          "type": "string"
-        },
         "show": {
           "type": "boolean"
         },
@@ -3586,7 +3604,6 @@
         "bar",
         "beat",
         "type",
-        "target",
         "text"
       ],
       "additionalProperties": false
