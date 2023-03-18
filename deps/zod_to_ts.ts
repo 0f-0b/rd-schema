@@ -2,9 +2,9 @@ import {
   type GetType,
   withGetType as withGetTypeFn,
   zodToTs as zodToTsFn,
-} from "https://esm.sh/zod-to-ts@1.1.2?deps=typescript@4.9.5,zod@3.21.4&target=esnext&pin=v111";
+} from "npm:zod-to-ts@1.1.2";
 
-export { default as ts } from "https://esm.sh/typescript@4.9.5?target=esnext&pin=v111";
+export { default as ts } from "npm:typescript@4.9.5";
 
 type Id<T> = T;
 

@@ -28,7 +28,7 @@ export type Settings = {
   mods?: (string[] | string) | undefined;
   rankDescription: string[];
 };
-export type RowType = "Classic" | "Oneshot" | "Hold" | "Scratch" | "Split";
+export type RowType = "Classic" | "Oneshot";
 export type Player = "P1" | "P2" | "CPU";
 export type Row = {
   character: string;
@@ -70,15 +70,15 @@ export type PlaySongEvent = {
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
+  song?: Sound | undefined;
+  bpm?: number | undefined;
+  loop?: boolean | undefined;
   filename?: string | undefined;
   sound?: string | undefined;
   offset?: number | undefined;
   volume?: number | undefined;
   pitch?: number | undefined;
   pan?: number | undefined;
-  song?: Sound | undefined;
-  bpm?: number | undefined;
-  loop?: boolean | undefined;
 };
 export type SetCrotchetsPerBarEvent = {
   bar: number;
@@ -99,16 +99,16 @@ export type PlaySoundEvent = {
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
-  filename?: string | undefined;
   sound?: (Sound | string) | undefined;
-  offset?: number | undefined;
-  volume?: number | undefined;
-  pitch?: number | undefined;
-  pan?: number | undefined;
   isCustom?: boolean | undefined;
   customSoundType?:
     | ("CueSound" | "MusicSound" | "BeatSound" | "HitSound" | "OtherSound")
     | undefined;
+  filename?: string | undefined;
+  offset?: number | undefined;
+  volume?: number | undefined;
+  pitch?: number | undefined;
+  pan?: number | undefined;
 };
 export type SetBeatsPerMinuteEvent = {
   bar: number;
@@ -129,20 +129,20 @@ export type SetClapSoundsEvent = {
   tag?: string | undefined;
   active?: boolean | undefined;
   rowType?: RowType | undefined;
-  p1Filename?: string | undefined;
   p1Sound?: ((Sound | null) | string) | undefined;
+  p2Sound?: ((Sound | null) | string) | undefined;
+  cpuSound?: ((Sound | null) | string) | undefined;
+  p1Filename?: string | undefined;
   p1Offset?: number | undefined;
   p1Volume?: number | undefined;
   p1Pitch?: number | undefined;
   p1Pan?: number | undefined;
   p2Filename?: string | undefined;
-  p2Sound?: ((Sound | null) | string) | undefined;
   p2Offset?: number | undefined;
   p2Volume?: number | undefined;
   p2Pitch?: number | undefined;
   p2Pan?: number | undefined;
   cpuFilename?: string | undefined;
-  cpuSound?: ((Sound | null) | string) | undefined;
   cpuOffset?: number | undefined;
   cpuVolume?: number | undefined;
   cpuPitch?: number | undefined;
@@ -292,8 +292,8 @@ export type SetBeatSoundEvent = {
   tag?: string | undefined;
   active?: boolean | undefined;
   row: number;
-  filename?: string | undefined;
   sound?: (Sound | string) | undefined;
+  filename?: string | undefined;
   offset?: number | undefined;
   volume?: number | undefined;
   pitch?: number | undefined;
@@ -847,9 +847,9 @@ export type CustomFlashEvent = {
   duration?: number | undefined;
   startColor?: ColorOrPaletteIndex | undefined;
   endColor?: ColorOrPaletteIndex | undefined;
-  ease?: Easing | undefined;
   startOpacity?: number | undefined;
   endOpacity?: number | undefined;
+  ease?: Easing | undefined;
 };
 export type MoveCameraEvent = {
   bar: number;
@@ -1069,7 +1069,10 @@ export type FloatingTextEvent = {
   times: string;
   color?: ColorOrPaletteIndex | undefined;
   outlineColor?: ColorOrPaletteIndex | undefined;
-  textPosition?: number[] | undefined;
+  textPosition?: [
+    number,
+    number,
+  ] | undefined;
   size?: number | undefined;
   angle?: number | undefined;
   showChildren?: boolean | undefined;

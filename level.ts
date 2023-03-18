@@ -1,5 +1,41 @@
-import { z, ZodOptional, ZodString } from "./deps/zod.ts";
+import {
+  z,
+  type ZodOptional,
+  type ZodString,
+  type ZodTypeAny,
+} from "./deps/zod.ts";
 
+import {
+  Border,
+  ColorOrPaletteIndex,
+  ConditionExpression,
+  ContentMode,
+  Easing,
+  Hands,
+  makeEventAutoProperties,
+  makeEventBaseProperties,
+  makeRoomsProperty,
+  makeRowProperty,
+  NarrationCategory,
+  Player,
+  RowType,
+  Sound,
+  Strength,
+} from "./attribute_parser.ts";
+
+export {
+  Border,
+  ColorOrPaletteIndex,
+  ConditionExpression,
+  ContentMode,
+  Easing,
+  Hands,
+  NarrationCategory,
+  Player,
+  RowType,
+  Sound,
+  Strength,
+};
 export const Settings = z.object({
   version: z.number().int(),
   artist: z.string().max(256).optional(),
@@ -32,20 +68,6 @@ export const Settings = z.object({
   mods: z.string().array().or(z.string()).optional(),
   rankDescription: z.string().array().min(6).max(6),
 });
-export const RowType = z.enum([
-  "Classic",
-  "Oneshot",
-  "Hold",
-  "Scratch",
-  "Split",
-]);
-const makeRoomsProperty = () => ({
-  rooms: z.number().int().array().optional(),
-});
-const makeRowProperty = () => ({
-  row: z.number().int(),
-});
-export const Player = z.enum(["P1", "P2", "CPU"]);
 export const Row = z.object({
   character: z.string(),
   rowType: RowType.optional(),
@@ -70,35 +92,13 @@ export const Decoration = z.object({
   depth: z.number().int(),
   visible: z.boolean(),
 });
-export const ConditionExpression = z.string().or(z.number().int().array());
-const makeEventProperties = (type: string) => ({
-  bar: z.number().int().min(1),
-  beat: z.number().min(1),
-  y: z.number().int().optional(),
-  type: z.literal(type),
-  if: ConditionExpression.optional(),
-  tag: z.string().optional(),
-  active: z.boolean().optional(),
-});
-export const Sound = z.object({
-  filename: z.string(),
-  volume: z.number().int().optional(),
-  pitch: z.number().int().optional(),
-  pan: z.number().int().optional(),
-  offset: z.number().int().optional(),
-});
-const makeSoundProperties = (
-  newKey: string,
-  prefix?: string,
-  nullable?: boolean,
-) => {
+const makeLegacySoundProperties = (prefix?: string) => {
   const filenameKey = prefix === undefined ? "filename" : `${prefix}Filename`;
   const soundKey = prefix === undefined ? "sound" : `${prefix}Sound`;
   const offsetKey = prefix === undefined ? "offset" : `${prefix}Offset`;
   const volumeKey = prefix === undefined ? "volume" : `${prefix}Volume`;
   const pitchKey = prefix === undefined ? "pitch" : `${prefix}Pitch`;
   const panKey = prefix === undefined ? "pan" : `${prefix}Pan`;
-  const MaybeSound = nullable ? Sound.nullable() : Sound;
   return {
     [filenameKey]: z.string().optional(),
     [soundKey]: z.string().optional(),
@@ -106,63 +106,53 @@ const makeSoundProperties = (
     [volumeKey]: z.number().int().optional(),
     [pitchKey]: z.number().int().optional(),
     [panKey]: z.number().int().optional(),
-    [newKey]: (soundKey === newKey ? MaybeSound.or(z.string()) : MaybeSound)
-      .optional(),
   };
 };
-export const PlaySongEvent = z.object({
-  ...makeEventProperties("PlaySong"),
-  ...makeSoundProperties("song"),
-  bpm: z.number().min(1).optional(),
-  loop: z.boolean().optional(),
-});
-export const SetCrotchetsPerBarEvent = z.object({
-  ...makeEventProperties("SetCrotchetsPerBar"),
-  crotchetsPerBar: z.number().int().min(1).optional(),
-  visualBeatMultiplier: z.number().min(0).optional(),
-});
-export const PlaySoundEvent = z.object({
-  ...makeEventProperties("PlaySound"),
-  ...makeSoundProperties("sound"),
-  isCustom: z.boolean().optional(),
-  customSoundType: z.enum([
-    "CueSound",
-    "MusicSound",
-    "BeatSound",
-    "HitSound",
-    "OtherSound",
-  ]).optional(),
-});
-export const SetBeatsPerMinuteEvent = z.object({
-  ...makeEventProperties("SetBeatsPerMinute"),
-  beatsPerMinute: z.number().min(1).max(1000).optional(),
-});
-export const SetClapSoundsEvent = z.object({
-  ...makeEventProperties("SetClapSounds"),
-  rowType: RowType.optional(),
-  ...makeSoundProperties("p1Sound", "p1", true),
-  ...makeSoundProperties("p2Sound", "p2", true),
-  ...makeSoundProperties("cpuSound", "cpu", true),
-  p1Used: z.boolean().optional(),
-  p2Used: z.boolean().optional(),
-  cpuUsed: z.boolean().optional(),
-});
-export const SetHeartExplodeVolumeEvent = z.object({
-  ...makeEventProperties("SetHeartExplodeVolume"),
-  volume: z.number().int().min(0).optional(),
-});
-export const SetHeartExplosionIntervalEvent = z.object({
-  ...makeEventProperties("SetHeartExplodeInterval"),
-  intervalType: z.enum([
-    "OneBeatAfter",
-    "Instant",
-    "GatherNoCeil",
-    "GatherAndCeil",
-  ]).optional(),
-  interval: z.number().optional(),
-});
+export const PlaySongEvent = z.object(
+  makeEventAutoProperties("PlaySong", (props) => {
+    Object.assign(props, makeLegacySoundProperties());
+  }),
+);
+export const SetCrotchetsPerBarEvent = z.object(
+  makeEventAutoProperties("SetCrotchetsPerBar"),
+);
+export const PlaySoundEvent = z.object(
+  makeEventAutoProperties("PlaySound", (props) => {
+    const sound = props.sound as ZodOptional<ZodTypeAny>;
+    Object.assign(props, makeLegacySoundProperties());
+    props.sound = sound.unwrap().or(z.string()).optional();
+  }),
+);
+export const SetBeatsPerMinuteEvent = z.object(
+  makeEventAutoProperties("SetBeatsPerMinute"),
+);
+export const SetClapSoundsEvent = z.object(
+  makeEventAutoProperties("SetClapSounds", (props) => {
+    const p1Sound = props.p1Sound as ZodOptional<ZodTypeAny>;
+    const p2Sound = props.p2Sound as ZodOptional<ZodTypeAny>;
+    const cpuSound = props.cpuSound as ZodOptional<ZodTypeAny>;
+    Object.assign(
+      props,
+      makeLegacySoundProperties("p1"),
+      makeLegacySoundProperties("p2"),
+      makeLegacySoundProperties("cpu"),
+    );
+    props.p1Sound = p1Sound.unwrap().or(z.string()).optional();
+    props.p2Sound = p2Sound.unwrap().or(z.string()).optional();
+    props.cpuSound = cpuSound.unwrap().or(z.string()).optional();
+    props.p1Used = z.boolean().optional();
+    props.p2Used = z.boolean().optional();
+    props.cpuUsed = z.boolean().optional();
+  }),
+);
+export const SetHeartExplodeVolumeEvent = z.object(
+  makeEventAutoProperties("SetHeartExplodeVolume"),
+);
+export const SetHeartExplosionIntervalEvent = z.object(
+  makeEventAutoProperties("SetHeartExplodeInterval"),
+);
 export const SayReadyGetSetGoEvent = z.object({
-  ...makeEventProperties("SayReadyGetSetGo"),
+  ...makeEventBaseProperties("SayReadyGetSetGo"),
   phraseToSay: z.enum([
     "SayReaDyGetSetGoNew",
     "SayGetSetGo",
@@ -194,7 +184,7 @@ export const SayReadyGetSetGoEvent = z.object({
   volume: z.number().int().optional(),
 });
 export const SetGameSoundEvent = z.object({
-  ...makeEventProperties("SetGameSound"),
+  ...makeEventBaseProperties("SetGameSound"),
   soundType: z.enum([
     "ClapSoundP1Classic",
     "ClapSoundP2Classic",
@@ -252,13 +242,15 @@ export const SetGameSoundEvent = z.object({
   pan: z.number().int().optional(),
   offset: z.number().int().optional(),
 });
-export const SetBeatSoundEvent = z.object({
-  ...makeEventProperties("SetBeatSound"),
-  ...makeRowProperty(),
-  ...makeSoundProperties("sound"),
-});
+export const SetBeatSoundEvent = z.object(
+  makeEventAutoProperties("SetBeatSound", (props) => {
+    const sound = props.sound as ZodOptional<ZodTypeAny>;
+    Object.assign(props, makeLegacySoundProperties());
+    props.sound = sound.unwrap().or(z.string()).optional();
+  }),
+);
 export const SetCountingSoundEvent = z.object({
-  ...makeEventProperties("SetCountingSound"),
+  ...makeEventBaseProperties("SetCountingSound"),
   ...makeRowProperty(),
   voiceSource: z.enum([
     "JyiCount",
@@ -288,22 +280,13 @@ export const SetCountingSoundEvent = z.object({
   enabled: z.boolean(),
   volume: z.number().int().optional(),
 });
-export const NarrationCategory = z.enum([
-  "Fallback",
-  "Navigation",
-  "Instruction",
-  "Notification",
-  "Dialogue",
-  "Description",
-  "Subtitles",
-]);
 export const ReadNarrationEvent = z.object({
-  ...makeEventProperties("ReadNarration"),
+  ...makeEventBaseProperties("ReadNarration"),
   text: z.string(),
   category: NarrationCategory.optional(),
 });
 export const NarrateRowInfoEvent = z.object({
-  ...makeEventProperties("NarrateRowInfo"),
+  ...makeEventBaseProperties("NarrateRowInfo"),
   ...makeRowProperty(),
   infoType: z.enum(["Connect", "Update", "Disconnect", "Online", "Offline"])
     .optional(),
@@ -328,7 +311,7 @@ export const SoundEvent = z.union([
   NarrateRowInfoEvent,
 ]);
 export const AddClassicBeatEvent = z.object({
-  ...makeEventProperties("AddClassicBeat"),
+  ...makeEventBaseProperties("AddClassicBeat"),
   ...makeRowProperty(),
   tick: z.number().min(0),
   swing: z.number().min(0).optional(),
@@ -337,27 +320,27 @@ export const AddClassicBeatEvent = z.object({
   hold: z.number().optional(),
 });
 export const SetRowXsEvent = z.object({
-  ...makeEventProperties("SetRowXs"),
+  ...makeEventBaseProperties("SetRowXs"),
   ...makeRowProperty(),
   pattern: z.string().regex(/^[-xudbr]{6}$/),
   syncoBeat: z.number().int().optional(),
   syncoSwing: z.number().optional(),
 });
 export const AddFreeTimeBeatEvent = z.object({
-  ...makeEventProperties("AddFreeTimeBeat"),
+  ...makeEventBaseProperties("AddFreeTimeBeat"),
   ...makeRowProperty(),
   hold: z.number().optional(),
   pulse: z.number().int().min(0).max(6),
 });
 export const PulseFreeTimeBeatEvent = z.object({
-  ...makeEventProperties("PulseFreeTimeBeat"),
+  ...makeEventBaseProperties("PulseFreeTimeBeat"),
   ...makeRowProperty(),
   hold: z.number().optional(),
   action: z.enum(["Increment", "Decrement", "Custom", "Remove"]).optional(),
   customPulse: z.number().int().min(0).max(6),
 });
 export const AddOneshotBeatEvent = z.object({
-  ...makeEventProperties("AddOneshotBeat"),
+  ...makeEventBaseProperties("AddOneshotBeat"),
   ...makeRowProperty(),
   pulseType: z.enum(["Wave", "Square", "Heart", "Triangle"]).optional(),
   loops: z.number().int().optional(),
@@ -368,7 +351,7 @@ export const AddOneshotBeatEvent = z.object({
   tick: z.number().min(0),
 });
 export const SetOneshotWaveEvent = z.object({
-  ...makeEventProperties("SetOneshotWave"),
+  ...makeEventBaseProperties("SetOneshotWave"),
   ...makeRowProperty(),
   waveType: z.enum([
     "BoomAndRush",
@@ -390,7 +373,7 @@ export const RowEvent = z.union([
   SetOneshotWaveEvent,
 ]);
 export const SetThemeEvent = z.object({
-  ...makeEventProperties("SetTheme"),
+  ...makeEventBaseProperties("SetTheme"),
   ...makeRoomsProperty(),
   preset: z.enum([
     "None",
@@ -486,50 +469,14 @@ export const OrdinaryVFXPreset = z.enum([
   "Funk",
 ]);
 export const EnableOrdinaryVFXPresetEvent = z.object({
-  ...makeEventProperties("SetVFXPreset"),
+  ...makeEventBaseProperties("SetVFXPreset"),
   ...makeRoomsProperty(),
   enable: z.literal(true),
   preset: OrdinaryVFXPreset.optional(),
 });
 export const BloomVFXPreset = z.enum(["Bloom"]);
-export const ColorOrPaletteIndex = z.string()
-  .regex(/^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\d+)$/);
-export const Easing = z.enum([
-  "Unset",
-  "Linear",
-  "InSine",
-  "OutSine",
-  "InOutSine",
-  "InQuad",
-  "OutQuad",
-  "InOutQuad",
-  "InCubic",
-  "OutCubic",
-  "InOutCubic",
-  "InQuart",
-  "OutQuart",
-  "InOutQuart",
-  "InQuint",
-  "OutQuint",
-  "InOutQuint",
-  "InExpo",
-  "OutExpo",
-  "InOutExpo",
-  "InCirc",
-  "OutCirc",
-  "InOutCirc",
-  "InElastic",
-  "OutElastic",
-  "InOutElastic",
-  "InBack",
-  "OutBack",
-  "InOutBack",
-  "InBounce",
-  "OutBounce",
-  "InOutBounce",
-]);
 export const EnableBloomVFXPresetEvent = z.object({
-  ...makeEventProperties("SetVFXPreset"),
+  ...makeEventBaseProperties("SetVFXPreset"),
   ...makeRoomsProperty(),
   enable: z.literal(true),
   preset: BloomVFXPreset,
@@ -541,7 +488,7 @@ export const EnableBloomVFXPresetEvent = z.object({
 });
 export const ScreenVFXPreset = z.enum(["TileN", "CustomScreenScroll"]);
 export const EnableScreenVFXPresetEvent = z.object({
-  ...makeEventProperties("SetVFXPreset"),
+  ...makeEventBaseProperties("SetVFXPreset"),
   ...makeRoomsProperty(),
   enable: z.literal(true),
   preset: ScreenVFXPreset,
@@ -564,7 +511,7 @@ export const EaseableVFXPreset = z.enum([
   "HueShift",
 ]);
 export const EnableEaseableVFXPresetEvent = z.object({
-  ...makeEventProperties("SetVFXPreset"),
+  ...makeEventBaseProperties("SetVFXPreset"),
   ...makeRoomsProperty(),
   enable: z.literal(true),
   preset: EaseableVFXPreset,
@@ -573,7 +520,7 @@ export const EnableEaseableVFXPresetEvent = z.object({
   ease: Easing.optional(),
 });
 export const DisableVFXPresetEvent = z.object({
-  ...makeEventProperties("SetVFXPreset"),
+  ...makeEventBaseProperties("SetVFXPreset"),
   ...makeRoomsProperty(),
   enable: z.literal(false),
   preset: z.enum([
@@ -591,29 +538,13 @@ export const SetVFXPresetEvent = z.union([
   DisableVFXPresetEvent,
 ]);
 export const ImageSequence = z.string().array().or(z.string());
-export const ContentMode = z.enum([
-  "ScaleToFill",
-  "AspectFit",
-  "AspectFill",
-  "Center",
-  "Tiled",
-]);
-export const SetBackgroundEvent = z.object({
-  ...makeEventProperties("SetBackgroundColor"),
-  ...makeRoomsProperty(),
-  backgroundType: z.enum(["Color", "Image"]).optional(),
-  color: ColorOrPaletteIndex.optional(),
-  image: ImageSequence.optional(),
-  contentMode: ContentMode.optional(),
-  filter: z.enum(["NearestNeighbor", "Bilinear"]).optional(),
-  scrollX: z.number().optional(),
-  scrollY: z.number().optional(),
-  duration: z.number().min(0).optional(),
-  ease: Easing.optional(),
-  fps: z.number().min(0).optional(),
-});
+export const SetBackgroundEvent = z.object(
+  makeEventAutoProperties("SetBackgroundColor", (props) => {
+    props.image = ImageSequence.optional();
+  }),
+);
 export const SetForegroundEvent = z.object({
-  ...makeEventProperties("SetForeground"),
+  ...makeEventBaseProperties("SetForeground"),
   ...makeRoomsProperty(),
   contentMode: ContentMode.optional(),
   color: ColorOrPaletteIndex,
@@ -624,30 +555,17 @@ export const SetForegroundEvent = z.object({
   duration: z.number().optional(),
   ease: Easing.optional(),
 });
-export const SetSpeedEvent = z.object({
-  ...makeEventProperties("SetSpeed"),
-  speed: z.number().min(0).optional(),
-  duration: z.number().min(0).optional(),
-  ease: Easing.optional(),
-});
-export const FlashEvent = z.object({
-  ...makeEventProperties("Flash"),
-  ...makeRoomsProperty(),
-  duration: z.enum(["Short", "Medium", "Long"]).optional(),
-});
-export const CustomFlashEvent = z.object({
-  ...makeEventProperties("CustomFlash"),
-  ...makeRoomsProperty(),
-  background: z.boolean().optional(),
-  duration: z.number().optional(),
-  startColor: ColorOrPaletteIndex.optional(),
-  endColor: ColorOrPaletteIndex.optional(),
-  ease: Easing.optional(),
-  startOpacity: z.number().int().optional(),
-  endOpacity: z.number().int().optional(),
-});
+export const SetSpeedEvent = z.object(
+  makeEventAutoProperties("SetSpeed"),
+);
+export const FlashEvent = z.object(
+  makeEventAutoProperties("Flash"),
+);
+export const CustomFlashEvent = z.object(
+  makeEventAutoProperties("CustomFlash"),
+);
 export const MoveCameraEvent = z.object({
-  ...makeEventProperties("MoveCamera"),
+  ...makeEventBaseProperties("MoveCamera"),
   ...makeRoomsProperty(),
   cameraPosition: z.number().min(-100).max(200).nullable()
     .array().min(2).max(2).optional(),
@@ -656,16 +574,15 @@ export const MoveCameraEvent = z.object({
   duration: z.number(),
   ease: Easing.optional(),
 });
-export const HideRowEvent = z.object({
-  ...makeEventProperties("HideRow"),
-  ...makeRowProperty(),
-  show: z.enum(["Visible", "Hidden", "OnlyCharacter", "OnlyRow"])
-    .or(z.boolean()).optional(),
-  transition: z.enum(["Smooth", "Instant", "Full"]).optional(),
-});
+export const HideRowEvent = z.object(
+  makeEventAutoProperties("HideRow", (props) => {
+    const show = props.show as ZodOptional<ZodTypeAny>;
+    props.show = show.unwrap().or(z.boolean()).optional();
+  }),
+);
 export const Expression = z.union([z.number(), z.string(), z.null()]);
 export const MoveRowEvent = z.object({
-  ...makeEventProperties("MoveRow"),
+  ...makeEventBaseProperties("MoveRow"),
   ...makeRowProperty(),
   target: z.enum(["WholeRow", "Character", "Heart"]).optional(),
   customPosition: z.boolean().optional(),
@@ -676,68 +593,37 @@ export const MoveRowEvent = z.object({
   duration: z.number(),
   ease: Easing.optional(),
 });
-export const PlayExpressionEvent = z.object({
-  ...makeEventProperties("PlayExpression"),
-  ...makeRowProperty(),
-  expression: z.string().optional(),
-  replace: z.boolean().optional(),
-  target: z.enum(["Neutral", "Happy", "Barely", "Missed", "Beep"]).optional(),
-});
-export const Border = z.enum(["None", "Outline", "Glow"]);
-export const PaintRowsEvent = z.object({
-  ...makeEventProperties("TintRows"),
-  ...makeRowProperty(),
-  ...makeRoomsProperty(),
-  border: Border.optional(),
-  borderColor: ColorOrPaletteIndex.optional(),
-  tint: z.boolean().optional(),
-  tintColor: ColorOrPaletteIndex.optional(),
-  opacity: z.number().int().min(0).max(100).optional(),
-  duration: z.number().min(0).optional(),
-  ease: Easing.optional(),
-  effect: z.enum(["None", "Electric"]).optional(),
-  borderOpacity: z.number().int().optional(),
-  tintOpacity: z.number().int().optional(),
-});
-export const Strength = z.enum(["Low", "Medium", "High"]);
-export const BassDropEvent = z.object({
-  ...makeEventProperties("BassDrop"),
-  ...makeRoomsProperty(),
-  strength: Strength.optional(),
-});
-export const ShakeScreenEvent = z.object({
-  ...makeEventProperties("ShakeScreen"),
-  ...makeRoomsProperty(),
-  shakeLevel: Strength.optional(),
-});
-export const FlipScreenEvent = z.object({
-  ...makeEventProperties("FlipScreen"),
-  ...makeRoomsProperty(),
-  flipX: z.boolean().optional(),
-  flipY: z.boolean().optional(),
-  x: z.boolean().optional(),
-  y: z.number().int().or(z.boolean()).optional(),
-});
-export const InvertColorsEvent = z.object({
-  ...makeEventProperties("InvertColors"),
-  ...makeRoomsProperty(),
-  enable: z.boolean().optional(),
-});
-export const PulseCameraEvent = z.object({
-  ...makeEventProperties("PulseCamera"),
-  ...makeRoomsProperty(),
-  strength: z.number().int().min(0).optional(),
-  count: z.number().int().min(0).optional(),
-  frequency: z.number().min(0).optional(),
-});
-export const TextExplosionEvent = z.object({
-  ...makeEventProperties("TextExplosion"),
-  ...makeRoomsProperty(),
-  text: z.string().optional(),
-  color: ColorOrPaletteIndex.optional(),
-  mode: z.enum(["OneColor", "Random"]).optional(),
-  direction: z.enum(["Left", "Right"]).optional(),
-});
+export const PlayExpressionEvent = z.object(
+  makeEventAutoProperties("PlayExpression"),
+);
+export const PaintRowsEvent = z.object(
+  makeEventAutoProperties("TintRows", (props) => {
+    props.borderOpacity = z.number().int().optional();
+    props.tintOpacity = z.number().int().optional();
+  }),
+);
+export const BassDropEvent = z.object(
+  makeEventAutoProperties("BassDrop"),
+);
+export const ShakeScreenEvent = z.object(
+  makeEventAutoProperties("ShakeScreen"),
+);
+export const FlipScreenEvent = z.object(
+  makeEventAutoProperties("FlipScreen", (props) => {
+    const y = props.y as ZodOptional<ZodTypeAny>;
+    props.x = z.boolean().optional();
+    props.y = y.unwrap().or(z.boolean()).optional();
+  }),
+);
+export const InvertColorsEvent = z.object(
+  makeEventAutoProperties("InvertColors"),
+);
+export const PulseCameraEvent = z.object(
+  makeEventAutoProperties("PulseCamera"),
+);
+export const TextExplosionEvent = z.object(
+  makeEventAutoProperties("TextExplosion"),
+);
 export const Language = z.enum([
   "English",
   "Spanish",
@@ -750,7 +636,7 @@ export const Language = z.enum([
   "German",
 ]);
 export const ShowDialogueEvent = z.object({
-  ...makeEventProperties("ShowDialogue"),
+  ...makeEventBaseProperties("ShowDialogue"),
   text: z.string(),
   localized: z.boolean().optional(),
   ...Object.fromEntries(
@@ -762,63 +648,37 @@ export const ShowDialogueEvent = z.object({
   speed: z.number(),
   playTextSounds: z.boolean().optional(),
 });
-export const ShowStatusSignEvent = z.object({
-  ...makeEventProperties("ShowStatusSign"),
-  text: z.string().optional(),
-  duration: z.number().optional(),
-  useBeats: z.boolean().optional(),
-  narrate: z.boolean().optional(),
-});
-export const FloatingTextEvent = z.object({
-  ...makeEventProperties("FloatingText"),
-  ...makeRoomsProperty(),
-  id: z.number().int().optional(),
-  text: z.string(),
-  times: z.string(),
-  color: ColorOrPaletteIndex.optional(),
-  outlineColor: ColorOrPaletteIndex.optional(),
-  textPosition: z.number().array().min(2).max(2).optional(),
-  size: z.number().int().min(0).optional(),
-  angle: z.number().optional(),
-  showChildren: z.boolean().optional(),
-  fadeOutRate: z.number().min(0).optional(),
-  mode: z.enum(["FadeOut", "HideAbruptly"]).optional(),
-  anchor: z.enum([
-    "UpperLeft",
-    "UpperCenter",
-    "UpperRight",
-    "MiddleLeft",
-    "MiddleCenter",
-    "MiddleRight",
-    "LowerLeft",
-    "LowerCenter",
-    "LowerRight",
-  ]).optional(),
-  narrate: z.boolean().optional(),
-  narrationCategory: NarrationCategory.optional(),
-});
+export const ShowStatusSignEvent = z.object(
+  makeEventAutoProperties("ShowStatusSign"),
+);
+export const FloatingTextEvent = z.object(
+  makeEventAutoProperties("FloatingText", (props) => {
+    const text = props.text as ZodOptional<ZodTypeAny>;
+    const times = props.times as ZodOptional<ZodTypeAny>;
+    props.text = text.unwrap();
+    props.times = times.unwrap();
+  }),
+);
 export const AdvanceFloatingTextEvent = z.object({
-  ...makeEventProperties("AdvanceText"),
+  ...makeEventBaseProperties("AdvanceText"),
   fadeOutDuration: z.number().optional(),
   id: z.number().int(),
 });
-export const ChangePlayersRowsEvent = z.object({
-  ...makeEventProperties("ChangePlayersRows"),
-  playerMode: z.enum(["OnePlayer", "TwoPlayers"]).optional(),
-  players: z.enum([...Player.options, "NoChange"]).array().optional(),
-  cpuMarkers: z.string().array().optional(),
-  flashingOnBeat: z.boolean().optional(),
-});
-export const FinishLevelEvent = z.object(makeEventProperties("FinishLevel"));
+export const ChangePlayersRowsEvent = z.object(
+  makeEventAutoProperties("ChangePlayersRows"),
+);
+export const FinishLevelEvent = z.object(
+  makeEventAutoProperties("FinishLevel"),
+);
 export const OrdinaryCommentEvent = z.object({
-  ...makeEventProperties("Comment"),
+  ...makeEventBaseProperties("Comment"),
   tab: z.enum(["Song", "Actions", "Rooms"]).optional(),
   show: z.boolean().optional(),
   text: z.string(),
   color: ColorOrPaletteIndex.optional(),
 });
 export const SpriteCommentEvent = z.object({
-  ...makeEventProperties("Comment"),
+  ...makeEventBaseProperties("Comment"),
   tab: z.literal("Sprites"),
   target: z.string(),
   show: z.boolean().optional(),
@@ -829,16 +689,9 @@ export const CommentEvent = z.union([
   OrdinaryCommentEvent,
   SpriteCommentEvent,
 ]);
-export const Hands = z.enum(["Left", "Right", "Both"]);
-export const ShowHandsEvent = z.object({
-  ...makeEventProperties("ShowHands"),
-  ...makeRoomsProperty(),
-  hand: Hands.optional(),
-  action: z.enum(["Show", "Hide", "Raise", "Lower"]).optional(),
-  align: z.boolean().optional(),
-  instant: z.boolean().optional(),
-  extent: z.enum(["Full", "Short"]).optional(),
-});
+export const ShowHandsEvent = z.object(
+  makeEventAutoProperties("ShowHands"),
+);
 const makeTintProperties = () => ({
   border: Border.optional(),
   borderColor: ColorOrPaletteIndex,
@@ -848,7 +701,7 @@ const makeTintProperties = () => ({
   tintOpacity: z.number().int().optional(),
 });
 export const PaintHandsEvent = z.object({
-  ...makeEventProperties("PaintHands"),
+  ...makeEventBaseProperties("PaintHands"),
   ...makeRoomsProperty(),
   hands: Hands.optional(),
   ...makeTintProperties(),
@@ -857,57 +710,31 @@ export const PaintHandsEvent = z.object({
   ease: Easing.optional(),
 });
 export const AssignHandsEvent = z.object({
-  ...makeEventProperties("SetHandOwner"),
+  ...makeEventBaseProperties("SetHandOwner"),
   ...makeRoomsProperty(),
   hand: Hands.optional(),
   character: z.string().optional(),
 });
-export const TagActionEvent = z.object({
-  ...makeEventProperties("TagAction"),
-  Action: z.enum([
-    "Run",
-    "RunAll",
-    "Enable",
-    "Disable",
-    "EnableAll",
-    "DisableAll",
-  ]).optional(),
-  Tag: z.string(),
-});
-export const SetPlayStyleEvent = z.object({
-  ...makeEventProperties("SetPlayStyle"),
-  PlayStyle: z.enum([
-    "Normal",
-    "Loop",
-    "Prolong",
-    "Immediately",
-    "ExtraImmediately",
-    "ProlongOneBar",
-    "Default",
-    "OnNextBar",
-    "BeatLoopOnly",
-    "ScrubToNext",
-    "None",
-  ]).optional(),
-  NextBar: z.number().int().min(1).optional(),
-  Relative: z.boolean().optional(),
-});
-export const StutterEvent = z.object({
-  ...makeEventProperties("Stutter"),
-  ...makeRoomsProperty(),
-  sourceBeat: z.number().min(0).optional(),
-  length: z.number().min(0).optional(),
-  loops: z.number().int().min(1).optional(),
-  action: z.enum(["Add", "Cancel"]).optional(),
-});
+export const TagActionEvent = z.object(
+  makeEventAutoProperties("TagAction", (props) => {
+    const tag = props.Tag as ZodOptional<ZodTypeAny>;
+    props.Tag = tag.unwrap();
+  }),
+);
+export const SetPlayStyleEvent = z.object(
+  makeEventAutoProperties("SetPlayStyle"),
+);
+export const StutterEvent = z.object(
+  makeEventAutoProperties("Stutter"),
+);
 export const CallCustomMethodEvent = z.object({
-  ...makeEventProperties("CallCustomMethod"),
+  ...makeEventBaseProperties("CallCustomMethod"),
   methodName: z.string(),
   executionTime: z.enum(["OnPrebar", "OnBar"]).optional(),
   sortOffset: z.number().int(),
 });
 export const WindowDanceEvent = z.object({
-  ...makeEventProperties("NewWindowDance"),
+  ...makeEventBaseProperties("NewWindowDance"),
   ...makeRoomsProperty(),
   preset: z.enum(["Move", "Sway", "Wrap", "Ellipse", "ShakePer"]).optional(),
   usePosition: z.enum(["New", "Current"]).optional(),
@@ -960,7 +787,7 @@ export const ActionEvent = z.union([
   WindowDanceEvent,
 ]);
 export const MoveSpriteEvent = z.object({
-  ...makeEventProperties("Move"),
+  ...makeEventBaseProperties("Move"),
   target: z.string(),
   position: Expression.array().min(2).max(2).optional(),
   scale: Expression.array().min(2).max(2).optional(),
@@ -970,7 +797,7 @@ export const MoveSpriteEvent = z.object({
   ease: Easing.optional(),
 });
 export const PaintSpriteEvent = z.object({
-  ...makeEventProperties("Tint"),
+  ...makeEventBaseProperties("Tint"),
   target: z.string(),
   ...makeTintProperties(),
   opacity: z.number().int().min(0).max(100).optional(),
@@ -978,12 +805,12 @@ export const PaintSpriteEvent = z.object({
   ease: Easing.optional(),
 });
 export const PlayAnimationEvent = z.object({
-  ...makeEventProperties("PlayAnimation"),
+  ...makeEventBaseProperties("PlayAnimation"),
   target: z.string(),
   expression: z.string(),
 });
 export const HideSpriteEvent = z.object({
-  ...makeEventProperties("SetVisible"),
+  ...makeEventBaseProperties("SetVisible"),
   target: z.string(),
   visible: z.boolean(),
 });
@@ -993,15 +820,11 @@ export const DecorationEvent = z.union([
   PlayAnimationEvent,
   HideSpriteEvent,
 ]);
-export const ShowRoomsHorizontallyEvent = z.object({
-  ...makeEventProperties("ShowRooms"),
-  ...makeRoomsProperty(),
-  transitionTime: z.number().optional(),
-  heights: z.number().int().array().optional(),
-  ease: Easing.optional(),
-});
+export const ShowRoomsHorizontallyEvent = z.object(
+  makeEventAutoProperties("ShowRooms"),
+);
 export const MoveRoomEvent = z.object({
-  ...makeEventProperties("MoveRoom"),
+  ...makeEventBaseProperties("MoveRoom"),
   roomPosition: z.number().min(-10000).max(10000).nullable()
     .array().min(2).max(2).optional(),
   scale: z.number().nullable().array().min(2).max(2).optional(),
@@ -1010,16 +833,14 @@ export const MoveRoomEvent = z.object({
   duration: z.number(),
   ease: Easing.optional(),
 });
-export const ReorderRoomsEvent = z.object({
-  ...makeEventProperties("ReorderRooms"),
-  order: z.number().int().array().optional(),
-});
-export const SetRoomContentModeEvent = z.object({
-  ...makeEventProperties("SetRoomContentMode"),
-  mode: ContentMode.optional(),
-});
+export const ReorderRoomsEvent = z.object(
+  makeEventAutoProperties("ReorderRooms"),
+);
+export const SetRoomContentModeEvent = z.object(
+  makeEventAutoProperties("SetRoomContentMode"),
+);
 export const MaskRoomEvent = z.object({
-  ...makeEventProperties("MaskRoom"),
+  ...makeEventBaseProperties("MaskRoom"),
   maskType: z.enum(["Image", "Room", "Color", "None"]).optional(),
   alphaMode: z.enum(["Normal", "Inverted"]).optional(),
   sourceRoom: z.number().int().optional(),
@@ -1030,14 +851,11 @@ export const MaskRoomEvent = z.object({
   colorFeathering: z.number().int().optional(),
   contentMode: ContentMode.optional(),
 });
-export const FadeRoomEvent = z.object({
-  ...makeEventProperties("FadeRoom"),
-  opacity: z.number().int().min(0).max(100).optional(),
-  duration: z.number().optional(),
-  ease: Easing.optional(),
-});
+export const FadeRoomEvent = z.object(
+  makeEventAutoProperties("FadeRoom"),
+);
 export const SetRoomPerspectiveEvent = z.object({
-  ...makeEventProperties("SetRoomPerspective"),
+  ...makeEventBaseProperties("SetRoomPerspective"),
   cornerPositions: z.number().min(-10000).max(10000).nullable()
     .array().min(2).max(2).array().min(4).max(4),
   duration: z.number(),

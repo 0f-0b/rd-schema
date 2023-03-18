@@ -1,4 +1,4 @@
-import { zodToJsonSchema as zodToJsonSchemaFn } from "https://esm.sh/zod-to-json-schema@3.20.4?deps=zod@3.21.4&target=esnext&pin=v111";
+import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.20.4";
 import type { ZodTypeAny } from "./zod.ts";
 
 type Id<T> = T;
