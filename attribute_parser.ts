@@ -257,11 +257,22 @@ export const Easing = z.enum([
   "InOutBounce",
 ]);
 export const Strength = z.enum(["Low", "Medium", "High"]);
+export const Language = z.enum([
+  "English",
+  "Spanish",
+  "Portuguese",
+  "ChineseSimplified",
+  "ChineseTraditional",
+  "Korean",
+  "Polish",
+  "Japanese",
+  "German",
+]);
 const makeAutoPropertyValue = (
   fieldIndex: number,
   signature: DataReader,
 ): ZodTypeAny | null => {
-  switch (signature.readPackedUint()) {
+  switch (signature.readUint8()) {
     case 2:
       return z.boolean();
     case 8: {
@@ -326,6 +337,16 @@ const makeAutoPropertyValue = (
           ]);
         case "\0NarrationCategory":
           return NarrationCategory;
+        case "\0OffsetType":
+          return z.enum([
+            "Perfect",
+            "SlightlyEarly",
+            "SlightlyLate",
+            "VeryEarly",
+            "VeryLate",
+            "AnyEarlyOrLate",
+            "Missed",
+          ]);
         case "\0OverrideExpression":
           return z.enum(["Neutral", "Happy", "Barely", "Missed", "Beep"]);
         case "\0PlayStyleChange":
@@ -391,6 +412,8 @@ const makeAutoPropertyValue = (
           return z.enum(["OneColor", "Random"]);
         case "RDLevelEditor\0TransitionType":
           return z.enum(["Smooth", "Instant", "Full"]);
+        case "UnityEngine\0SystemLanguage":
+          return Language;
         case "UnityEngine\0TextAnchor":
           return z.enum([
             "UpperLeft",
@@ -438,7 +461,7 @@ const makeAutoPropertyValue = (
       }
       break;
     case 21: {
-      switch (signature.readPackedUint()) {
+      switch (signature.readUint8()) {
         case 17:
           switch (getFullNameOfTypeByCodedIndex(signature.readPackedUint())) {
             case "System\0Nullable`1": {
@@ -477,6 +500,37 @@ export const makeRowProperty = () => ({
 export const makeRoomsProperty = () => ({
   rooms: z.number().int().array().optional(),
 });
+const makeAutoProperties = (typeDefIndex: number) => {
+  const [fieldStart, fieldEnd] = getFieldListByTypeDefIndex(typeDefIndex);
+  const props: Record<string, ZodTypeAny> = {};
+  for (let fieldIndex = fieldStart; fieldIndex < fieldEnd; fieldIndex++) {
+    const field = fieldTable[fieldIndex];
+    const jsonProperty = getCustomAttribute(
+      PE.MdTableIndex.Field,
+      fieldIndex,
+      jsonPropertyType,
+    );
+    if (!jsonProperty) {
+      continue;
+    }
+    const name = jsonProperty.readSerString() || getString(field.Name.value);
+    const signature = new DataReader(getBlob(field.Signature.value));
+    if (signature.readUint8() !== 6) {
+      throw new TypeError("Invalid field signature");
+    }
+    const prop = makeAutoPropertyValue(fieldIndex, signature);
+    if (!prop) {
+      console.warn(
+        "%s.%s: Unknown type",
+        getString(typeDefTable[typeDefIndex].Name.value),
+        name,
+      );
+      continue;
+    }
+    props[name] = prop.optional();
+  }
+  return props;
+};
 export const makeEventAutoProperties = (
   type: string,
   patch?: (props: Record<string, ZodTypeAny>) => unknown,
@@ -496,36 +550,32 @@ export const makeEventAutoProperties = (
   const roomsUsage = levelEventInfo.readInt32LE();
   levelEventInfo.skip(1);
   const defaultRow = levelEventInfo.readInt32LE();
-  const props: Record<string, ZodTypeAny> = makeEventBaseProperties(type);
-  if (defaultRow !== -10) {
-    Object.assign(props, makeRowProperty());
-  }
-  if (roomsUsage !== 0) {
-    Object.assign(props, makeRoomsProperty());
-  }
-  const [fieldStart, fieldEnd] = getFieldListByTypeDefIndex(typeDefIndex);
-  for (let fieldIndex = fieldStart; fieldIndex < fieldEnd; fieldIndex++) {
-    const field = fieldTable[fieldIndex];
-    const jsonProperty = getCustomAttribute(
-      PE.MdTableIndex.Field,
-      fieldIndex,
-      jsonPropertyType,
-    );
-    if (!jsonProperty) {
-      continue;
-    }
-    const name = jsonProperty.readSerString() || getString(field.Name.value);
-    const signature = new DataReader(getBlob(field.Signature.value));
-    if (signature.readUint8() !== 6) {
-      throw new TypeError("Invalid field signature");
-    }
-    const prop = makeAutoPropertyValue(fieldIndex, signature);
-    if (!prop) {
-      console.warn(`${type}.${name}: Unknown type`);
-      continue;
-    }
-    props[name] = prop.optional();
-  }
+  const props = Object.assign(
+    makeEventBaseProperties(type),
+    defaultRow === -10 ? null : makeRowProperty(),
+    roomsUsage === 0 ? null : makeRoomsProperty(),
+    makeAutoProperties(typeDefIndex),
+  );
+  patch?.(props);
+  return props;
+};
+export const makeConditionalBaseProperties = (type: string) => ({
+  type: z.literal(type),
+  tag: z.string().optional(),
+  name: z.string(),
+  id: z.number().int(),
+});
+export const makeConditionalAutoProperties = (
+  type: string,
+  patch?: (props: Record<string, ZodTypeAny>) => unknown,
+) => {
+  const typeDefIndex = getTypeDefIndexByFullName(
+    `RDLevelEditor\0Conditional_${type}`,
+  );
+  const props = Object.assign(
+    makeConditionalBaseProperties(type),
+    makeAutoProperties(typeDefIndex),
+  );
   patch?.(props);
   return props;
 };

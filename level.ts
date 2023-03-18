@@ -12,6 +12,8 @@ import {
   ContentMode,
   Easing,
   Hands,
+  Language,
+  makeConditionalAutoProperties,
   makeEventAutoProperties,
   makeEventBaseProperties,
   makeRoomsProperty,
@@ -30,6 +32,7 @@ export {
   ContentMode,
   Easing,
   Hands,
+  Language,
   NarrationCategory,
   Player,
   RowType,
@@ -624,25 +627,14 @@ export const PulseCameraEvent = z.object(
 export const TextExplosionEvent = z.object(
   makeEventAutoProperties("TextExplosion"),
 );
-export const Language = z.enum([
-  "English",
-  "Spanish",
-  "Portuguese",
-  "ChineseSimplified",
-  "ChineseTraditional",
-  "Korean",
-  "Polish",
-  "Japanese",
-  "German",
-]);
 export const ShowDialogueEvent = z.object({
   ...makeEventBaseProperties("ShowDialogue"),
   text: z.string(),
   localized: z.boolean().optional(),
-  ...Object.fromEntries(
-    Language.options
-      .map((language) => [`text${language}`, z.string().optional()]),
-  ) as Record<`text${z.infer<typeof Language>}`, ZodOptional<ZodString>>,
+  ...Object.fromEntries(Language.options.map((language) => [
+    `text${language}`,
+    z.string().optional(),
+  ])) as Record<`text${z.infer<typeof Language>}`, ZodOptional<ZodString>>,
   panelSide: z.enum(["Bottom", "Top"]).optional(),
   portraitSide: z.enum(["Left", "Right"]).optional(),
   speed: z.number(),
@@ -877,41 +869,27 @@ export const Event = z.union([
   DecorationEvent,
   RoomEvent,
 ]);
-const makeConditionalProperties = (type: string) => ({
-  type: z.literal(type),
-  tag: z.string().optional(),
-  name: z.string(),
-  id: z.number().int(),
-});
-export const LastHitConditional = z.object({
-  ...makeConditionalProperties("LastHit"),
-  row: z.number().int().optional(),
-  result: z.enum([
-    "Perfect",
-    "SlightlyEarly",
-    "SlightlyLate",
-    "VeryEarly",
-    "VeryLate",
-    "AnyEarlyOrLate",
-    "Missed",
-  ]).optional(),
-});
-export const CustomConditional = z.object({
-  ...makeConditionalProperties("Custom"),
-  expression: z.string(),
-});
-export const TimesExecutedConditional = z.object({
-  ...makeConditionalProperties("TimesExecuted"),
-  maxTimes: z.number().int().optional(),
-});
-export const LanguageConditional = z.object({
-  ...makeConditionalProperties("Language"),
-  Language: Language,
-});
-export const PlayerModeConditional = z.object({
-  ...makeConditionalProperties("PlayerMode"),
-  twoPlayerMode: z.boolean().optional(),
-});
+export const LastHitConditional = z.object(
+  makeConditionalAutoProperties("LastHit"),
+);
+export const CustomConditional = z.object(
+  makeConditionalAutoProperties("Custom", (props) => {
+    const expression = props.expression as ZodOptional<ZodTypeAny>;
+    props.expression = expression.unwrap();
+  }),
+);
+export const TimesExecutedConditional = z.object(
+  makeConditionalAutoProperties("TimesExecuted"),
+);
+export const LanguageConditional = z.object(
+  makeConditionalAutoProperties("Language", (props) => {
+    const language = props.Language as ZodOptional<ZodTypeAny>;
+    props.Language = language.unwrap();
+  }),
+);
+export const PlayerModeConditional = z.object(
+  makeConditionalAutoProperties("PlayerMode"),
+);
 export const Conditional = z.union([
   LastHitConditional,
   CustomConditional,
