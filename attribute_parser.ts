@@ -485,21 +485,6 @@ const makeAutoPropertyValue = (
   }
   return null;
 };
-export const makeEventBaseProperties = (type: string) => ({
-  bar: z.number().int().min(1),
-  beat: z.number().min(1),
-  y: z.number().int().optional(),
-  type: z.literal(type),
-  if: ConditionExpression.optional(),
-  tag: z.string().optional(),
-  active: z.boolean().optional(),
-});
-export const makeRowProperty = () => ({
-  row: z.number().int(),
-});
-export const makeRoomsProperty = () => ({
-  rooms: z.number().int().array().optional(),
-});
 const makeAutoProperties = (typeDefIndex: number) => {
   const [fieldStart, fieldEnd] = getFieldListByTypeDefIndex(typeDefIndex);
   const props: Record<string, ZodTypeAny> = {};
@@ -531,10 +516,22 @@ const makeAutoProperties = (typeDefIndex: number) => {
   }
   return props;
 };
-export const makeEventAutoProperties = (
-  type: string,
-  patch?: (props: Record<string, ZodTypeAny>) => unknown,
-) => {
+export const makeEventBaseProperties = (type: string) => ({
+  bar: z.number().int().min(1),
+  beat: z.number().min(1),
+  y: z.number().int().optional(),
+  type: z.literal(type),
+  if: ConditionExpression.optional(),
+  tag: z.string().optional(),
+  active: z.boolean().optional(),
+});
+export const makeRowProperty = () => ({
+  row: z.number().int(),
+});
+export const makeRoomsProperty = () => ({
+  rooms: z.number().int().array().optional(),
+});
+export const makeEventAutoProperties = (type: string) => {
   const typeDefIndex = getTypeDefIndexByFullName(
     `RDLevelEditor\0LevelEvent_${type}`,
   );
@@ -550,14 +547,12 @@ export const makeEventAutoProperties = (
   const roomsUsage = levelEventInfo.readInt32LE();
   levelEventInfo.skip(1);
   const defaultRow = levelEventInfo.readInt32LE();
-  const props = Object.assign(
-    makeEventBaseProperties(type),
-    defaultRow === -10 ? null : makeRowProperty(),
-    roomsUsage === 0 ? null : makeRoomsProperty(),
-    makeAutoProperties(typeDefIndex),
-  );
-  patch?.(props);
-  return props;
+  return {
+    ...makeEventBaseProperties(type),
+    ...defaultRow === -10 ? null : makeRowProperty(),
+    ...roomsUsage === 0 ? null : makeRoomsProperty(),
+    ...makeAutoProperties(typeDefIndex),
+  };
 };
 export const makeConditionalBaseProperties = (type: string) => ({
   type: z.literal(type),
@@ -565,17 +560,12 @@ export const makeConditionalBaseProperties = (type: string) => ({
   name: z.string(),
   id: z.number().int(),
 });
-export const makeConditionalAutoProperties = (
-  type: string,
-  patch?: (props: Record<string, ZodTypeAny>) => unknown,
-) => {
+export const makeConditionalAutoProperties = (type: string) => {
   const typeDefIndex = getTypeDefIndexByFullName(
     `RDLevelEditor\0Conditional_${type}`,
   );
-  const props = Object.assign(
-    makeConditionalBaseProperties(type),
-    makeAutoProperties(typeDefIndex),
-  );
-  patch?.(props);
-  return props;
+  return {
+    ...makeConditionalBaseProperties(type),
+    ...makeAutoProperties(typeDefIndex),
+  };
 };

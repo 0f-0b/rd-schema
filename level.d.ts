@@ -198,6 +198,9 @@ export type SayReadyGetSetGoEvent = {
       | "JustSayAndStop"
       | "Count1"
       | "Count2"
+      | "Count3"
+      | "Count4"
+      | "Count5"
       | "SayReadyGetSetGo"
       | "JustSayReady"
     )

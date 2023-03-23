@@ -1,9 +1,4 @@
-import {
-  z,
-  type ZodOptional,
-  type ZodString,
-  type ZodTypeAny,
-} from "./deps/zod.ts";
+import { z, ZodOptional, type ZodTypeAny } from "./deps/zod.ts";
 
 import {
   Border,
@@ -111,42 +106,75 @@ const makeLegacySoundProperties = (prefix?: string) => {
     [panKey]: z.number().int().optional(),
   };
 };
-export const PlaySongEvent = z.object(
-  makeEventAutoProperties("PlaySong", (props) => {
-    Object.assign(props, makeLegacySoundProperties());
-  }),
+const mergeShapes = (
+  ...shapes: Readonly<Record<string, ZodTypeAny | [override: ZodTypeAny]>>[]
+) => {
+  interface MergeContext {
+    optional: boolean;
+    subtypes: ZodTypeAny[];
+  }
+
+  const contexts: Record<string, MergeContext> = Object.create(null);
+  const addToContext = (ctx: MergeContext, type: ZodTypeAny) => {
+    while (type instanceof ZodOptional) {
+      ctx.optional = true;
+      type = type.unwrap();
+    }
+    ctx.subtypes.push(type);
+  };
+  for (const shape of shapes) {
+    for (const key of Object.keys(shape)) {
+      let value = shape[key];
+      if (!value) {
+        continue;
+      }
+      let override = !contexts[key];
+      if (Array.isArray(value)) {
+        value = value[0];
+        override = true;
+      }
+      if (override) {
+        contexts[key] = { optional: false, subtypes: [] };
+      }
+      addToContext(contexts[key], value);
+    }
+  }
+  return Object.fromEntries(
+    Object.entries(contexts).map(([key, { optional, subtypes }]) => {
+      const union = subtypes.length === 1
+        ? subtypes[0]
+        : z.union(subtypes as never);
+      return [key, optional ? union.optional() : union];
+    }),
+  );
+};
+const mergeShapesToObject = (
+  ...shapes: Readonly<Record<string, ZodTypeAny | [override: ZodTypeAny]>>[]
+) => z.object(mergeShapes(...shapes));
+export const PlaySongEvent = mergeShapesToObject(
+  makeEventAutoProperties("PlaySong"),
+  makeLegacySoundProperties(),
 );
 export const SetCrotchetsPerBarEvent = z.object(
   makeEventAutoProperties("SetCrotchetsPerBar"),
 );
-export const PlaySoundEvent = z.object(
-  makeEventAutoProperties("PlaySound", (props) => {
-    const sound = props.sound as ZodOptional<ZodTypeAny>;
-    Object.assign(props, makeLegacySoundProperties());
-    props.sound = sound.unwrap().or(z.string()).optional();
-  }),
+export const PlaySoundEvent = mergeShapesToObject(
+  makeEventAutoProperties("PlaySound"),
+  makeLegacySoundProperties(),
 );
 export const SetBeatsPerMinuteEvent = z.object(
   makeEventAutoProperties("SetBeatsPerMinute"),
 );
-export const SetClapSoundsEvent = z.object(
-  makeEventAutoProperties("SetClapSounds", (props) => {
-    const p1Sound = props.p1Sound as ZodOptional<ZodTypeAny>;
-    const p2Sound = props.p2Sound as ZodOptional<ZodTypeAny>;
-    const cpuSound = props.cpuSound as ZodOptional<ZodTypeAny>;
-    Object.assign(
-      props,
-      makeLegacySoundProperties("p1"),
-      makeLegacySoundProperties("p2"),
-      makeLegacySoundProperties("cpu"),
-    );
-    props.p1Sound = p1Sound.unwrap().or(z.string()).optional();
-    props.p2Sound = p2Sound.unwrap().or(z.string()).optional();
-    props.cpuSound = cpuSound.unwrap().or(z.string()).optional();
-    props.p1Used = z.boolean().optional();
-    props.p2Used = z.boolean().optional();
-    props.cpuUsed = z.boolean().optional();
-  }),
+export const SetClapSoundsEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetClapSounds"),
+  makeLegacySoundProperties("p1"),
+  makeLegacySoundProperties("p2"),
+  makeLegacySoundProperties("cpu"),
+  {
+    p1Used: z.boolean().optional(),
+    p2Used: z.boolean().optional(),
+    cpuUsed: z.boolean().optional(),
+  },
 );
 export const SetHeartExplodeVolumeEvent = z.object(
   makeEventAutoProperties("SetHeartExplodeVolume"),
@@ -171,6 +199,9 @@ export const SayReadyGetSetGoEvent = z.object({
     "JustSayAndStop",
     "Count1",
     "Count2",
+    "Count3",
+    "Count4",
+    "Count5",
     "SayReadyGetSetGo",
     "JustSayReady",
   ]).optional(),
@@ -245,12 +276,9 @@ export const SetGameSoundEvent = z.object({
   pan: z.number().int().optional(),
   offset: z.number().int().optional(),
 });
-export const SetBeatSoundEvent = z.object(
-  makeEventAutoProperties("SetBeatSound", (props) => {
-    const sound = props.sound as ZodOptional<ZodTypeAny>;
-    Object.assign(props, makeLegacySoundProperties());
-    props.sound = sound.unwrap().or(z.string()).optional();
-  }),
+export const SetBeatSoundEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetBeatSound"),
+  makeLegacySoundProperties(),
 );
 export const SetCountingSoundEvent = z.object({
   ...makeEventBaseProperties("SetCountingSound"),
@@ -541,10 +569,9 @@ export const SetVFXPresetEvent = z.union([
   DisableVFXPresetEvent,
 ]);
 export const ImageSequence = z.string().array().or(z.string());
-export const SetBackgroundEvent = z.object(
-  makeEventAutoProperties("SetBackgroundColor", (props) => {
-    props.image = ImageSequence.optional();
-  }),
+export const SetBackgroundEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetBackgroundColor"),
+  { image: [ImageSequence.optional()] },
 );
 export const SetForegroundEvent = z.object({
   ...makeEventBaseProperties("SetForeground"),
@@ -577,11 +604,9 @@ export const MoveCameraEvent = z.object({
   duration: z.number(),
   ease: Easing.optional(),
 });
-export const HideRowEvent = z.object(
-  makeEventAutoProperties("HideRow", (props) => {
-    const show = props.show as ZodOptional<ZodTypeAny>;
-    props.show = show.unwrap().or(z.boolean()).optional();
-  }),
+export const HideRowEvent = mergeShapesToObject(
+  makeEventAutoProperties("HideRow"),
+  { show: z.boolean() },
 );
 export const Expression = z.union([z.number(), z.string(), z.null()]);
 export const MoveRowEvent = z.object({
@@ -599,11 +624,12 @@ export const MoveRowEvent = z.object({
 export const PlayExpressionEvent = z.object(
   makeEventAutoProperties("PlayExpression"),
 );
-export const PaintRowsEvent = z.object(
-  makeEventAutoProperties("TintRows", (props) => {
-    props.borderOpacity = z.number().int().optional();
-    props.tintOpacity = z.number().int().optional();
-  }),
+export const PaintRowsEvent = mergeShapesToObject(
+  makeEventAutoProperties("TintRows"),
+  {
+    borderOpacity: z.number().int().optional(),
+    tintOpacity: z.number().int().optional(),
+  },
 );
 export const BassDropEvent = z.object(
   makeEventAutoProperties("BassDrop"),
@@ -611,12 +637,9 @@ export const BassDropEvent = z.object(
 export const ShakeScreenEvent = z.object(
   makeEventAutoProperties("ShakeScreen"),
 );
-export const FlipScreenEvent = z.object(
-  makeEventAutoProperties("FlipScreen", (props) => {
-    const y = props.y as ZodOptional<ZodTypeAny>;
-    props.x = z.boolean().optional();
-    props.y = y.unwrap().or(z.boolean()).optional();
-  }),
+export const FlipScreenEvent = mergeShapesToObject(
+  makeEventAutoProperties("FlipScreen"),
+  { x: z.boolean().optional(), y: z.boolean().optional() },
 );
 export const InvertColorsEvent = z.object(
   makeEventAutoProperties("InvertColors"),
@@ -634,7 +657,7 @@ export const ShowDialogueEvent = z.object({
   ...Object.fromEntries(Language.options.map((language) => [
     `text${language}`,
     z.string().optional(),
-  ])) as Record<`text${z.infer<typeof Language>}`, ZodOptional<ZodString>>,
+  ])),
   panelSide: z.enum(["Bottom", "Top"]).optional(),
   portraitSide: z.enum(["Left", "Right"]).optional(),
   speed: z.number(),
@@ -643,13 +666,9 @@ export const ShowDialogueEvent = z.object({
 export const ShowStatusSignEvent = z.object(
   makeEventAutoProperties("ShowStatusSign"),
 );
-export const FloatingTextEvent = z.object(
-  makeEventAutoProperties("FloatingText", (props) => {
-    const text = props.text as ZodOptional<ZodTypeAny>;
-    const times = props.times as ZodOptional<ZodTypeAny>;
-    props.text = text.unwrap();
-    props.times = times.unwrap();
-  }),
+export const FloatingTextEvent = mergeShapesToObject(
+  makeEventAutoProperties("FloatingText"),
+  { text: [z.string()], times: [z.string()] },
 );
 export const AdvanceFloatingTextEvent = z.object({
   ...makeEventBaseProperties("AdvanceText"),
@@ -707,11 +726,9 @@ export const AssignHandsEvent = z.object({
   hand: Hands.optional(),
   character: z.string().optional(),
 });
-export const TagActionEvent = z.object(
-  makeEventAutoProperties("TagAction", (props) => {
-    const tag = props.Tag as ZodOptional<ZodTypeAny>;
-    props.Tag = tag.unwrap();
-  }),
+export const TagActionEvent = mergeShapesToObject(
+  makeEventAutoProperties("TagAction"),
+  { Tag: [z.string()] },
 );
 export const SetPlayStyleEvent = z.object(
   makeEventAutoProperties("SetPlayStyle"),
@@ -872,20 +889,16 @@ export const Event = z.union([
 export const LastHitConditional = z.object(
   makeConditionalAutoProperties("LastHit"),
 );
-export const CustomConditional = z.object(
-  makeConditionalAutoProperties("Custom", (props) => {
-    const expression = props.expression as ZodOptional<ZodTypeAny>;
-    props.expression = expression.unwrap();
-  }),
+export const CustomConditional = mergeShapesToObject(
+  makeConditionalAutoProperties("Custom"),
+  { expression: [z.string()] },
 );
 export const TimesExecutedConditional = z.object(
   makeConditionalAutoProperties("TimesExecuted"),
 );
-export const LanguageConditional = z.object(
-  makeConditionalAutoProperties("Language", (props) => {
-    const language = props.Language as ZodOptional<ZodTypeAny>;
-    props.Language = language.unwrap();
-  }),
+export const LanguageConditional = mergeShapesToObject(
+  makeConditionalAutoProperties("Language"),
+  { Language: [Language] },
 );
 export const PlayerModeConditional = z.object(
   makeConditionalAutoProperties("PlayerMode"),
