@@ -209,6 +209,8 @@ export type SayReadyGetSetGoEvent = {
     | (
       | "Nurse"
       | "NurseTired"
+      | "NurseSwing"
+      | "NurseSwingCalm"
       | "IanExcited"
       | "IanCalm"
       | "IanSlow"
@@ -763,12 +765,24 @@ export type DisableVFXPresetEvent = {
     )
     | undefined;
 };
+export type DisableAllVFXPresetEvent = {
+  bar: number;
+  beat: number;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "DisableAll";
+};
 export type SetVFXPresetEvent =
   | EnableOrdinaryVFXPresetEvent
   | EnableBloomVFXPresetEvent
   | EnableScreenVFXPresetEvent
   | EnableEaseableVFXPresetEvent
-  | DisableVFXPresetEvent;
+  | DisableVFXPresetEvent
+  | DisableAllVFXPresetEvent;
 export type ImageSequence = string[] | string;
 export type ContentMode =
   | "ScaleToFill"

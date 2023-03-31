@@ -505,11 +505,8 @@ const makeAutoProperties = (typeDefIndex: number) => {
     }
     const prop = makeAutoPropertyValue(fieldIndex, signature);
     if (!prop) {
-      console.warn(
-        "%s.%s: Unknown type",
-        getString(typeDefTable[typeDefIndex].Name.value),
-        name,
-      );
+      const typeDef = typeDefTable[typeDefIndex];
+      console.warn(`${getString(typeDef.Name.value)}.${name}: Unknown type`);
       continue;
     }
     props[name] = prop.optional();

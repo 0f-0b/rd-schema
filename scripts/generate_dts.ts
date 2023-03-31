@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --no-prompt --allow-read --allow-write=character.d.ts,level.d.ts --allow-env=RD_ASSEMBLY_PATH --allow-run=./scripts/deno_fmt.sh
 
-import { ts, withGetType, zodToTs } from "../deps/zod_to_ts.ts";
+import { setTsType, ts, zodToTs } from "../deps/zod_to_ts.ts";
 
 import { characterTypedefs } from "../character.ts";
 import { levelTypedefs } from "../level.ts";
@@ -30,7 +30,7 @@ async function generate(
       typeAlias,
       sourceFile,
     ) + "\n";
-    withGetType(type, () => ident);
+    setTsType(type, () => ident);
   }
   const sourceReadable = new ReadableStream({
     start(controller) {

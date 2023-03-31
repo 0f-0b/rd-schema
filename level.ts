@@ -208,6 +208,8 @@ export const SayReadyGetSetGoEvent = z.object({
   voiceSource: z.enum([
     "Nurse",
     "NurseTired",
+    "NurseSwing",
+    "NurseSwingCalm",
     "IanExcited",
     "IanCalm",
     "IanSlow",
@@ -561,12 +563,18 @@ export const DisableVFXPresetEvent = z.object({
     ...EaseableVFXPreset.options,
   ]).optional(),
 });
+export const DisableAllVFXPresetEvent = z.object({
+  ...makeEventBaseProperties("SetVFXPreset"),
+  ...makeRoomsProperty(),
+  preset: z.literal("DisableAll"),
+});
 export const SetVFXPresetEvent = z.union([
   EnableOrdinaryVFXPresetEvent,
   EnableBloomVFXPresetEvent,
   EnableScreenVFXPresetEvent,
   EnableEaseableVFXPresetEvent,
   DisableVFXPresetEvent,
+  DisableAllVFXPresetEvent,
 ]);
 export const ImageSequence = z.string().array().or(z.string());
 export const SetBackgroundEvent = mergeShapesToObject(
@@ -964,6 +972,7 @@ export const levelTypedefs = {
   EnableScreenVFXPresetEvent,
   EnableEaseableVFXPresetEvent,
   DisableVFXPresetEvent,
+  DisableAllVFXPresetEvent,
   SetVFXPresetEvent,
   ImageSequence,
   ContentMode,

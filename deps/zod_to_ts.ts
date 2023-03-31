@@ -20,6 +20,6 @@ export type ZodToTsResult = ReturnType<typeof zodToTsFn>;
 export const zodToTs = zodToTsFn as {
   (type: unknown, identifier?: string, options?: ZodToTsOptions): ZodToTsResult;
 };
-export const withGetType = withGetTypeFn as {
+export const setTsType = withGetTypeFn as {
   <T>(schema: T, getType?: GetType["getType"]): T;
 };

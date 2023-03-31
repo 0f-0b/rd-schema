@@ -792,6 +792,8 @@
           "enum": [
             "Nurse",
             "NurseTired",
+            "NurseSwing",
+            "NurseSwingCalm",
             "IanExcited",
             "IanCalm",
             "IanSlow",
@@ -2130,6 +2132,52 @@
       ],
       "additionalProperties": false
     },
+    "DisableAllVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "preset": {
+          "type": "string",
+          "const": "DisableAll"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
     "SetVFXPresetEvent": {
       "anyOf": [
         {
@@ -2146,6 +2194,9 @@
         },
         {
           "$ref": "#/definitions/DisableVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/DisableAllVFXPresetEvent"
         }
       ]
     },
