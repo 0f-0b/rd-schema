@@ -4,9 +4,10 @@
   "npm": {
     "specifiers": {
       "pe-struct@0.9.4": "pe-struct@0.9.4",
-      "typescript@4.9.5": "typescript@4.9.5",
-      "zod-to-json-schema@3.20.4": "zod-to-json-schema@3.20.4_zod@3.21.4",
-      "zod-to-ts@1.1.2": "zod-to-ts@1.1.2_typescript@4.9.5_zod@3.21.4",
+      "type-fest@3.12.0": "type-fest@3.12.0",
+      "typescript@5.1.3": "typescript@5.1.3",
+      "zod-to-json-schema@3.21.1": "zod-to-json-schema@3.21.1_zod@3.21.4",
+      "zod-to-ts@1.1.4": "zod-to-ts@1.1.4_typescript@5.1.3_zod@3.21.4",
       "zod@3.21.4": "zod@3.21.4"
     },
     "packages": {
@@ -14,20 +15,24 @@
         "integrity": "sha512-aGFWx9K+n1yl16YnRS6nkOnKNPF3jjxvKsLZeq4lSuvFNVrmlhgoArIHFIopXyA/zyxQA4tDljPPHFjHMvcSKA==",
         "dependencies": {}
       },
-      "typescript@4.9.5": {
-        "integrity": "sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==",
+      "type-fest@3.12.0": {
+        "integrity": "sha512-qj9wWsnFvVEMUDbESiilKeXeHL7FwwiFcogfhfyjmvT968RXSvnl23f1JOClTHYItsi7o501C/7qVllscUP3oA==",
         "dependencies": {}
       },
-      "zod-to-json-schema@3.20.4_zod@3.21.4": {
-        "integrity": "sha512-Un9+kInJ2Zt63n6Z7mLqBifzzPcOyX+b+Exuzf7L1+xqck9Q2EPByyTRduV3kmSPaXaRer1JCsucubpgL1fipg==",
+      "typescript@5.1.3": {
+        "integrity": "sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==",
+        "dependencies": {}
+      },
+      "zod-to-json-schema@3.21.1_zod@3.21.4": {
+        "integrity": "sha512-y5g0MPxDq+YG/T+cHGPYH4PcBpyCqwK6wxeJ76MR563y0gk/14HKfebq8xHiItY7lkc9GDFygCnkvNDTvAhYAg==",
         "dependencies": {
           "zod": "zod@3.21.4"
         }
       },
-      "zod-to-ts@1.1.2_typescript@4.9.5_zod@3.21.4": {
-        "integrity": "sha512-IZdM0Ga1l/vQnrNy63aV3qsLNchD0aUYZEtXcyt8A3xA7+erFO0zeImEcUH5qNLA6tXDTjRpcWp0paoVoH/D0A==",
+      "zod-to-ts@1.1.4_typescript@5.1.3_zod@3.21.4": {
+        "integrity": "sha512-jsCg+pTNxLAdJOfW4ul+SpechdGYEJPPnssSbqWdR2LSIkotT22k+UvqPb1nEHwe/YbEcbUOlZUfGM0npgR+Jg==",
         "dependencies": {
-          "typescript": "typescript@4.9.5",
+          "typescript": "typescript@5.1.3",
           "zod": "zod@3.21.4"
         }
       },

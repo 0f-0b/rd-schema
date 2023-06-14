@@ -1,25 +1,28 @@
-#!/usr/bin/env -S deno run --no-prompt --allow-read --allow-write=character.d.ts,level.d.ts --allow-env=RD_ASSEMBLY_PATH --allow-run=./scripts/deno_fmt.sh
+#!/usr/bin/env -S deno run --allow-read --allow-write=character.d.ts,level.d.ts --allow-env=RD_ASSEMBLY_PATH --allow-run=./scripts/deno_fmt.sh
 
-import { setTsType, ts, zodToTs } from "../deps/zod_to_ts.ts";
+import { ts } from "../deps/typescript.ts";
+import type { ZodTypeAny } from "../deps/zod.ts";
+import { setTsType, zodToTs } from "../deps/zod_to_ts.ts";
 
 import { characterTypedefs } from "../character.ts";
 import { levelTypedefs } from "../level.ts";
 
+const f = ts.factory;
 const decoder = new TextDecoder();
 const encoder = new TextEncoder();
 const sourceFile = ts.createSourceFile("", "", ts.ScriptTarget.Latest);
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
-const exportModifier = ts.factory.createModifier(ts.SyntaxKind.ExportKeyword);
+const exportModifier = f.createModifier(ts.SyntaxKind.ExportKeyword);
 
 async function generate(
   path: string,
-  definitions: Record<string, unknown>,
+  definitions: Record<string, ZodTypeAny>,
 ): Promise<undefined> {
   let sourceText = "";
   for (const [name, type] of Object.entries(definitions)) {
     const { node } = zodToTs(type, name);
-    const ident = ts.factory.createIdentifier(name);
-    const typeAlias = ts.factory.createTypeAliasDeclaration(
+    const ident = f.createIdentifier(name);
+    const typeAlias = f.createTypeAliasDeclaration(
       [exportModifier],
       ident,
       undefined,

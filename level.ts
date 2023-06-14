@@ -114,7 +114,8 @@ const mergeShapes = (
     subtypes: ZodTypeAny[];
   }
 
-  const contexts: Record<string, MergeContext> = Object.create(null);
+  // deno-lint-ignore ban-types
+  const contexts: Record<string, MergeContext> = { __proto__: null } as {};
   const addToContext = (ctx: MergeContext, type: ZodTypeAny) => {
     while (type instanceof ZodOptional) {
       ctx.optional = true;
@@ -139,12 +140,22 @@ const mergeShapes = (
       addToContext(contexts[key], value);
     }
   }
+  const union = (types: readonly ZodTypeAny[]) => {
+    switch (types.length) {
+      case 0:
+        return z.never();
+      case 1:
+        return types[0];
+      default:
+        return z.union(
+          types as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]],
+        );
+    }
+  };
   return Object.fromEntries(
     Object.entries(contexts).map(([key, { optional, subtypes }]) => {
-      const union = subtypes.length === 1
-        ? subtypes[0]
-        : z.union(subtypes as never);
-      return [key, optional ? union.optional() : union];
+      const type = union(subtypes);
+      return [key, optional ? type.optional() : type];
     }),
   );
 };

@@ -1,4 +1,5 @@
-import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.20.4";
+import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.21.1";
+import { LiteralUnion } from "./type_fest/literal_union.d.ts";
 import type { ZodTypeAny } from "./zod.ts";
 
 type Id<T> = T;
@@ -6,8 +7,9 @@ export type JsonSchemaType = typeof zodToJsonSchemaFn<"jsonSchema7"> extends
   (type: ZodTypeAny) => { definitions?: Record<string, infer T> } ? T
   : JsonSchemaType;
 type DefaultDefinitionPath = "definitions";
-type GetDefinitionPath<T extends { definitionPath?: string }> = T extends
-  { definitionPath: infer P } ? P : DefaultDefinitionPath;
+type GetDefinitionPath<T extends { definitionPath?: string }> =
+  T["definitionPath"] extends infer P extends string ? P
+    : DefaultDefinitionPath;
 type Result<S, P extends string> = Partial<Record<P, Record<string, S>>> & S;
 
 export interface ZodToOpenApiOptions
@@ -21,17 +23,15 @@ export type ZodToOpenApiResult<P extends string = DefaultDefinitionPath> =
 export interface ZodToJsonSchemaOptions extends
   Id<
     typeof zodToJsonSchemaFn<"jsonSchema7"> extends
-      (type: never, options?: string | infer T) => unknown
-      ? Omit<T, "definitionPath">
-      : never
+      (type: never, options?: string | infer T) => unknown ? T
+      : ZodToJsonSchemaOptions
   > {
-  // deno-lint-ignore ban-types
-  definitionPath?: "definitions" | "$defs" | (string & {});
+  definitionPath?: LiteralUnion<"definitions" | "$defs", string>;
 }
 
 export type ZodToJsonSchemaResult<P extends string = DefaultDefinitionPath> =
-  & { $schema: string }
-  & Result<JsonSchemaType, P>;
+  & Result<JsonSchemaType, P>
+  & { $schema: string };
 export const zodToJsonSchema = zodToJsonSchemaFn as {
   <T extends ZodToJsonSchemaOptions>(
     type: ZodTypeAny,

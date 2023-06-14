@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec deno fmt -
+exec deno fmt --no-config -
