@@ -6,17 +6,17 @@ export const Clip = z.object({
   loopStart: z.number().int().optional(),
   loop: z.enum(["yes", "onBeat", "no"]),
   fps: z.number(),
-  portraitOffset: z.number().int().array().min(2).max(2).optional(),
-  portraitSize: z.number().int().array().min(2).max(2).optional(),
+  portraitOffset: z.number().int().array().length(2).optional(),
+  portraitSize: z.number().int().array().length(2).optional(),
   portraitScale: z.number().optional(),
 });
 export const Character = z.object({
   $schema: z.string().url().optional(),
   name: z.string().optional(),
   voice: z.string().optional(),
-  size: z.number().int().array().min(2).max(2),
+  size: z.number().int().array().length(2),
   clips: Clip.array(),
-  rowPreviewOffset: z.number().int().array().min(2).max(2).optional(),
+  rowPreviewOffset: z.number().int().array().length(2).optional(),
   rowPreviewFrame: z.number().int().optional(),
 });
 export const characterTypedefs = {

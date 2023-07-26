@@ -17,7 +17,6 @@ async function generate(
     { $id: url },
   );
   await Deno.writeTextFile(path, JSON.stringify(schema, undefined, 2) + "\n");
-  return;
 }
 
 await Promise.all([

@@ -1,1 +1,1 @@
-export * from "npm:type-fest@3.12.0/source/literal-union.d.ts";
+export * from "npm:type-fest@4.0.0/source/literal-union.d.ts";

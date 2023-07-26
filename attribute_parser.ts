@@ -18,7 +18,6 @@ class DataReader {
 
   skip(count: number): undefined {
     this.#offset += count;
-    return;
   }
 
   remaining(): Uint8Array {

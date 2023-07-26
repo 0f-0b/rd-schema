@@ -62,9 +62,9 @@ export const Settings = z.object({
   inkFile: z.string().optional(),
   multiplayerAppearance: z.enum(["HorizontalStrips", "Nothing"]).optional(),
   levelVolume: z.number().optional(),
-  rankMaxMistakes: z.number().int().array().min(4).max(4),
+  rankMaxMistakes: z.number().int().array().length(4),
   mods: z.string().array().or(z.string()).optional(),
-  rankDescription: z.string().array().min(6).max(6),
+  rankDescription: z.string().array().length(6),
 });
 export const Row = z.object({
   character: z.string(),
@@ -617,7 +617,7 @@ export const MoveCameraEvent = z.object({
   ...makeEventBaseProperties("MoveCamera"),
   ...makeRoomsProperty(),
   cameraPosition: z.number().min(-100).max(200).nullable()
-    .array().min(2).max(2).optional(),
+    .array().length(2).optional(),
   zoom: z.number().int().min(1).max(9999).optional(),
   angle: z.number().min(-9999).max(9999).optional(),
   duration: z.number(),
@@ -633,8 +633,8 @@ export const MoveRowEvent = z.object({
   ...makeRowProperty(),
   target: z.enum(["WholeRow", "Character", "Heart"]).optional(),
   customPosition: z.boolean().optional(),
-  rowPosition: Expression.array().min(2).max(2).optional(),
-  scale: Expression.array().min(2).max(2).optional(),
+  rowPosition: Expression.array().length(2).optional(),
+  scale: Expression.array().length(2).optional(),
   angle: Expression.optional(),
   pivot: z.number().optional(),
   duration: z.number(),
@@ -766,12 +766,12 @@ export const WindowDanceEvent = z.object({
   ...makeRoomsProperty(),
   preset: z.enum(["Move", "Sway", "Wrap", "Ellipse", "ShakePer"]).optional(),
   usePosition: z.enum(["New", "Current"]).optional(),
-  position: z.number().array().min(2).max(2),
+  position: z.number().array().length(2),
   reference: z.enum(["Center", "Edge"]).optional(),
   useCircle: z.boolean().optional(),
   speed: z.number(),
   amplitude: z.number(),
-  amplitudeVector: z.number().array().min(2).max(2),
+  amplitudeVector: z.number().array().length(2),
   angle: z.number(),
   frequency: z.number(),
   period: z.number(),
@@ -817,10 +817,10 @@ export const ActionEvent = z.union([
 export const MoveSpriteEvent = z.object({
   ...makeEventBaseProperties("Move"),
   target: z.string(),
-  position: Expression.array().min(2).max(2).optional(),
-  scale: Expression.array().min(2).max(2).optional(),
+  position: Expression.array().length(2).optional(),
+  scale: Expression.array().length(2).optional(),
   angle: Expression.optional(),
-  pivot: z.number().nullable().array().min(2).max(2).optional(),
+  pivot: z.number().nullable().array().length(2).optional(),
   duration: z.number(),
   ease: Easing.optional(),
 });
@@ -854,10 +854,10 @@ export const ShowRoomsHorizontallyEvent = z.object(
 export const MoveRoomEvent = z.object({
   ...makeEventBaseProperties("MoveRoom"),
   roomPosition: z.number().min(-10000).max(10000).nullable()
-    .array().min(2).max(2).optional(),
-  scale: z.number().nullable().array().min(2).max(2).optional(),
+    .array().length(2).optional(),
+  scale: z.number().nullable().array().length(2).optional(),
   angle: z.number().min(-9999).max(9999).optional(),
-  pivot: z.number().nullable().array().min(2).max(2).optional(),
+  pivot: z.number().nullable().array().length(2).optional(),
   duration: z.number(),
   ease: Easing.optional(),
 });
@@ -885,7 +885,7 @@ export const FadeRoomEvent = z.object(
 export const SetRoomPerspectiveEvent = z.object({
   ...makeEventBaseProperties("SetRoomPerspective"),
   cornerPositions: z.number().min(-10000).max(10000).nullable()
-    .array().min(2).max(2).array().min(4).max(4),
+    .array().length(2).array().length(4),
   duration: z.number(),
   ease: Easing.optional(),
 });

@@ -52,7 +52,6 @@ async function generate(
     throw new Error(decoder.decode(stderr));
   }
   await Deno.writeFile(path, stdout);
-  return;
 }
 
 await Promise.all([

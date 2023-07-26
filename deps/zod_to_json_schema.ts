@@ -1,4 +1,4 @@
-import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.21.1";
+import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.21.4";
 import { LiteralUnion } from "./type_fest/literal_union.d.ts";
 import type { ZodTypeAny } from "./zod.ts";
 
