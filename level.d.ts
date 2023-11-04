@@ -201,6 +201,11 @@ export type SayReadyGetSetGoEvent = {
       | "Count3"
       | "Count4"
       | "Count5"
+      | "Count6"
+      | "Count7"
+      | "Count8"
+      | "Count9"
+      | "Count10"
       | "SayReadyGetSetGo"
       | "JustSayReady"
     )
@@ -221,7 +226,72 @@ export type SayReadyGetSetGoEvent = {
   tick: number;
   volume?: number | undefined;
 };
-export type SetGameSoundEvent = {
+export type GameSoundType =
+  | "ClapSoundP1Classic"
+  | "ClapSoundP2Classic"
+  | "ClapSoundP1Oneshot"
+  | "ClapSoundP2Oneshot"
+  | "PulseSoundRow0"
+  | "PulseSoundRow1"
+  | "PulseSoundRow2"
+  | "PulseSoundRow3"
+  | "PulseSoundRow4"
+  | "PulseSoundRow5"
+  | "PulseSoundRow6"
+  | "PulseSoundRow7"
+  | "PulseSoundRow8"
+  | "PulseSoundRow9"
+  | "PulseSoundRow10"
+  | "PulseSoundRow11"
+  | "PulseSoundRow12"
+  | "PulseSoundRow13"
+  | "PulseSoundRow14"
+  | "PulseSoundRow15"
+  | "SmallMistake"
+  | "BigMistake"
+  | "Hand1PopSound"
+  | "Hand2PopSound"
+  | "HeartExplosion"
+  | "HeartExplosion2"
+  | "HeartExplosion3"
+  | "ClapSoundHoldLongEnd"
+  | "ClapSoundHoldLongStart"
+  | "ClapSoundHoldShortEnd"
+  | "ClapSoundHoldShortStart"
+  | "PulseSoundHoldStart"
+  | "PulseSoundHoldShortEnd"
+  | "PulseSoundHoldEnd"
+  | "PulseSoundHoldStartAlt"
+  | "PulseSoundHoldShortEndAlt"
+  | "PulseSoundHoldEndAlt"
+  | "ClapSoundCPUClassic"
+  | "ClapSoundCPUOneshot"
+  | "ClapSoundHoldLongEndP2"
+  | "ClapSoundHoldLongStartP2"
+  | "ClapSoundHoldShortEndP2"
+  | "ClapSoundHoldShortStartP2"
+  | "PulseSoundHoldStartP2"
+  | "PulseSoundHoldShortEndP2"
+  | "PulseSoundHoldEndP2"
+  | "PulseSoundHoldStartAltP2"
+  | "PulseSoundHoldShortEndAltP2"
+  | "PulseSoundHoldEndAltP2"
+  | "FreezeshotSoundCueLow"
+  | "FreezeshotSoundCueHigh"
+  | "FreezeshotSoundRiser"
+  | "FreezeshotSoundCymbal"
+  | "BurnshotSoundCueLow"
+  | "BurnshotSoundCueHigh"
+  | "BurnshotSoundRiser"
+  | "BurnshotSoundCymbal"
+  | "ClapSoundHold"
+  | "PulseSoundHold"
+  | "ClapSoundHoldP2"
+  | "PulseSoundHoldP2"
+  | "FreezeshotSound"
+  | "BurnshotSound"
+  | "Skipshot";
+export type SetSingleGameSoundEvent = {
   bar: number;
   beat: number;
   y?: number | undefined;
@@ -229,65 +299,35 @@ export type SetGameSoundEvent = {
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
-  soundType?:
-    | (
-      | "ClapSoundP1Classic"
-      | "ClapSoundP2Classic"
-      | "ClapSoundP1Oneshot"
-      | "ClapSoundP2Oneshot"
-      | "PulseSoundRow0"
-      | "PulseSoundRow1"
-      | "PulseSoundRow2"
-      | "PulseSoundRow3"
-      | "PulseSoundRow4"
-      | "PulseSoundRow5"
-      | "PulseSoundRow6"
-      | "PulseSoundRow7"
-      | "PulseSoundRow8"
-      | "PulseSoundRow9"
-      | "PulseSoundRow10"
-      | "PulseSoundRow11"
-      | "PulseSoundRow12"
-      | "PulseSoundRow13"
-      | "PulseSoundRow14"
-      | "PulseSoundRow15"
-      | "SmallMistake"
-      | "BigMistake"
-      | "Hand1PopSound"
-      | "Hand2PopSound"
-      | "HeartExplosion"
-      | "HeartExplosion2"
-      | "HeartExplosion3"
-      | "ClapSoundHoldLongEnd"
-      | "ClapSoundHoldLongStart"
-      | "ClapSoundHoldShortEnd"
-      | "ClapSoundHoldShortStart"
-      | "PulseSoundHoldStart"
-      | "PulseSoundHoldShortEnd"
-      | "PulseSoundHoldEnd"
-      | "PulseSoundHoldStartAlt"
-      | "PulseSoundHoldShortEndAlt"
-      | "PulseSoundHoldEndAlt"
-      | "ClapSoundCPUClassic"
-      | "ClapSoundCPUOneshot"
-      | "ClapSoundHoldLongEndP2"
-      | "ClapSoundHoldLongStartP2"
-      | "ClapSoundHoldShortEndP2"
-      | "ClapSoundHoldShortStartP2"
-      | "PulseSoundHoldStartP2"
-      | "PulseSoundHoldShortEndP2"
-      | "PulseSoundHoldEndP2"
-      | "PulseSoundHoldStartAltP2"
-      | "PulseSoundHoldShortEndAltP2"
-      | "PulseSoundHoldEndAltP2"
-    )
-    | undefined;
-  filename: string;
+  soundType?: GameSoundType | undefined;
+  filename?: string | undefined;
   volume?: number | undefined;
   pitch?: number | undefined;
   pan?: number | undefined;
   offset?: number | undefined;
 };
+export type SetGameSoundGroupEvent = {
+  bar: number;
+  beat: number;
+  y?: number | undefined;
+  type: "SetGameSound";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  active?: boolean | undefined;
+  soundType?: GameSoundType | undefined;
+  soundSubtypes: {
+    groupSubtype?: GameSoundType | undefined;
+    used?: boolean | undefined;
+    filename?: string | undefined;
+    volume?: number | undefined;
+    pitch?: number | undefined;
+    pan?: number | undefined;
+    offset?: number | undefined;
+  }[];
+};
+export type SetGameSoundEvent =
+  | SetSingleGameSoundEvent
+  | SetGameSoundGroupEvent;
 export type SetBeatSoundEvent = {
   bar: number;
   beat: number;
@@ -330,6 +370,7 @@ export type SetCountingSoundEvent = {
       | "IanCountEnglish"
       | "IanCountEnglishFast"
       | "IanCountEnglishCalm"
+      | "IanCountEnglishSlow"
       | "BirdCount"
       | "OwlCount"
       | "WhistleCount"
@@ -341,6 +382,7 @@ export type SetCountingSoundEvent = {
     )
     | undefined;
   enabled: boolean;
+  subdivOffset?: number | undefined;
   volume?: number | undefined;
 };
 export type NarrationCategory =
@@ -458,9 +500,12 @@ export type AddOneshotBeatEvent = {
   pulseType?: ("Wave" | "Square" | "Heart" | "Triangle") | undefined;
   loops?: number | undefined;
   interval?: number | undefined;
-  delay?: number | undefined;
+  subdivisions?: number | undefined;
+  subdivSound?: boolean | undefined;
   squareSound?: boolean | undefined;
   skipshot?: boolean | undefined;
+  freezeBurnMode?: ("None" | "Freezeshot" | "Burnshot") | undefined;
+  delay?: number | undefined;
   tick: number;
 };
 export type SetOneshotWaveEvent = {
@@ -512,6 +557,8 @@ export type SetThemeEvent = {
       | "Kaleidoscope"
       | "PoliticiansRally"
       | "Rooftop"
+      | "RooftopSummer"
+      | "RooftopAutumn"
       | "BackAlley"
       | "Sky"
       | "NightSky"
@@ -541,8 +588,13 @@ export type SetThemeEvent = {
       | "ZenGarden"
       | "Space"
       | "Tutorial"
-      | "RollerDisco"
       | "Vaporwave"
+      | "RollerDisco"
+      | "Stadium"
+      | "StadiumStormy"
+      | "AthleteWard"
+      | "AthleteWardNight"
+      | "ProceduralTree"
     )
     | undefined;
 };
@@ -636,6 +688,36 @@ export type Easing =
   | "InBounce"
   | "OutBounce"
   | "InOutBounce";
+export type EnableEaseableVFXPresetEvent = {
+  bar: number;
+  beat: number;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  enable: true;
+  preset:
+    | "HueShift"
+    | "Brightness"
+    | "Contrast"
+    | "Saturation"
+    | "Rain"
+    | "JPEG"
+    | "Mosaic"
+    | "ScreenWaves"
+    | "Grain"
+    | "Blizzard"
+    | "Drawing"
+    | "Aberration"
+    | "Blur"
+    | "RadialBlur"
+    | "Dots";
+  intensity?: number | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+};
 export type EnableBloomVFXPresetEvent = {
   bar: number;
   beat: number;
@@ -666,32 +748,6 @@ export type EnableScreenVFXPresetEvent = {
   preset: "TileN" | "CustomScreenScroll";
   floatX: number;
   floatY: number;
-  duration?: number | undefined;
-  ease?: Easing | undefined;
-};
-export type EnableEaseableVFXPresetEvent = {
-  bar: number;
-  beat: number;
-  y?: number | undefined;
-  type: "SetVFXPreset";
-  if?: ConditionExpression | undefined;
-  tag?: string | undefined;
-  active?: boolean | undefined;
-  rooms?: number[] | undefined;
-  enable: true;
-  preset:
-    | "Rain"
-    | "JPEG"
-    | "Mosaic"
-    | "ScreenWaves"
-    | "Grain"
-    | "Blizzard"
-    | "Drawing"
-    | "Aberration"
-    | "Blur"
-    | "RadialBlur"
-    | "HueShift";
-  intensity?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -748,9 +804,10 @@ export type DisableVFXPresetEvent = {
       | "Sepia"
       | "NumbersAbovePulses"
       | "Funk"
-      | "Bloom"
-      | "TileN"
-      | "CustomScreenScroll"
+      | "HueShift"
+      | "Brightness"
+      | "Contrast"
+      | "Saturation"
       | "Rain"
       | "JPEG"
       | "Mosaic"
@@ -761,7 +818,10 @@ export type DisableVFXPresetEvent = {
       | "Aberration"
       | "Blur"
       | "RadialBlur"
-      | "HueShift"
+      | "Dots"
+      | "Bloom"
+      | "TileN"
+      | "CustomScreenScroll"
     )
     | undefined;
 };
@@ -778,9 +838,9 @@ export type DisableAllVFXPresetEvent = {
 };
 export type SetVFXPresetEvent =
   | EnableOrdinaryVFXPresetEvent
+  | EnableEaseableVFXPresetEvent
   | EnableBloomVFXPresetEvent
   | EnableScreenVFXPresetEvent
-  | EnableEaseableVFXPresetEvent
   | DisableVFXPresetEvent
   | DisableAllVFXPresetEvent;
 export type ImageSequence = string[] | string;
@@ -789,7 +849,9 @@ export type ContentMode =
   | "AspectFit"
   | "AspectFill"
   | "Center"
-  | "Tiled";
+  | "Tiled"
+  | "Real";
+export type TilingType = "Scroll" | "Pulse";
 export type SetBackgroundEvent = {
   bar: number;
   beat: number;
@@ -804,9 +866,11 @@ export type SetBackgroundEvent = {
   image?: ImageSequence | undefined;
   contentMode?: ContentMode | undefined;
   filter?: ("NearestNeighbor" | "Bilinear") | undefined;
+  tilingType?: TilingType | undefined;
   scrollX?: number | undefined;
   scrollY?: number | undefined;
   duration?: number | undefined;
+  interval?: number | undefined;
   ease?: Easing | undefined;
   fps?: number | undefined;
 };
@@ -820,12 +884,14 @@ export type SetForegroundEvent = {
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   contentMode?: ContentMode | undefined;
+  tilingType?: TilingType | undefined;
   color: ColorOrPaletteIndex;
   image: ImageSequence;
   fps?: number | undefined;
   scrollX: number;
   scrollY: number;
   duration?: number | undefined;
+  interval?: number | undefined;
   ease?: Easing | undefined;
 };
 export type SetSpeedEvent = {
@@ -880,6 +946,7 @@ export type MoveCameraEvent = {
   cameraPosition?: (number | null)[] | undefined;
   zoom?: number | undefined;
   angle?: number | undefined;
+  real?: boolean | undefined;
   duration: number;
   ease?: Easing | undefined;
 };
@@ -927,7 +994,9 @@ export type PlayExpressionEvent = {
   row: number;
   expression?: string | undefined;
   replace?: boolean | undefined;
-  target?: ("Neutral" | "Happy" | "Barely" | "Missed" | "Beep") | undefined;
+  target?:
+    | ("Neutral" | "Happy" | "Barely" | "Missed" | "Prehit" | "Beep")
+    | undefined;
 };
 export type Border = "None" | "Outline" | "Glow";
 export type PaintRowsEvent = {
@@ -1172,7 +1241,7 @@ export type SpriteCommentEvent = {
   color?: ColorOrPaletteIndex | undefined;
 };
 export type CommentEvent = OrdinaryCommentEvent | SpriteCommentEvent;
-export type Hands = "Left" | "Right" | "Both";
+export type Hands = "Left" | "Right" | "p1" | "p2" | "Both";
 export type ShowHandsEvent = {
   bar: number;
   beat: number;
@@ -1295,18 +1364,34 @@ export type WindowDanceEvent = {
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset?: ("Move" | "Sway" | "Wrap" | "Ellipse" | "ShakePer") | undefined;
+  samePresetBehavior?: ("Keep" | "Reset") | undefined;
   usePosition?: ("New" | "Current") | undefined;
-  position: number[];
+  position: (number | null)[];
   reference?: ("Center" | "Edge") | undefined;
   useCircle?: boolean | undefined;
   speed: number;
   amplitude: number;
-  amplitudeVector: number[];
+  amplitudeVector: (number | null)[];
   angle: number;
   frequency: number;
   period: number;
   easeType?: ("Repeat" | "Mirror") | undefined;
+  subEase?: Easing | undefined;
   easingDuration: number;
+  ease?: Easing | undefined;
+};
+export type ResizeWindowEvent = {
+  bar: number;
+  beat: number;
+  y?: number | undefined;
+  type: "WindowResize";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  scale: (number | null)[];
+  pivot: (number | null)[];
+  duration: number;
   ease?: Easing | undefined;
 };
 export type ActionEvent =
@@ -1342,7 +1427,8 @@ export type ActionEvent =
   | SetPlayStyleEvent
   | StutterEvent
   | CallCustomMethodEvent
-  | WindowDanceEvent;
+  | WindowDanceEvent
+  | ResizeWindowEvent;
 export type MoveSpriteEvent = {
   bar: number;
   beat: number;

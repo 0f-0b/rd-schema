@@ -208,8 +208,9 @@ export const ContentMode = z.enum([
   "AspectFill",
   "Center",
   "Tiled",
+  "Real",
 ]);
-export const Hands = z.enum(["Left", "Right", "Both"]);
+export const Hands = z.enum(["Left", "Right", "p1", "p2", "Both"]);
 export const NarrationCategory = z.enum([
   "Fallback",
   "Navigation",
@@ -256,6 +257,7 @@ export const Easing = z.enum([
   "InOutBounce",
 ]);
 export const Strength = z.enum(["Low", "Medium", "High"]);
+export const TilingType = z.enum(["Scroll", "Pulse"]);
 export const Language = z.enum([
   "English",
   "Spanish",
@@ -347,7 +349,14 @@ const makeAutoPropertyValue = (
             "Missed",
           ]);
         case "\0OverrideExpression":
-          return z.enum(["Neutral", "Happy", "Barely", "Missed", "Beep"]);
+          return z.enum([
+            "Neutral",
+            "Happy",
+            "Barely",
+            "Missed",
+            "Prehit",
+            "Beep",
+          ]);
         case "\0PlayStyleChange":
           return z.enum([
             "Normal",
@@ -409,6 +418,8 @@ const makeAutoPropertyValue = (
           return z.enum(["Left", "Right"]);
         case "RDLevelEditor\0TextExplosionMode":
           return z.enum(["OneColor", "Random"]);
+        case "RDLevelEditor\0TilingType":
+          return TilingType;
         case "RDLevelEditor\0TransitionType":
           return z.enum(["Smooth", "Instant", "Full"]);
         case "UnityEngine\0SystemLanguage":

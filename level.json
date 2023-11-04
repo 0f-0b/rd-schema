@@ -783,6 +783,11 @@
             "Count3",
             "Count4",
             "Count5",
+            "Count6",
+            "Count7",
+            "Count8",
+            "Count9",
+            "Count10",
             "SayReadyGetSetGo",
             "JustSayReady"
           ]
@@ -816,7 +821,76 @@
       ],
       "additionalProperties": false
     },
-    "SetGameSoundEvent": {
+    "GameSoundType": {
+      "type": "string",
+      "enum": [
+        "ClapSoundP1Classic",
+        "ClapSoundP2Classic",
+        "ClapSoundP1Oneshot",
+        "ClapSoundP2Oneshot",
+        "PulseSoundRow0",
+        "PulseSoundRow1",
+        "PulseSoundRow2",
+        "PulseSoundRow3",
+        "PulseSoundRow4",
+        "PulseSoundRow5",
+        "PulseSoundRow6",
+        "PulseSoundRow7",
+        "PulseSoundRow8",
+        "PulseSoundRow9",
+        "PulseSoundRow10",
+        "PulseSoundRow11",
+        "PulseSoundRow12",
+        "PulseSoundRow13",
+        "PulseSoundRow14",
+        "PulseSoundRow15",
+        "SmallMistake",
+        "BigMistake",
+        "Hand1PopSound",
+        "Hand2PopSound",
+        "HeartExplosion",
+        "HeartExplosion2",
+        "HeartExplosion3",
+        "ClapSoundHoldLongEnd",
+        "ClapSoundHoldLongStart",
+        "ClapSoundHoldShortEnd",
+        "ClapSoundHoldShortStart",
+        "PulseSoundHoldStart",
+        "PulseSoundHoldShortEnd",
+        "PulseSoundHoldEnd",
+        "PulseSoundHoldStartAlt",
+        "PulseSoundHoldShortEndAlt",
+        "PulseSoundHoldEndAlt",
+        "ClapSoundCPUClassic",
+        "ClapSoundCPUOneshot",
+        "ClapSoundHoldLongEndP2",
+        "ClapSoundHoldLongStartP2",
+        "ClapSoundHoldShortEndP2",
+        "ClapSoundHoldShortStartP2",
+        "PulseSoundHoldStartP2",
+        "PulseSoundHoldShortEndP2",
+        "PulseSoundHoldEndP2",
+        "PulseSoundHoldStartAltP2",
+        "PulseSoundHoldShortEndAltP2",
+        "PulseSoundHoldEndAltP2",
+        "FreezeshotSoundCueLow",
+        "FreezeshotSoundCueHigh",
+        "FreezeshotSoundRiser",
+        "FreezeshotSoundCymbal",
+        "BurnshotSoundCueLow",
+        "BurnshotSoundCueHigh",
+        "BurnshotSoundRiser",
+        "BurnshotSoundCymbal",
+        "ClapSoundHold",
+        "PulseSoundHold",
+        "ClapSoundHoldP2",
+        "PulseSoundHoldP2",
+        "FreezeshotSound",
+        "BurnshotSound",
+        "Skipshot"
+      ]
+    },
+    "SetSingleGameSoundEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -844,58 +918,7 @@
           "type": "boolean"
         },
         "soundType": {
-          "type": "string",
-          "enum": [
-            "ClapSoundP1Classic",
-            "ClapSoundP2Classic",
-            "ClapSoundP1Oneshot",
-            "ClapSoundP2Oneshot",
-            "PulseSoundRow0",
-            "PulseSoundRow1",
-            "PulseSoundRow2",
-            "PulseSoundRow3",
-            "PulseSoundRow4",
-            "PulseSoundRow5",
-            "PulseSoundRow6",
-            "PulseSoundRow7",
-            "PulseSoundRow8",
-            "PulseSoundRow9",
-            "PulseSoundRow10",
-            "PulseSoundRow11",
-            "PulseSoundRow12",
-            "PulseSoundRow13",
-            "PulseSoundRow14",
-            "PulseSoundRow15",
-            "SmallMistake",
-            "BigMistake",
-            "Hand1PopSound",
-            "Hand2PopSound",
-            "HeartExplosion",
-            "HeartExplosion2",
-            "HeartExplosion3",
-            "ClapSoundHoldLongEnd",
-            "ClapSoundHoldLongStart",
-            "ClapSoundHoldShortEnd",
-            "ClapSoundHoldShortStart",
-            "PulseSoundHoldStart",
-            "PulseSoundHoldShortEnd",
-            "PulseSoundHoldEnd",
-            "PulseSoundHoldStartAlt",
-            "PulseSoundHoldShortEndAlt",
-            "PulseSoundHoldEndAlt",
-            "ClapSoundCPUClassic",
-            "ClapSoundCPUOneshot",
-            "ClapSoundHoldLongEndP2",
-            "ClapSoundHoldLongStartP2",
-            "ClapSoundHoldShortEndP2",
-            "ClapSoundHoldShortStartP2",
-            "PulseSoundHoldStartP2",
-            "PulseSoundHoldShortEndP2",
-            "PulseSoundHoldEndP2",
-            "PulseSoundHoldStartAltP2",
-            "PulseSoundHoldShortEndAltP2",
-            "PulseSoundHoldEndAltP2"
-          ]
+          "$ref": "#/definitions/GameSoundType"
         },
         "filename": {
           "type": "string"
@@ -916,10 +939,88 @@
       "required": [
         "bar",
         "beat",
-        "type",
-        "filename"
+        "type"
       ],
       "additionalProperties": false
+    },
+    "SetGameSoundGroupEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetGameSound"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "soundType": {
+          "$ref": "#/definitions/GameSoundType"
+        },
+        "soundSubtypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "groupSubtype": {
+                "$ref": "#/definitions/GameSoundType"
+              },
+              "used": {
+                "type": "boolean"
+              },
+              "filename": {
+                "type": "string"
+              },
+              "volume": {
+                "type": "integer"
+              },
+              "pitch": {
+                "type": "integer"
+              },
+              "pan": {
+                "type": "integer"
+              },
+              "offset": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "soundSubtypes"
+      ],
+      "additionalProperties": false
+    },
+    "SetGameSoundEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SetSingleGameSoundEvent"
+        },
+        {
+          "$ref": "#/definitions/SetGameSoundGroupEvent"
+        }
+      ]
     },
     "SetBeatSoundEvent": {
       "type": "object",
@@ -1033,6 +1134,7 @@
             "IanCountEnglish",
             "IanCountEnglishFast",
             "IanCountEnglishCalm",
+            "IanCountEnglishSlow",
             "BirdCount",
             "OwlCount",
             "WhistleCount",
@@ -1045,6 +1147,9 @@
         },
         "enabled": {
           "type": "boolean"
+        },
+        "subdivOffset": {
+          "type": "number"
         },
         "volume": {
           "type": "integer"
@@ -1485,15 +1590,31 @@
           "type": "number",
           "minimum": 0
         },
-        "delay": {
-          "type": "number",
-          "minimum": 0
+        "subdivisions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "subdivSound": {
+          "type": "boolean"
         },
         "squareSound": {
           "type": "boolean"
         },
         "skipshot": {
           "type": "boolean"
+        },
+        "freezeBurnMode": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Freezeshot",
+            "Burnshot"
+          ]
+        },
+        "delay": {
+          "type": "number",
+          "minimum": 0
         },
         "tick": {
           "type": "number",
@@ -1641,6 +1762,8 @@
             "Kaleidoscope",
             "PoliticiansRally",
             "Rooftop",
+            "RooftopSummer",
+            "RooftopAutumn",
             "BackAlley",
             "Sky",
             "NightSky",
@@ -1670,8 +1793,13 @@
             "ZenGarden",
             "Space",
             "Tutorial",
+            "Vaporwave",
             "RollerDisco",
-            "Vaporwave"
+            "Stadium",
+            "StadiumStormy",
+            "AthleteWard",
+            "AthleteWardNight",
+            "ProceduralTree"
           ]
         }
       },
@@ -1815,6 +1943,82 @@
         "InOutBounce"
       ]
     },
+    "EnableEaseableVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "HueShift",
+            "Brightness",
+            "Contrast",
+            "Saturation",
+            "Rain",
+            "JPEG",
+            "Mosaic",
+            "ScreenWaves",
+            "Grain",
+            "Blizzard",
+            "Drawing",
+            "Aberration",
+            "Blur",
+            "RadialBlur",
+            "Dots"
+          ]
+        },
+        "intensity": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "enable",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
     "EnableBloomVFXPresetEvent": {
       "type": "object",
       "properties": {
@@ -1954,78 +2158,6 @@
       ],
       "additionalProperties": false
     },
-    "EnableEaseableVFXPresetEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer"
-        },
-        "type": {
-          "type": "string",
-          "const": "SetVFXPreset"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "enable": {
-          "type": "boolean",
-          "const": true
-        },
-        "preset": {
-          "type": "string",
-          "enum": [
-            "Rain",
-            "JPEG",
-            "Mosaic",
-            "ScreenWaves",
-            "Grain",
-            "Blizzard",
-            "Drawing",
-            "Aberration",
-            "Blur",
-            "RadialBlur",
-            "HueShift"
-          ]
-        },
-        "intensity": {
-          "type": "integer"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "bar",
-        "beat",
-        "type",
-        "enable",
-        "preset"
-      ],
-      "additionalProperties": false
-    },
     "DisableVFXPresetEvent": {
       "type": "object",
       "properties": {
@@ -2107,9 +2239,10 @@
             "Sepia",
             "NumbersAbovePulses",
             "Funk",
-            "Bloom",
-            "TileN",
-            "CustomScreenScroll",
+            "HueShift",
+            "Brightness",
+            "Contrast",
+            "Saturation",
             "Rain",
             "JPEG",
             "Mosaic",
@@ -2120,7 +2253,10 @@
             "Aberration",
             "Blur",
             "RadialBlur",
-            "HueShift"
+            "Dots",
+            "Bloom",
+            "TileN",
+            "CustomScreenScroll"
           ]
         }
       },
@@ -2184,13 +2320,13 @@
           "$ref": "#/definitions/EnableOrdinaryVFXPresetEvent"
         },
         {
+          "$ref": "#/definitions/EnableEaseableVFXPresetEvent"
+        },
+        {
           "$ref": "#/definitions/EnableBloomVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/EnableScreenVFXPresetEvent"
-        },
-        {
-          "$ref": "#/definitions/EnableEaseableVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/DisableVFXPresetEvent"
@@ -2220,7 +2356,15 @@
         "AspectFit",
         "AspectFill",
         "Center",
-        "Tiled"
+        "Tiled",
+        "Real"
+      ]
+    },
+    "TilingType": {
+      "type": "string",
+      "enum": [
+        "Scroll",
+        "Pulse"
       ]
     },
     "SetBackgroundEvent": {
@@ -2279,6 +2423,9 @@
             "Bilinear"
           ]
         },
+        "tilingType": {
+          "$ref": "#/definitions/TilingType"
+        },
         "scrollX": {
           "type": "number"
         },
@@ -2288,6 +2435,10 @@
         "duration": {
           "type": "number",
           "minimum": 0
+        },
+        "interval": {
+          "type": "number",
+          "minimum": 0.009999999776482582
         },
         "ease": {
           "$ref": "#/definitions/Easing"
@@ -2340,6 +2491,9 @@
         "contentMode": {
           "$ref": "#/definitions/ContentMode"
         },
+        "tilingType": {
+          "$ref": "#/definitions/TilingType"
+        },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
@@ -2356,6 +2510,9 @@
           "type": "number"
         },
         "duration": {
+          "type": "number"
+        },
+        "interval": {
           "type": "number"
         },
         "ease": {
@@ -2594,6 +2751,9 @@
           "minimum": -9999,
           "maximum": 9999
         },
+        "real": {
+          "type": "boolean"
+        },
         "duration": {
           "type": "number"
         },
@@ -2801,6 +2961,7 @@
             "Happy",
             "Barely",
             "Missed",
+            "Prehit",
             "Beep"
           ]
         }
@@ -3745,6 +3906,8 @@
       "enum": [
         "Left",
         "Right",
+        "p1",
+        "p2",
         "Both"
       ]
     },
@@ -4081,7 +4244,7 @@
         },
         "sourceBeat": {
           "type": "number",
-          "minimum": 0
+          "minimum": 1
         },
         "length": {
           "type": "number",
@@ -4200,6 +4363,13 @@
             "ShakePer"
           ]
         },
+        "samePresetBehavior": {
+          "type": "string",
+          "enum": [
+            "Keep",
+            "Reset"
+          ]
+        },
         "usePosition": {
           "type": "string",
           "enum": [
@@ -4210,7 +4380,10 @@
         "position": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "minItems": 2,
           "maxItems": 2
@@ -4234,7 +4407,10 @@
         "amplitudeVector": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "minItems": 2,
           "maxItems": 2
@@ -4255,6 +4431,9 @@
             "Mirror"
           ]
         },
+        "subEase": {
+          "$ref": "#/definitions/Easing"
+        },
         "easingDuration": {
           "type": "number"
         },
@@ -4274,6 +4453,78 @@
         "frequency",
         "period",
         "easingDuration"
+      ],
+      "additionalProperties": false
+    },
+    "ResizeWindowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "WindowResize"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "pivot": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "scale",
+        "pivot",
+        "duration"
       ],
       "additionalProperties": false
     },
@@ -4377,6 +4628,9 @@
         },
         {
           "$ref": "#/definitions/WindowDanceEvent"
+        },
+        {
+          "$ref": "#/definitions/ResizeWindowEvent"
         }
       ]
     },

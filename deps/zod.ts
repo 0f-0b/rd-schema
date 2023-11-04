@@ -1,1 +1,1 @@
-export * from "npm:zod@3.21.4";
+export * from "npm:zod@3.22.4";
