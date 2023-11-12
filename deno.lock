@@ -3,7 +3,7 @@
   "packages": {
     "specifiers": {
       "npm:pe-struct@0.9.4": "npm:pe-struct@0.9.4",
-      "npm:type-fest@4.6.0": "npm:type-fest@4.6.0",
+      "npm:type-fest@4.7.1": "npm:type-fest@4.7.1",
       "npm:typescript@5.2.2": "npm:typescript@5.2.2",
       "npm:zod-to-json-schema@3.21.4": "npm:zod-to-json-schema@3.21.4_zod@3.22.4",
       "npm:zod-to-ts@1.2.0": "npm:zod-to-ts@1.2.0_typescript@5.2.2_zod@3.22.4",
@@ -14,8 +14,8 @@
         "integrity": "sha512-aGFWx9K+n1yl16YnRS6nkOnKNPF3jjxvKsLZeq4lSuvFNVrmlhgoArIHFIopXyA/zyxQA4tDljPPHFjHMvcSKA==",
         "dependencies": {}
       },
-      "type-fest@4.6.0": {
-        "integrity": "sha512-rLjWJzQFOq4xw7MgJrCZ6T1jIOvvYElXT12r+y0CC6u67hegDHaxcPqb2fZHOGlqxugGQPNB1EnTezjBetkwkw==",
+      "type-fest@4.7.1": {
+        "integrity": "sha512-iWr8RUmzAJRfhZugX9O7nZE6pCxDU8CZ3QxsLuTnGcBLJpCaP2ll3s4eMTBoFnU/CeXY/5rfQSuAEsTGJO4y8A==",
         "dependencies": {}
       },
       "typescript@5.2.2": {
@@ -41,5 +41,11 @@
       }
     }
   },
-  "remote": {}
+  "remote": {
+    "https://deno.land/std@0.206.0/path/_common/from_file_url.ts": "ef1bf3197d2efbf0297a2bdbf3a61d804b18f2bcce45548ae112313ec5be3c22",
+    "https://deno.land/std@0.206.0/path/_os.ts": "30b0c2875f360c9296dbe6b7f2d528f0f9c741cecad2e97f803f5219e91b40a2",
+    "https://deno.land/std@0.206.0/path/from_file_url.ts": "e7fa233ea1dff9641e8d566153a24d95010110185a6f418dd2e32320926043f8",
+    "https://deno.land/std@0.206.0/path/posix/from_file_url.ts": "b97287a83e6407ac27bdf3ab621db3fccbf1c27df0a1b1f20e1e1b5acf38a379",
+    "https://deno.land/std@0.206.0/path/windows/from_file_url.ts": "d53335c12b0725893d768be3ac6bf0112cc5b639d2deb0171b35988493b46199"
+  }
 }

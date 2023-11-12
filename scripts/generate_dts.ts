@@ -5,14 +5,16 @@ import type { ZodTypeAny } from "../deps/zod.ts";
 import { setTsType, zodToTs } from "../deps/zod_to_ts.ts";
 
 import { characterTypedefs } from "../character.ts";
+import { fromFileUrl } from "../deps/std/path/from_file_url.ts";
 import { levelTypedefs } from "../level.ts";
 
 const f = ts.factory;
-const decoder = new TextDecoder();
 const encoder = new TextEncoder();
+const decoder = new TextDecoder();
 const sourceFile = ts.createSourceFile("", "", ts.ScriptTarget.Latest);
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
 const exportModifier = f.createModifier(ts.SyntaxKind.ExportKeyword);
+const fmtPath = fromFileUrl(import.meta.resolve("./deno_fmt.sh"));
 
 async function generate(
   path: string,
@@ -35,18 +37,13 @@ async function generate(
     ) + "\n";
     setTsType(type, () => ident);
   }
-  const sourceReadable = new ReadableStream({
-    start(controller) {
-      controller.enqueue(encoder.encode(sourceText));
-      controller.close();
-    },
-  });
-  const child = new Deno.Command(new URL("deno_fmt.sh", import.meta.url), {
+  const child = new Deno.Command(fmtPath, {
     stdin: "piped",
     stdout: "piped",
     stderr: "piped",
   }).spawn();
-  sourceReadable.pipeTo(child.stdin).catch(() => {});
+  ReadableStream.from([encoder.encode(sourceText)])
+    .pipeTo(child.stdin).catch(() => {});
   const { success, stdout, stderr } = await child.output();
   if (!success) {
     throw new Error(decoder.decode(stderr));
