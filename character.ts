@@ -1,4 +1,4 @@
-import { z } from "./deps/zod.ts";
+import { z } from "zod";
 
 export const Clip = z.object({
   name: z.string(),

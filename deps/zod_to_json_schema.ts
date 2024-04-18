@@ -1,11 +1,10 @@
-// deno-lint-ignore-file no-explicit-any
-// Use `any` here because typechecking would be too slow otherwise.
-import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.21.4";
-import { LiteralUnion } from "./type_fest/literal_union.d.ts";
+import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.22.5";
+import type { LiteralUnion } from "type-fest/literal-union";
+import type { ZodType } from "zod";
 
 type Id<T> = T;
 export type JsonSchemaType = typeof zodToJsonSchemaFn<"jsonSchema7"> extends
-  (type: any) => { definitions?: Record<string, infer T> } ? T
+  (type: ZodType) => { definitions?: Record<string, infer T> | undefined } ? T
   : JsonSchemaType;
 type DefaultDefinitionPath = "definitions";
 type GetDefinitionPath<T extends { definitionPath?: string }> =
@@ -35,12 +34,12 @@ export type ZodToJsonSchemaResult<P extends string = DefaultDefinitionPath> =
   & { $schema: string };
 export const zodToJsonSchema = zodToJsonSchemaFn as {
   <T extends ZodToJsonSchemaOptions>(
-    type: any,
+    type: ZodType,
     options: T,
   ): ZodToJsonSchemaResult<GetDefinitionPath<T>>;
   <T extends ZodToOpenApiOptions>(
-    type: any,
+    type: ZodType,
     options: T,
   ): ZodToOpenApiResult<GetDefinitionPath<T>>;
-  (type: any, name?: string): ZodToJsonSchemaResult;
+  (type: ZodType, name?: string): ZodToJsonSchemaResult;
 };

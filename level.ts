@@ -1,4 +1,4 @@
-import { z, ZodOptional, type ZodTypeAny } from "./deps/zod.ts";
+import { z, ZodOptional, type ZodType } from "zod";
 
 import {
   Border,
@@ -109,16 +109,16 @@ const makeLegacySoundProperties = (prefix?: string) => {
   };
 };
 const mergeShapes = (
-  ...shapes: Readonly<Record<string, ZodTypeAny | [override: ZodTypeAny]>>[]
+  ...shapes: Readonly<Record<string, ZodType | [override: ZodType]>>[]
 ) => {
   interface MergeContext {
     optional: boolean;
-    subtypes: ZodTypeAny[];
+    subtypes: ZodType[];
   }
 
   // deno-lint-ignore ban-types
   const contexts: Record<string, MergeContext> = { __proto__: null } as {};
-  const addToContext = (ctx: MergeContext, type: ZodTypeAny) => {
+  const addToContext = (ctx: MergeContext, type: ZodType) => {
     while (type instanceof ZodOptional) {
       ctx.optional = true;
       type = type.unwrap();
@@ -142,16 +142,14 @@ const mergeShapes = (
       addToContext(contexts[key], value);
     }
   }
-  const union = (types: readonly ZodTypeAny[]) => {
+  const union = (types: readonly ZodType[]) => {
     switch (types.length) {
       case 0:
         return z.never();
       case 1:
         return types[0];
       default:
-        return z.union(
-          types as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]],
-        );
+        return z.union(types as readonly [ZodType, ZodType, ...ZodType[]]);
     }
   };
   return Object.fromEntries(
@@ -162,7 +160,7 @@ const mergeShapes = (
   );
 };
 const mergeShapesToObject = (
-  ...shapes: Readonly<Record<string, ZodTypeAny | [override: ZodTypeAny]>>[]
+  ...shapes: Readonly<Record<string, ZodType | [override: ZodType]>>[]
 ) => z.object(mergeShapes(...shapes));
 export const PlaySongEvent = mergeShapesToObject(
   makeEventAutoProperties("PlaySong"),

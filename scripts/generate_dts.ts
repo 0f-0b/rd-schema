@@ -1,11 +1,11 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write=character.d.ts,level.d.ts --allow-env=RD_ASSEMBLY_PATH --allow-run=./scripts/deno_fmt.sh
+#!/usr/bin/env -S deno run --no-prompt --allow-read --allow-write=character.d.ts,level.d.ts --allow-env=RD_ASSEMBLY_PATH --allow-run=./scripts/deno_fmt.sh
 
-import { ts } from "../deps/typescript.ts";
-import type { ZodTypeAny } from "../deps/zod.ts";
-import { setTsType, zodToTs } from "../deps/zod_to_ts.ts";
+import { fromFileUrl } from "@std/path/from-file-url";
+import { ts } from "typescript";
+import type { ZodType } from "zod";
+import { setTsType, zodToTs } from "zod-to-ts";
 
 import { characterTypedefs } from "../character.ts";
-import { fromFileUrl } from "../deps/std/path/from_file_url.ts";
 import { levelTypedefs } from "../level.ts";
 
 const f = ts.factory;
@@ -18,7 +18,7 @@ const fmtPath = fromFileUrl(import.meta.resolve("./deno_fmt.sh"));
 
 async function generate(
   path: string,
-  definitions: Record<string, ZodTypeAny>,
+  definitions: Record<string, ZodType>,
 ): Promise<undefined> {
   let sourceText = "";
   for (const [name, type] of Object.entries(definitions)) {

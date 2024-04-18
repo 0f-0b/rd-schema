@@ -1,1 +1,1 @@
-export { default as ts } from "npm:typescript@5.2.2";
+export { default as ts } from "npm:typescript@5.4.5";

@@ -1,5 +1,5 @@
-import { PE } from "./deps/pe_struct.ts";
-import { z, type ZodTypeAny } from "./deps/zod.ts";
+import { PE } from "pe-struct-0";
+import { z, type ZodType } from "zod";
 
 const clampInts = false;
 const decoder = new TextDecoder(undefined, { fatal: true, ignoreBOM: false });
@@ -272,7 +272,7 @@ export const Language = z.enum([
 const makeAutoPropertyValue = (
   fieldIndex: number,
   signature: DataReader,
-): ZodTypeAny | null => {
+): ZodType | null => {
   switch (signature.readUint8()) {
     case 2:
       return z.boolean();
@@ -497,7 +497,7 @@ const makeAutoPropertyValue = (
 };
 const makeAutoProperties = (typeDefIndex: number) => {
   const [fieldStart, fieldEnd] = getFieldListByTypeDefIndex(typeDefIndex);
-  const props: Record<string, ZodTypeAny> = {};
+  const props: Record<string, ZodType> = {};
   for (let fieldIndex = fieldStart; fieldIndex < fieldEnd; fieldIndex++) {
     const field = fieldTable[fieldIndex];
     const jsonProperty = getCustomAttribute(

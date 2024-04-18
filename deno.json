@@ -1,5 +1,27 @@
 {
+  "imports": {
+    "@std/path": "jsr:@std/path@^0.223.0",
+    "pe-struct-0": "./deps/pe_struct.ts",
+    "type-fest": "npm:type-fest@4.15.0/source",
+    "typescript": "./deps/typescript.ts",
+    "zod": "npm:zod@3.22.4",
+    "zod-to-json-schema": "./deps/zod_to_json_schema.ts",
+    "zod-to-ts": "./deps/zod_to_ts.ts"
+  },
+  "compilerOptions": {
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true
+  },
+  "lint": {
+    "rules": {
+      "include": [
+        "verbatim-module-syntax"
+      ]
+    }
+  },
   "tasks": {
+    "cache": "deno cache scripts/generate_dts.ts scripts/generate_json_schemas.ts",
     "lint": "deno fmt --check && deno lint && deno check --all scripts/generate_dts.ts && deno check --all scripts/generate_json_schemas.ts"
   }
 }

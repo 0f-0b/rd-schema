@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write=character.json,level.json --allow-env=RD_ASSEMBLY_PATH
 
-import type { ZodTypeAny } from "../deps/zod.ts";
-import { zodToJsonSchema } from "../deps/zod_to_json_schema.ts";
+import type { ZodType } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 import { Character, characterTypedefs } from "../character.ts";
 import { Level, levelTypedefs } from "../level.ts";
@@ -9,8 +9,8 @@ import { Level, levelTypedefs } from "../level.ts";
 async function generate(
   path: string,
   url: string,
-  type: ZodTypeAny,
-  definitions: Record<string, ZodTypeAny>,
+  type: ZodType,
+  definitions: Record<string, ZodType>,
 ): Promise<undefined> {
   const schema = Object.assign(
     zodToJsonSchema(type, { definitions }),
