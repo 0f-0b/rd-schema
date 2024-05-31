@@ -6,18 +6,23 @@ export const Clip = z.object({
   loopStart: z.number().int().optional(),
   loop: z.enum(["yes", "onBeat", "no"]),
   fps: z.number(),
-  portraitOffset: z.number().int().array().length(2).optional(),
-  portraitSize: z.number().int().array().length(2).optional(),
+  pivotOffset: z.tuple([z.number(), z.number()]).optional(),
+  portraitOffset: z.tuple([z.number(), z.number()]).optional(),
+  portraitSize: z.tuple([z.number().int(), z.number().int()]).optional(),
   portraitScale: z.number().optional(),
 });
 export const Character = z.object({
   $schema: z.string().url().optional(),
   name: z.string().optional(),
   voice: z.string().optional(),
-  size: z.number().int().array().length(2),
+  size: z.tuple([z.number().int(), z.number().int()]),
   clips: Clip.array(),
-  rowPreviewOffset: z.number().int().array().length(2).optional(),
+  rowPreviewOffset: z.tuple([z.number(), z.number()]).optional(),
   rowPreviewFrame: z.number().int().optional(),
+  pivotOffset: z.tuple([z.number(), z.number()]).optional(),
+  portraitOffset: z.tuple([z.number(), z.number()]).optional(),
+  portraitSize: z.tuple([z.number().int(), z.number().int()]).optional(),
+  portraitScale: z.number().optional(),
 });
 export const characterTypedefs = {
   Clip,

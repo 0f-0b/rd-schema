@@ -1,10 +1,10 @@
 {
   "imports": {
-    "@std/path": "jsr:@std/path@^0.223.0",
+    "@std/path": "jsr:@std/path@^0.225.1",
     "pe-struct-0": "./deps/pe_struct.ts",
-    "type-fest": "npm:type-fest@4.15.0/source",
+    "type-fest": "npm:type-fest@4.18.3/source",
     "typescript": "./deps/typescript.ts",
-    "zod": "npm:zod@3.22.4",
+    "zod": "npm:zod@3.23.3",
     "zod-to-json-schema": "./deps/zod_to_json_schema.ts",
     "zod-to-ts": "./deps/zod_to_ts.ts"
   },

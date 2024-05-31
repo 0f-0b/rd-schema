@@ -6,13 +6,13 @@ import {
   ConditionExpression,
   ContentMode,
   Easing,
+  Expression,
+  FilterMode,
+  GameSoundType,
   Hands,
   Language,
   makeConditionalAutoProperties,
   makeEventAutoProperties,
-  makeEventBaseProperties,
-  makeRoomsProperty,
-  makeRowProperty,
   NarrationCategory,
   Player,
   RowType,
@@ -27,6 +27,9 @@ export {
   ConditionExpression,
   ContentMode,
   Easing,
+  Expression,
+  FilterMode,
+  GameSoundType,
   Hands,
   Language,
   NarrationCategory,
@@ -36,6 +39,62 @@ export {
   Strength,
   TilingType,
 };
+type Shape = Readonly<Record<string, ZodType | [override: ZodType] | []>>;
+const mergeShapes = (...shapes: [Shape, Shape, ...Shape[]]) => {
+  interface MergeContext {
+    optional: boolean;
+    subtypes: ZodType[];
+  }
+
+  // deno-lint-ignore ban-types
+  const contexts: Record<string, MergeContext> = { __proto__: null } as {};
+  const addToContext = (ctx: MergeContext, type: ZodType) => {
+    while (type instanceof ZodOptional) {
+      ctx.optional = true;
+      type = type.unwrap();
+    }
+    ctx.subtypes.push(type);
+  };
+  for (const shape of shapes) {
+    for (const key of Object.keys(shape)) {
+      let value = shape[key];
+      if (!value) {
+        continue;
+      }
+      let override = !contexts[key];
+      if (Array.isArray(value)) {
+        if (value.length === 0) {
+          delete contexts[key];
+          continue;
+        }
+        value = value[0];
+        override = true;
+      }
+      if (override) {
+        contexts[key] = { optional: false, subtypes: [] };
+      }
+      addToContext(contexts[key], value);
+    }
+  }
+  const union = (types: readonly ZodType[]) => {
+    switch (types.length) {
+      case 0:
+        return z.never();
+      case 1:
+        return types[0];
+      default:
+        return z.union(types as readonly [ZodType, ZodType, ...ZodType[]]);
+    }
+  };
+  return Object.fromEntries(
+    Object.entries(contexts).map(([key, { optional, subtypes }]) => {
+      const type = union(subtypes);
+      return [key, optional ? type.optional() : type];
+    }),
+  );
+};
+const mergeShapesToObject = (...shapes: [Shape, Shape, ...Shape[]]) =>
+  z.object(mergeShapes(...shapes));
 export const Settings = z.object({
   version: z.number().int(),
   artist: z.string().max(256).optional(),
@@ -68,30 +127,22 @@ export const Settings = z.object({
   mods: z.string().array().or(z.string()).optional(),
   rankDescription: z.string().array().length(6),
 });
-export const Row = z.object({
-  character: z.string(),
-  rowType: RowType.optional(),
-  ...makeRowProperty(),
-  ...makeRoomsProperty(),
-  player: Player.optional(),
-  cpuMarker: z.string().optional(),
-  hideAtStart: z.boolean().optional(),
-  rowToMimic: z.number().int().optional(),
-  muteBeats: z.boolean().optional(),
-  pulseSound: z.string(),
-  pulseSoundVolume: z.number().int().optional(),
-  pulseSoundPitch: z.number().int().optional(),
-  pulseSoundPan: z.number().int().optional(),
-  pulseSoundOffset: z.number().int().optional(),
-});
-export const Decoration = z.object({
-  id: z.string(),
-  ...makeRowProperty(),
-  ...makeRoomsProperty(),
-  filename: z.string(),
-  depth: z.number().int(),
-  visible: z.boolean(),
-});
+export const Row = mergeShapesToObject(
+  makeEventAutoProperties("MakeRow", true),
+  {
+    character: [z.string()],
+    player: [Player.optional()],
+    pulseSound: z.string(),
+    pulseSoundVolume: z.number().int().optional(),
+    pulseSoundPitch: z.number().int().optional(),
+    pulseSoundPan: z.number().int().optional(),
+    pulseSoundOffset: z.number().int().optional(),
+  },
+);
+export const Decoration = mergeShapesToObject(
+  makeEventAutoProperties("MakeSprite", true),
+  { id: [z.string()], filename: [z.string()] },
+);
 const makeLegacySoundProperties = (prefix?: string) => {
   const filenameKey = prefix === undefined ? "filename" : `${prefix}Filename`;
   const soundKey = prefix === undefined ? "sound" : `${prefix}Sound`;
@@ -108,60 +159,6 @@ const makeLegacySoundProperties = (prefix?: string) => {
     [panKey]: z.number().int().optional(),
   };
 };
-const mergeShapes = (
-  ...shapes: Readonly<Record<string, ZodType | [override: ZodType]>>[]
-) => {
-  interface MergeContext {
-    optional: boolean;
-    subtypes: ZodType[];
-  }
-
-  // deno-lint-ignore ban-types
-  const contexts: Record<string, MergeContext> = { __proto__: null } as {};
-  const addToContext = (ctx: MergeContext, type: ZodType) => {
-    while (type instanceof ZodOptional) {
-      ctx.optional = true;
-      type = type.unwrap();
-    }
-    ctx.subtypes.push(type);
-  };
-  for (const shape of shapes) {
-    for (const key of Object.keys(shape)) {
-      let value = shape[key];
-      if (!value) {
-        continue;
-      }
-      let override = !contexts[key];
-      if (Array.isArray(value)) {
-        value = value[0];
-        override = true;
-      }
-      if (override) {
-        contexts[key] = { optional: false, subtypes: [] };
-      }
-      addToContext(contexts[key], value);
-    }
-  }
-  const union = (types: readonly ZodType[]) => {
-    switch (types.length) {
-      case 0:
-        return z.never();
-      case 1:
-        return types[0];
-      default:
-        return z.union(types as readonly [ZodType, ZodType, ...ZodType[]]);
-    }
-  };
-  return Object.fromEntries(
-    Object.entries(contexts).map(([key, { optional, subtypes }]) => {
-      const type = union(subtypes);
-      return [key, optional ? type.optional() : type];
-    }),
-  );
-};
-const mergeShapesToObject = (
-  ...shapes: Readonly<Record<string, ZodType | [override: ZodType]>>[]
-) => z.object(mergeShapes(...shapes));
 export const PlaySongEvent = mergeShapesToObject(
   makeEventAutoProperties("PlaySong"),
   makeLegacySoundProperties(),
@@ -193,136 +190,33 @@ export const SetHeartExplodeVolumeEvent = z.object(
 export const SetHeartExplosionIntervalEvent = z.object(
   makeEventAutoProperties("SetHeartExplodeInterval"),
 );
-export const SayReadyGetSetGoEvent = z.object({
-  ...makeEventBaseProperties("SayReadyGetSetGo"),
-  phraseToSay: z.enum([
-    "SayReaDyGetSetGoNew",
-    "SayGetSetGo",
-    "SayReaDyGetSetOne",
-    "SayGetSetOne",
-    "JustSayRea",
-    "JustSayDy",
-    "JustSayGet",
-    "JustSaySet",
-    "JustSayAnd",
-    "JustSayGo",
-    "JustSayStop",
-    "JustSayAndStop",
-    "Count1",
-    "Count2",
-    "Count3",
-    "Count4",
-    "Count5",
-    "Count6",
-    "Count7",
-    "Count8",
-    "Count9",
-    "Count10",
-    "SayReadyGetSetGo",
-    "JustSayReady",
-  ]).optional(),
-  voiceSource: z.enum([
-    "Nurse",
-    "NurseTired",
-    "NurseSwing",
-    "NurseSwingCalm",
-    "IanExcited",
-    "IanCalm",
-    "IanSlow",
-    "NoneBottom",
-    "NoneTop",
-  ]).optional(),
-  tick: z.number(),
-  volume: z.number().int().optional(),
-});
-export const GameSoundType = z.enum([
-  "ClapSoundP1Classic",
-  "ClapSoundP2Classic",
-  "ClapSoundP1Oneshot",
-  "ClapSoundP2Oneshot",
-  "PulseSoundRow0",
-  "PulseSoundRow1",
-  "PulseSoundRow2",
-  "PulseSoundRow3",
-  "PulseSoundRow4",
-  "PulseSoundRow5",
-  "PulseSoundRow6",
-  "PulseSoundRow7",
-  "PulseSoundRow8",
-  "PulseSoundRow9",
-  "PulseSoundRow10",
-  "PulseSoundRow11",
-  "PulseSoundRow12",
-  "PulseSoundRow13",
-  "PulseSoundRow14",
-  "PulseSoundRow15",
-  "SmallMistake",
-  "BigMistake",
-  "Hand1PopSound",
-  "Hand2PopSound",
-  "HeartExplosion",
-  "HeartExplosion2",
-  "HeartExplosion3",
-  "ClapSoundHoldLongEnd",
-  "ClapSoundHoldLongStart",
-  "ClapSoundHoldShortEnd",
-  "ClapSoundHoldShortStart",
-  "PulseSoundHoldStart",
-  "PulseSoundHoldShortEnd",
-  "PulseSoundHoldEnd",
-  "PulseSoundHoldStartAlt",
-  "PulseSoundHoldShortEndAlt",
-  "PulseSoundHoldEndAlt",
-  "ClapSoundCPUClassic",
-  "ClapSoundCPUOneshot",
-  "ClapSoundHoldLongEndP2",
-  "ClapSoundHoldLongStartP2",
-  "ClapSoundHoldShortEndP2",
-  "ClapSoundHoldShortStartP2",
-  "PulseSoundHoldStartP2",
-  "PulseSoundHoldShortEndP2",
-  "PulseSoundHoldEndP2",
-  "PulseSoundHoldStartAltP2",
-  "PulseSoundHoldShortEndAltP2",
-  "PulseSoundHoldEndAltP2",
-  "FreezeshotSoundCueLow",
-  "FreezeshotSoundCueHigh",
-  "FreezeshotSoundRiser",
-  "FreezeshotSoundCymbal",
-  "BurnshotSoundCueLow",
-  "BurnshotSoundCueHigh",
-  "BurnshotSoundRiser",
-  "BurnshotSoundCymbal",
-  "ClapSoundHold",
-  "PulseSoundHold",
-  "ClapSoundHoldP2",
-  "PulseSoundHoldP2",
-  "FreezeshotSound",
-  "BurnshotSound",
-  "Skipshot",
-]);
-export const SetSingleGameSoundEvent = z.object({
-  ...makeEventBaseProperties("SetGameSound"),
-  soundType: GameSoundType.optional(),
-  filename: z.string().optional(),
-  volume: z.number().int().optional(),
-  pitch: z.number().int().optional(),
-  pan: z.number().int().optional(),
-  offset: z.number().int().optional(),
-});
-export const SetGameSoundGroupEvent = z.object({
-  ...makeEventBaseProperties("SetGameSound"),
-  soundType: GameSoundType.optional(),
-  soundSubtypes: z.object({
-    groupSubtype: GameSoundType.optional(),
-    used: z.boolean().optional(),
+export const SayReadyGetSetGoEvent = z.object(
+  makeEventAutoProperties("SayReadyGetSetGo"),
+);
+export const SetSingleGameSoundEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetGameSound"),
+  {
     filename: z.string().optional(),
     volume: z.number().int().optional(),
     pitch: z.number().int().optional(),
     pan: z.number().int().optional(),
     offset: z.number().int().optional(),
-  }).array(),
-});
+  },
+);
+export const SetGameSoundGroupEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetGameSound"),
+  {
+    soundSubtypes: z.object({
+      groupSubtype: GameSoundType.optional(),
+      used: z.boolean().optional(),
+      filename: z.string().optional(),
+      volume: z.number().int().optional(),
+      pitch: z.number().int().optional(),
+      pan: z.number().int().optional(),
+      offset: z.number().int().optional(),
+    }).array(),
+  },
+);
 export const SetGameSoundEvent = z.union([
   SetSingleGameSoundEvent,
   SetGameSoundGroupEvent,
@@ -331,54 +225,20 @@ export const SetBeatSoundEvent = mergeShapesToObject(
   makeEventAutoProperties("SetBeatSound"),
   makeLegacySoundProperties(),
 );
-export const SetCountingSoundEvent = z.object({
-  ...makeEventBaseProperties("SetCountingSound"),
-  ...makeRowProperty(),
-  voiceSource: z.enum([
-    "JyiCount",
-    "JyiCountFast",
-    "JyiCountCalm",
-    "JyiCountTired",
-    "JyiCountVeryTired",
-    "JyiCountEnglish",
-    "JyiCountJapanese",
-    "IanCount",
-    "IanCountFast",
-    "IanCountCalm",
-    "IanCountSlow",
-    "IanCountSlower",
-    "IanCountEnglish",
-    "IanCountEnglishFast",
-    "IanCountEnglishCalm",
-    "IanCountEnglishSlow",
-    "BirdCount",
-    "OwlCount",
-    "WhistleCount",
-    "JyiCountLegacy",
-    "ParrotCount",
-    "OrioleCount",
-    "WrenCount",
-    "CanaryCount",
-  ]).optional(),
-  enabled: z.boolean(),
-  subdivOffset: z.number().optional(),
-  volume: z.number().int().optional(),
-});
-export const ReadNarrationEvent = z.object({
-  ...makeEventBaseProperties("ReadNarration"),
-  text: z.string(),
-  category: NarrationCategory.optional(),
-});
-export const NarrateRowInfoEvent = z.object({
-  ...makeEventBaseProperties("NarrateRowInfo"),
-  ...makeRowProperty(),
-  infoType: z.enum(["Connect", "Update", "Disconnect", "Online", "Offline"])
-    .optional(),
-  soundOnly: z.boolean().optional(),
-  narrateSkipBeats: z.enum(["on", "custom", "off"]).optional(),
-  customPattern: z.string().regex(/^[-x]{6}$/).optional(),
-  skipsUnstable: z.boolean().optional(),
-});
+export const SetCountingSoundEvent = z.object(
+  makeEventAutoProperties("SetCountingSound"),
+);
+export const ReadNarrationEvent = mergeShapesToObject(
+  makeEventAutoProperties("ReadNarration"),
+  { text: [z.string()] },
+);
+export const NarrateRowInfoEvent = mergeShapesToObject(
+  makeEventAutoProperties("NarrateRowInfo"),
+  {
+    narrateSkipBeats: [z.enum(["on", "custom", "off"]).optional()],
+    customPattern: [z.string().regex(/^[-x]{6}$/).optional()],
+  },
+);
 export const SoundEvent = z.union([
   PlaySongEvent,
   SetCrotchetsPerBarEvent,
@@ -394,131 +254,48 @@ export const SoundEvent = z.union([
   ReadNarrationEvent,
   NarrateRowInfoEvent,
 ]);
-export const AddClassicBeatEvent = z.object({
-  ...makeEventBaseProperties("AddClassicBeat"),
-  ...makeRowProperty(),
-  tick: z.number().min(0),
-  swing: z.number().min(0).optional(),
-  legacy: z.boolean().optional(),
-  setXs: z.enum(["ThreeBeat", "FourBeat"]).optional(),
-  hold: z.number().optional(),
-});
-export const SetRowXsEvent = z.object({
-  ...makeEventBaseProperties("SetRowXs"),
-  ...makeRowProperty(),
-  pattern: z.string().regex(/^[-xudbr]{6}$/),
-  syncoBeat: z.number().int().optional(),
-  syncoSwing: z.number().optional(),
-});
-export const AddFreeTimeBeatEvent = z.object({
-  ...makeEventBaseProperties("AddFreeTimeBeat"),
-  ...makeRowProperty(),
-  hold: z.number().optional(),
-  pulse: z.number().int().min(0).max(6),
-});
-export const PulseFreeTimeBeatEvent = z.object({
-  ...makeEventBaseProperties("PulseFreeTimeBeat"),
-  ...makeRowProperty(),
-  hold: z.number().optional(),
-  action: z.enum(["Increment", "Decrement", "Custom", "Remove"]).optional(),
-  customPulse: z.number().int().min(0).max(6),
-});
-export const AddOneshotBeatEvent = z.object({
-  ...makeEventBaseProperties("AddOneshotBeat"),
-  ...makeRowProperty(),
-  pulseType: z.enum(["Wave", "Square", "Heart", "Triangle"]).optional(),
-  loops: z.number().int().optional(),
-  interval: z.number().min(0).optional(),
-  subdivisions: z.number().int().min(1).max(10).optional(),
-  subdivSound: z.boolean().optional(),
-  squareSound: z.boolean().optional(),
-  skipshot: z.boolean().optional(),
-  freezeBurnMode: z.enum(["None", "Freezeshot", "Burnshot"]).optional(),
-  delay: z.number().min(0).optional(),
-  tick: z.number().min(0),
-});
-export const SetOneshotWaveEvent = z.object({
-  ...makeEventBaseProperties("SetOneshotWave"),
-  ...makeRowProperty(),
-  waveType: z.enum([
-    "BoomAndRush",
-    "Ball",
-    "Spring",
-    "Spike",
-    "SpikeHuge",
-    "Single",
-  ]).optional(),
-  height: z.number().int(),
-  width: z.number().int(),
-});
+export const AddClassicBeatEvent = mergeShapesToObject(
+  makeEventAutoProperties("AddClassicBeat"),
+  { swing: [z.number().min(0).optional()] },
+);
+export const SetBeatModifiersEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetRowXs"),
+  { pattern: [z.string().regex(/^[-xudbr]{6}$/)] },
+);
+export const AddFreeTimeBeatEvent = mergeShapesToObject(
+  makeEventAutoProperties("AddFreeTimeBeat"),
+  { pulse: [z.number().int().min(0).max(6)] },
+);
+export const PulseFreeTimeBeatEvent = mergeShapesToObject(
+  makeEventAutoProperties("PulseFreeTimeBeat"),
+  { customPulse: [z.number().int().min(0).max(6)] },
+);
+export const AddOneshotBeatEvent = mergeShapesToObject(
+  makeEventAutoProperties("AddOneshotBeat"),
+  {
+    interval: [z.number().min(0).optional()],
+    tick: [z.number().min(0).optional()],
+    delay: [z.number().min(0).optional()],
+    loops: [z.number().int().min(0).optional()],
+    subdivisions: [z.number().int().min(1).max(10).optional()],
+    squareSound: z.boolean().optional(),
+  },
+);
+export const SetOneshotWaveEvent = z.object(
+  makeEventAutoProperties("SetOneshotWave"),
+);
 export const RowEvent = z.union([
   AddClassicBeatEvent,
-  SetRowXsEvent,
+  SetBeatModifiersEvent,
   AddFreeTimeBeatEvent,
   PulseFreeTimeBeatEvent,
   AddOneshotBeatEvent,
   SetOneshotWaveEvent,
 ]);
-export const SetThemeEvent = z.object({
-  ...makeEventBaseProperties("SetTheme"),
-  ...makeRoomsProperty(),
-  preset: z.enum([
-    "None",
-    "Intimate",
-    "IntimateSimple",
-    "InsomniacDay",
-    "InsomniacNight",
-    "Matrix",
-    "NeonMuseum",
-    "CrossesStraight",
-    "CrossesFalling",
-    "CubesFalling",
-    "CubesFallingNiceBlue",
-    "CubesFallingWithBlueBloomAndCrossesAndMatrix",
-    "OrientalTechno",
-    "Kaleidoscope",
-    "PoliticiansRally",
-    "Rooftop",
-    "RooftopSummer",
-    "RooftopAutumn",
-    "BackAlley",
-    "Sky",
-    "NightSky",
-    "HallOfMirrors",
-    "CoffeeShop",
-    "CoffeeShopNight",
-    "Garden",
-    "GardenNight",
-    "TrainDay",
-    "TrainNight",
-    "DesertDay",
-    "DesertNight",
-    "HospitalWard",
-    "HospitalWardNight",
-    "PaigeOffice",
-    "Basement",
-    "ColeWardNight",
-    "ColeWardSunrise",
-    "BoyWard",
-    "GirlWard",
-    "Skyline",
-    "SkylineBlue",
-    "FloatingHeart",
-    "FloatingHeartWithCubes",
-    "FloatingHeartBroken",
-    "FloatingHeartBrokenWithCubes",
-    "ZenGarden",
-    "Space",
-    "Tutorial",
-    "Vaporwave",
-    "RollerDisco",
-    "Stadium",
-    "StadiumStormy",
-    "AthleteWard",
-    "AthleteWardNight",
-    "ProceduralTree",
-  ]).optional(),
-});
+export const SetThemeEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetTheme"),
+  { firstRowOnFloor: [] },
+);
 export const OrdinaryVFXPreset = z.enum([
   "SilhouettesOnHBeat",
   "Vignette",
@@ -562,12 +339,20 @@ export const OrdinaryVFXPreset = z.enum([
   "NumbersAbovePulses",
   "Funk",
 ]);
-export const EnableOrdinaryVFXPresetEvent = z.object({
-  ...makeEventBaseProperties("SetVFXPreset"),
-  ...makeRoomsProperty(),
-  enable: z.literal(true),
-  preset: OrdinaryVFXPreset.optional(),
-});
+export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    enable: [z.literal(true).optional()],
+    preset: [OrdinaryVFXPreset.optional()],
+    threshold: [],
+    intensity: [],
+    color: [],
+    floatX: [],
+    floatY: [],
+    duration: [],
+    ease: [],
+  },
+);
 export const EaseableVFXPreset = z.enum([
   "HueShift",
   "Brightness",
@@ -585,54 +370,74 @@ export const EaseableVFXPreset = z.enum([
   "RadialBlur",
   "Dots",
 ]);
-export const EnableEaseableVFXPresetEvent = z.object({
-  ...makeEventBaseProperties("SetVFXPreset"),
-  ...makeRoomsProperty(),
-  enable: z.literal(true),
-  preset: EaseableVFXPreset,
-  intensity: z.number().int().optional(),
-  duration: z.number().optional(),
-  ease: Easing.optional(),
-});
+export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [EaseableVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    color: [],
+    floatX: [],
+    floatY: [],
+  },
+);
 export const BloomVFXPreset = z.enum(["Bloom"]);
-export const EnableBloomVFXPresetEvent = z.object({
-  ...makeEventBaseProperties("SetVFXPreset"),
-  ...makeRoomsProperty(),
-  enable: z.literal(true),
-  preset: BloomVFXPreset,
-  threshold: z.number(),
-  intensity: z.number(),
-  color: ColorOrPaletteIndex,
-  duration: z.number().optional(),
-  ease: Easing.optional(),
-});
+export const EnableBloomVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [BloomVFXPreset],
+    enable: [z.literal(true).optional()],
+    color: [ColorOrPaletteIndex],
+    floatX: [],
+    floatY: [],
+  },
+);
 export const ScreenVFXPreset = z.enum(["TileN", "CustomScreenScroll"]);
-export const EnableScreenVFXPresetEvent = z.object({
-  ...makeEventBaseProperties("SetVFXPreset"),
-  ...makeRoomsProperty(),
-  enable: z.literal(true),
-  preset: ScreenVFXPreset,
-  floatX: z.number(),
-  floatY: z.number(),
-  duration: z.number().optional(),
-  ease: Easing.optional(),
-});
-export const DisableVFXPresetEvent = z.object({
-  ...makeEventBaseProperties("SetVFXPreset"),
-  ...makeRoomsProperty(),
-  enable: z.literal(false),
-  preset: z.enum([
-    ...OrdinaryVFXPreset.options,
-    ...EaseableVFXPreset.options,
-    ...BloomVFXPreset.options,
-    ...ScreenVFXPreset.options,
-  ]).optional(),
-});
-export const DisableAllVFXPresetEvent = z.object({
-  ...makeEventBaseProperties("SetVFXPreset"),
-  ...makeRoomsProperty(),
-  preset: z.literal("DisableAll"),
-});
+export const EnableScreenVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [ScreenVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    intensity: [],
+    color: [],
+  },
+);
+export const DisableVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [
+      z.enum([
+        ...OrdinaryVFXPreset.options,
+        ...EaseableVFXPreset.options,
+        ...BloomVFXPreset.options,
+        ...ScreenVFXPreset.options,
+      ]).optional(),
+    ],
+    enable: [z.literal(false)],
+    threshold: [],
+    intensity: [],
+    color: [],
+    floatX: [],
+    floatY: [],
+    duration: [],
+    ease: [],
+  },
+);
+export const DisableAllVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [z.literal("DisableAll")],
+    enable: [],
+    threshold: [],
+    intensity: [],
+    color: [],
+    floatX: [],
+    floatY: [],
+    duration: [],
+    ease: [],
+  },
+);
 export const SetVFXPresetEvent = z.union([
   EnableOrdinaryVFXPresetEvent,
   EnableEaseableVFXPresetEvent,
@@ -646,20 +451,13 @@ export const SetBackgroundEvent = mergeShapesToObject(
   makeEventAutoProperties("SetBackgroundColor"),
   { image: [ImageSequence.optional()] },
 );
-export const SetForegroundEvent = z.object({
-  ...makeEventBaseProperties("SetForeground"),
-  ...makeRoomsProperty(),
-  contentMode: ContentMode.optional(),
-  tilingType: TilingType.optional(),
-  color: ColorOrPaletteIndex,
-  image: ImageSequence,
-  fps: z.number().optional(),
-  scrollX: z.number(),
-  scrollY: z.number(),
-  duration: z.number().optional(),
-  interval: z.number().optional(),
-  ease: Easing.optional(),
-});
+export const SetForegroundEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetForeground"),
+  {
+    color: [ColorOrPaletteIndex.optional()],
+    image: [ImageSequence.optional()],
+  },
+);
 export const SetSpeedEvent = z.object(
   makeEventAutoProperties("SetSpeed"),
 );
@@ -669,34 +467,17 @@ export const FlashEvent = z.object(
 export const CustomFlashEvent = z.object(
   makeEventAutoProperties("CustomFlash"),
 );
-export const MoveCameraEvent = z.object({
-  ...makeEventBaseProperties("MoveCamera"),
-  ...makeRoomsProperty(),
-  cameraPosition: z.number().min(-100).max(200).nullable()
-    .array().length(2).optional(),
-  zoom: z.number().int().min(1).max(9999).optional(),
-  angle: z.number().min(-9999).max(9999).optional(),
-  real: z.boolean().optional(),
-  duration: z.number(),
-  ease: Easing.optional(),
-});
+export const MoveCameraEvent = mergeShapesToObject(
+  makeEventAutoProperties("MoveCamera"),
+  { zoom: [z.number().int().min(1).max(9999).optional()] },
+);
 export const HideRowEvent = mergeShapesToObject(
   makeEventAutoProperties("HideRow"),
   { show: z.boolean() },
 );
-export const Expression = z.union([z.number(), z.string(), z.null()]);
-export const MoveRowEvent = z.object({
-  ...makeEventBaseProperties("MoveRow"),
-  ...makeRowProperty(),
-  target: z.enum(["WholeRow", "Character", "Heart"]).optional(),
-  customPosition: z.boolean().optional(),
-  rowPosition: Expression.array().length(2).optional(),
-  scale: Expression.array().length(2).optional(),
-  angle: Expression.optional(),
-  pivot: z.number().optional(),
-  duration: z.number(),
-  ease: Easing.optional(),
-});
+export const MoveRowEvent = z.object(
+  makeEventAutoProperties("MoveRow"),
+);
 export const PlayExpressionEvent = z.object(
   makeEventAutoProperties("PlayExpression"),
 );
@@ -726,19 +507,16 @@ export const PulseCameraEvent = z.object(
 export const TextExplosionEvent = z.object(
   makeEventAutoProperties("TextExplosion"),
 );
-export const ShowDialogueEvent = z.object({
-  ...makeEventBaseProperties("ShowDialogue"),
-  text: z.string(),
-  localized: z.boolean().optional(),
-  ...Object.fromEntries(Language.options.map((language) => [
-    `text${language}`,
-    z.string().optional(),
-  ])),
-  panelSide: z.enum(["Bottom", "Top"]).optional(),
-  portraitSide: z.enum(["Left", "Right"]).optional(),
-  speed: z.number(),
-  playTextSounds: z.boolean().optional(),
-});
+export const ShowDialogueEvent = mergeShapesToObject(
+  makeEventAutoProperties("ShowDialogue"),
+  {
+    text: [z.string()],
+    ...Object.fromEntries(Language.options.map((language) => [
+      `text${language}`,
+      z.string().optional(),
+    ])),
+  },
+);
 export const ShowStatusSignEvent = z.object(
   makeEventAutoProperties("ShowStatusSign"),
 );
@@ -746,32 +524,32 @@ export const FloatingTextEvent = mergeShapesToObject(
   makeEventAutoProperties("FloatingText"),
   { text: [z.string()], times: [z.string()] },
 );
-export const AdvanceFloatingTextEvent = z.object({
-  ...makeEventBaseProperties("AdvanceText"),
-  fadeOutDuration: z.number().optional(),
-  id: z.number().int(),
-});
+export const AdvanceFloatingTextEvent = z.object(
+  makeEventAutoProperties("AdvanceText"),
+);
 export const ChangePlayersRowsEvent = z.object(
   makeEventAutoProperties("ChangePlayersRows"),
 );
 export const FinishLevelEvent = z.object(
   makeEventAutoProperties("FinishLevel"),
 );
-export const OrdinaryCommentEvent = z.object({
-  ...makeEventBaseProperties("Comment"),
-  tab: z.enum(["Song", "Actions", "Rooms"]).optional(),
-  show: z.boolean().optional(),
-  text: z.string(),
-  color: ColorOrPaletteIndex.optional(),
-});
-export const SpriteCommentEvent = z.object({
-  ...makeEventBaseProperties("Comment"),
-  tab: z.literal("Sprites"),
-  target: z.string(),
-  show: z.boolean().optional(),
-  text: z.string(),
-  color: ColorOrPaletteIndex.optional(),
-});
+export const OrdinaryCommentEvent = mergeShapesToObject(
+  makeEventAutoProperties("Comment"),
+  {
+    text: [z.string()],
+    color: [ColorOrPaletteIndex.optional()],
+    tab: z.enum(["Song", "Actions", "Rooms"]).optional(),
+  },
+);
+export const SpriteCommentEvent = mergeShapesToObject(
+  makeEventAutoProperties("Comment"),
+  {
+    text: [z.string()],
+    color: [ColorOrPaletteIndex.optional()],
+    tab: z.literal("Sprites"),
+    target: z.string(),
+  },
+);
 export const CommentEvent = z.union([
   OrdinaryCommentEvent,
   SpriteCommentEvent,
@@ -779,29 +557,13 @@ export const CommentEvent = z.union([
 export const ShowHandsEvent = z.object(
   makeEventAutoProperties("ShowHands"),
 );
-const makeTintProperties = () => ({
-  border: Border.optional(),
-  borderColor: ColorOrPaletteIndex,
-  tint: z.boolean(),
-  tintColor: ColorOrPaletteIndex,
-  borderOpacity: z.number().int().optional(),
-  tintOpacity: z.number().int().optional(),
-});
-export const PaintHandsEvent = z.object({
-  ...makeEventBaseProperties("PaintHands"),
-  ...makeRoomsProperty(),
-  hands: Hands.optional(),
-  ...makeTintProperties(),
-  opacity: z.number().int().min(0).max(100).optional(),
-  duration: z.number().optional(),
-  ease: Easing.optional(),
-});
-export const AssignHandsEvent = z.object({
-  ...makeEventBaseProperties("SetHandOwner"),
-  ...makeRoomsProperty(),
-  hand: Hands.optional(),
-  character: z.string().optional(),
-});
+export const PaintHandsEvent = mergeShapesToObject(
+  makeEventAutoProperties("PaintHands"),
+  { borderColor: [ColorOrPaletteIndex], tintColor: [ColorOrPaletteIndex] },
+);
+export const AssignHandsEvent = z.object(
+  makeEventAutoProperties("SetHandOwner"),
+);
 export const TagActionEvent = mergeShapesToObject(
   makeEventAutoProperties("TagAction"),
   { Tag: [z.string()] },
@@ -812,40 +574,17 @@ export const SetPlayStyleEvent = z.object(
 export const StutterEvent = z.object(
   makeEventAutoProperties("Stutter"),
 );
-export const CallCustomMethodEvent = z.object({
-  ...makeEventBaseProperties("CallCustomMethod"),
-  methodName: z.string(),
-  executionTime: z.enum(["OnPrebar", "OnBar"]).optional(),
-  sortOffset: z.number().int(),
-});
-export const WindowDanceEvent = z.object({
-  ...makeEventBaseProperties("NewWindowDance"),
-  ...makeRoomsProperty(),
-  preset: z.enum(["Move", "Sway", "Wrap", "Ellipse", "ShakePer"]).optional(),
-  samePresetBehavior: z.enum(["Keep", "Reset"]).optional(),
-  usePosition: z.enum(["New", "Current"]).optional(),
-  position: z.number().nullable().array().length(2),
-  reference: z.enum(["Center", "Edge"]).optional(),
-  useCircle: z.boolean().optional(),
-  speed: z.number(),
-  amplitude: z.number(),
-  amplitudeVector: z.number().nullable().array().length(2),
-  angle: z.number(),
-  frequency: z.number(),
-  period: z.number(),
-  easeType: z.enum(["Repeat", "Mirror"]).optional(),
-  subEase: Easing.optional(),
-  easingDuration: z.number(),
-  ease: Easing.optional(),
-});
-export const ResizeWindowEvent = z.object({
-  ...makeEventBaseProperties("WindowResize"),
-  ...makeRoomsProperty(),
-  scale: z.number().nullable().array().length(2),
-  pivot: z.number().nullable().array().length(2),
-  duration: z.number(),
-  ease: Easing.optional(),
-});
+export const CallCustomMethodEvent = mergeShapesToObject(
+  makeEventAutoProperties("CallCustomMethod"),
+  { methodName: [z.string()] },
+);
+export const WindowDanceEvent = mergeShapesToObject(
+  makeEventAutoProperties("NewWindowDance"),
+  { usePosition: z.enum(["New", "Current"]).optional() },
+);
+export const ResizeWindowEvent = z.object(
+  makeEventAutoProperties("WindowResize"),
+);
 export const ActionEvent = z.union([
   SetThemeEvent,
   SetVFXPresetEvent,
@@ -882,81 +621,64 @@ export const ActionEvent = z.union([
   WindowDanceEvent,
   ResizeWindowEvent,
 ]);
-export const MoveSpriteEvent = z.object({
-  ...makeEventBaseProperties("Move"),
-  target: z.string(),
-  position: Expression.array().length(2).optional(),
-  scale: Expression.array().length(2).optional(),
-  angle: Expression.optional(),
-  pivot: z.number().nullable().array().length(2).optional(),
-  duration: z.number(),
-  ease: Easing.optional(),
-});
-export const PaintSpriteEvent = z.object({
-  ...makeEventBaseProperties("Tint"),
-  target: z.string(),
-  ...makeTintProperties(),
-  opacity: z.number().int().min(0).max(100).optional(),
-  duration: z.number().optional(),
-  ease: Easing.optional(),
-});
-export const PlayAnimationEvent = z.object({
-  ...makeEventBaseProperties("PlayAnimation"),
-  target: z.string(),
-  expression: z.string(),
-});
-export const HideSpriteEvent = z.object({
-  ...makeEventBaseProperties("SetVisible"),
-  target: z.string(),
-  visible: z.boolean(),
-});
+export const MoveSpriteEvent = mergeShapesToObject(
+  makeEventAutoProperties("Move"),
+  { target: z.string() },
+);
+export const PaintSpriteEvent = mergeShapesToObject(
+  makeEventAutoProperties("Tint"),
+  { target: z.string() },
+);
+export const PlayAnimationEvent = mergeShapesToObject(
+  makeEventAutoProperties("PlayAnimation"),
+  { target: z.string() },
+);
+export const HideSpriteEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVisible"),
+  { target: z.string() },
+);
+export const TileSpriteEvent = mergeShapesToObject(
+  makeEventAutoProperties("Tile"),
+  { target: z.string() },
+);
 export const DecorationEvent = z.union([
   MoveSpriteEvent,
   PaintSpriteEvent,
   PlayAnimationEvent,
   HideSpriteEvent,
+  TileSpriteEvent,
 ]);
 export const ShowRoomsHorizontallyEvent = z.object(
   makeEventAutoProperties("ShowRooms"),
 );
-export const MoveRoomEvent = z.object({
-  ...makeEventBaseProperties("MoveRoom"),
-  roomPosition: z.number().min(-10000).max(10000).nullable()
-    .array().length(2).optional(),
-  scale: z.number().nullable().array().length(2).optional(),
-  angle: z.number().min(-9999).max(9999).optional(),
-  pivot: z.number().nullable().array().length(2).optional(),
-  duration: z.number(),
-  ease: Easing.optional(),
-});
+export const MoveRoomEvent = z.object(
+  makeEventAutoProperties("MoveRoom"),
+);
 export const ReorderRoomsEvent = z.object(
   makeEventAutoProperties("ReorderRooms"),
 );
 export const SetRoomContentModeEvent = z.object(
   makeEventAutoProperties("SetRoomContentMode"),
 );
-export const MaskRoomEvent = z.object({
-  ...makeEventBaseProperties("MaskRoom"),
-  maskType: z.enum(["Image", "Room", "Color", "None"]).optional(),
-  alphaMode: z.enum(["Normal", "Inverted"]).optional(),
-  sourceRoom: z.number().int().optional(),
-  image: ImageSequence,
-  fps: z.number().optional(),
-  keyColor: ColorOrPaletteIndex.optional(),
-  colorCutoff: z.number().int().optional(),
-  colorFeathering: z.number().int().optional(),
-  contentMode: ContentMode.optional(),
-});
+export const MaskRoomEvent = mergeShapesToObject(
+  makeEventAutoProperties("MaskRoom"),
+  {
+    image: [ImageSequence.optional()],
+    keyColor: [ColorOrPaletteIndex.optional()],
+  },
+);
 export const FadeRoomEvent = z.object(
   makeEventAutoProperties("FadeRoom"),
 );
-export const SetRoomPerspectiveEvent = z.object({
-  ...makeEventBaseProperties("SetRoomPerspective"),
-  cornerPositions: z.number().min(-10000).max(10000).nullable()
-    .array().length(2).array().length(4),
-  duration: z.number(),
-  ease: Easing.optional(),
-});
+export const SetRoomPerspectiveEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetRoomPerspective"),
+  {
+    cornerPositions: [
+      z.number().min(-10000).max(10000).nullable()
+        .array().length(2).array().length(4),
+    ],
+  },
+);
 export const RoomEvent = z.union([
   ShowRoomsHorizontallyEvent,
   MoveRoomEvent,
@@ -1018,9 +740,10 @@ export const levelTypedefs = {
   RowType,
   Player,
   Row,
-  ConditionExpression,
+  FilterMode,
   Decoration,
   Sound,
+  ConditionExpression,
   PlaySongEvent,
   SetCrotchetsPerBarEvent,
   PlaySoundEvent,
@@ -1040,7 +763,7 @@ export const levelTypedefs = {
   NarrateRowInfoEvent,
   SoundEvent,
   AddClassicBeatEvent,
-  SetRowXsEvent,
+  SetBeatModifiersEvent,
   AddFreeTimeBeatEvent,
   PulseFreeTimeBeatEvent,
   AddOneshotBeatEvent,
@@ -1103,6 +826,7 @@ export const levelTypedefs = {
   PaintSpriteEvent,
   PlayAnimationEvent,
   HideSpriteEvent,
+  TileSpriteEvent,
   DecorationEvent,
   ShowRoomsHorizontallyEvent,
   MoveRoomEvent,

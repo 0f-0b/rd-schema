@@ -27,21 +27,44 @@
         "fps": {
           "type": "number"
         },
+        "pivotOffset": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
         "portraitOffset": {
           "type": "array",
-          "items": {
-            "type": "integer"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
         },
         "portraitSize": {
           "type": "array",
-          "items": {
-            "type": "integer"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
         "portraitScale": {
           "type": "number"
@@ -70,11 +93,16 @@
         },
         "size": {
           "type": "array",
-          "items": {
-            "type": "integer"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
         "clips": {
           "type": "array",
@@ -84,14 +112,61 @@
         },
         "rowPreviewOffset": {
           "type": "array",
-          "items": {
-            "type": "integer"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
         },
         "rowPreviewFrame": {
           "type": "integer"
+        },
+        "pivotOffset": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "portraitOffset": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "portraitSize": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "portraitScale": {
+          "type": "number"
         }
       },
       "required": [

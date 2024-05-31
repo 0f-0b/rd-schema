@@ -162,12 +162,6 @@
     "Row": {
       "type": "object",
       "properties": {
-        "character": {
-          "type": "string"
-        },
-        "rowType": {
-          "$ref": "#/definitions/RowType"
-        },
         "row": {
           "type": "integer"
         },
@@ -177,8 +171,14 @@
             "type": "integer"
           }
         },
+        "rowType": {
+          "$ref": "#/definitions/RowType"
+        },
         "player": {
           "$ref": "#/definitions/Player"
+        },
+        "character": {
+          "type": "string"
         },
         "cpuMarker": {
           "type": "string"
@@ -187,7 +187,9 @@
           "type": "boolean"
         },
         "rowToMimic": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
         "muteBeats": {
           "type": "boolean"
@@ -209,31 +211,22 @@
         }
       },
       "required": [
-        "character",
         "row",
+        "character",
         "pulseSound"
       ],
       "additionalProperties": false
     },
-    "ConditionExpression": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        }
+    "FilterMode": {
+      "type": "string",
+      "enum": [
+        "NearestNeighbor",
+        "Bilinear"
       ]
     },
     "Decoration": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
-        },
         "row": {
           "type": "integer"
         },
@@ -243,22 +236,28 @@
             "type": "integer"
           }
         },
+        "visible": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
         "filename": {
           "type": "string"
         },
         "depth": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
-        "visible": {
-          "type": "boolean"
+        "filter": {
+          "$ref": "#/definitions/FilterMode"
         }
       },
       "required": [
-        "id",
         "row",
-        "filename",
-        "depth",
-        "visible"
+        "id",
+        "filename"
       ],
       "additionalProperties": false
     },
@@ -285,6 +284,19 @@
         "filename"
       ],
       "additionalProperties": false
+    },
+    "ConditionExpression": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      ]
     },
     "PlaySongEvent": {
       "type": "object",
@@ -810,14 +822,15 @@
           "type": "number"
         },
         "volume": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "tick"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -828,22 +841,6 @@
         "ClapSoundP2Classic",
         "ClapSoundP1Oneshot",
         "ClapSoundP2Oneshot",
-        "PulseSoundRow0",
-        "PulseSoundRow1",
-        "PulseSoundRow2",
-        "PulseSoundRow3",
-        "PulseSoundRow4",
-        "PulseSoundRow5",
-        "PulseSoundRow6",
-        "PulseSoundRow7",
-        "PulseSoundRow8",
-        "PulseSoundRow9",
-        "PulseSoundRow10",
-        "PulseSoundRow11",
-        "PulseSoundRow12",
-        "PulseSoundRow13",
-        "PulseSoundRow14",
-        "PulseSoundRow15",
         "SmallMistake",
         "BigMistake",
         "Hand1PopSound",
@@ -1142,25 +1139,33 @@
             "ParrotCount",
             "OrioleCount",
             "WrenCount",
-            "CanaryCount"
+            "CanaryCount",
+            "Custom"
           ]
+        },
+        "sounds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Sound"
+          }
         },
         "enabled": {
           "type": "boolean"
         },
+        "volume": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
         "subdivOffset": {
           "type": "number"
-        },
-        "volume": {
-          "type": "integer"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "row",
-        "enabled"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -1366,8 +1371,8 @@
           "type": "number",
           "minimum": 0
         },
-        "legacy": {
-          "type": "boolean"
+        "hold": {
+          "type": "number"
         },
         "setXs": {
           "type": "string",
@@ -1376,20 +1381,19 @@
             "FourBeat"
           ]
         },
-        "hold": {
-          "type": "number"
+        "legacy": {
+          "type": "boolean"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "row",
-        "tick"
+        "row"
       ],
       "additionalProperties": false
     },
-    "SetRowXsEvent": {
+    "SetBeatModifiersEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -1424,10 +1428,22 @@
           "pattern": "^[-xudbr]{6}$"
         },
         "syncoBeat": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
         "syncoSwing": {
-          "type": "number"
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "syncoVolume": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "syncoPlayModifierSound": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -1469,13 +1485,13 @@
         "row": {
           "type": "integer"
         },
-        "hold": {
-          "type": "number"
-        },
         "pulse": {
           "type": "integer",
           "minimum": 0,
           "maximum": 6
+        },
+        "hold": {
+          "type": "number"
         }
       },
       "required": [
@@ -1517,9 +1533,6 @@
         "row": {
           "type": "integer"
         },
-        "hold": {
-          "type": "number"
-        },
         "action": {
           "type": "string",
           "enum": [
@@ -1533,6 +1546,9 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 6
+        },
+        "hold": {
+          "type": "number"
         }
       },
       "required": [
@@ -1583,11 +1599,27 @@
             "Triangle"
           ]
         },
-        "loops": {
-          "type": "integer"
+        "freezeBurnMode": {
+          "type": "string",
+          "enum": [
+            "Freezeshot",
+            "Burnshot"
+          ]
         },
         "interval": {
           "type": "number",
+          "minimum": 0
+        },
+        "tick": {
+          "type": "number",
+          "minimum": 0
+        },
+        "delay": {
+          "type": "number",
+          "minimum": 0
+        },
+        "loops": {
+          "type": "integer",
           "minimum": 0
         },
         "subdivisions": {
@@ -1598,35 +1630,21 @@
         "subdivSound": {
           "type": "boolean"
         },
-        "squareSound": {
-          "type": "boolean"
-        },
         "skipshot": {
           "type": "boolean"
         },
-        "freezeBurnMode": {
-          "type": "string",
-          "enum": [
-            "None",
-            "Freezeshot",
-            "Burnshot"
-          ]
+        "subdivTickOverride": {
+          "type": "number"
         },
-        "delay": {
-          "type": "number",
-          "minimum": 0
-        },
-        "tick": {
-          "type": "number",
-          "minimum": 0
+        "squareSound": {
+          "type": "boolean"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "row",
-        "tick"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -1672,19 +1690,21 @@
           ]
         },
         "height": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
         "width": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "row",
-        "height",
-        "width"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -1694,7 +1714,7 @@
           "$ref": "#/definitions/AddClassicBeatEvent"
         },
         {
-          "$ref": "#/definitions/SetRowXsEvent"
+          "$ref": "#/definitions/SetBeatModifiersEvent"
         },
         {
           "$ref": "#/definitions/AddFreeTimeBeatEvent"
@@ -1801,6 +1821,11 @@
             "AthleteWardNight",
             "ProceduralTree"
           ]
+        },
+        "variant": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         }
       },
       "required": [
@@ -1842,10 +1867,6 @@
           "items": {
             "type": "integer"
           }
-        },
-        "enable": {
-          "type": "boolean",
-          "const": true
         },
         "preset": {
           "type": "string",
@@ -1892,13 +1913,16 @@
             "NumbersAbovePulses",
             "Funk"
           ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "enable"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -1976,10 +2000,6 @@
             "type": "integer"
           }
         },
-        "enable": {
-          "type": "boolean",
-          "const": true
-        },
         "preset": {
           "type": "string",
           "enum": [
@@ -2000,8 +2020,12 @@
             "Dots"
           ]
         },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
         "intensity": {
-          "type": "integer"
+          "type": "number"
         },
         "duration": {
           "type": "number"
@@ -2014,7 +2038,6 @@
         "bar",
         "beat",
         "type",
-        "enable",
         "preset"
       ],
       "additionalProperties": false
@@ -2052,15 +2075,15 @@
             "type": "integer"
           }
         },
-        "enable": {
-          "type": "boolean",
-          "const": true
-        },
         "preset": {
           "type": "string",
           "enum": [
             "Bloom"
           ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
         },
         "threshold": {
           "type": "number"
@@ -2082,10 +2105,7 @@
         "bar",
         "beat",
         "type",
-        "enable",
         "preset",
-        "threshold",
-        "intensity",
         "color"
       ],
       "additionalProperties": false
@@ -2123,16 +2143,16 @@
             "type": "integer"
           }
         },
-        "enable": {
-          "type": "boolean",
-          "const": true
-        },
         "preset": {
           "type": "string",
           "enum": [
             "TileN",
             "CustomScreenScroll"
           ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
         },
         "floatX": {
           "type": "number"
@@ -2151,10 +2171,7 @@
         "bar",
         "beat",
         "type",
-        "enable",
-        "preset",
-        "floatX",
-        "floatY"
+        "preset"
       ],
       "additionalProperties": false
     },
@@ -2190,10 +2207,6 @@
           "items": {
             "type": "integer"
           }
-        },
-        "enable": {
-          "type": "boolean",
-          "const": false
         },
         "preset": {
           "type": "string",
@@ -2258,6 +2271,10 @@
             "TileN",
             "CustomScreenScroll"
           ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": false
         }
       },
       "required": [
@@ -2417,11 +2434,7 @@
           "$ref": "#/definitions/ContentMode"
         },
         "filter": {
-          "type": "string",
-          "enum": [
-            "NearestNeighbor",
-            "Bilinear"
-          ]
+          "$ref": "#/definitions/FilterMode"
         },
         "tilingType": {
           "$ref": "#/definitions/TilingType"
@@ -2488,20 +2501,17 @@
             "type": "integer"
           }
         },
-        "contentMode": {
-          "$ref": "#/definitions/ContentMode"
-        },
-        "tilingType": {
-          "$ref": "#/definitions/TilingType"
-        },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "image": {
           "$ref": "#/definitions/ImageSequence"
         },
-        "fps": {
-          "type": "number"
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
+        },
+        "tilingType": {
+          "$ref": "#/definitions/TilingType"
         },
         "scrollX": {
           "type": "number"
@@ -2517,16 +2527,15 @@
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "fps": {
+          "type": "number"
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "color",
-        "image",
-        "scrollX",
-        "scrollY"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -2726,20 +2735,34 @@
         },
         "cameraPosition": {
           "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "number",
-                "minimum": -100,
-                "maximum": 200
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": -100,
+                  "maximum": 200
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": -100,
+                  "maximum": 200
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          ]
         },
         "zoom": {
           "type": "integer",
@@ -2751,21 +2774,20 @@
           "minimum": -9999,
           "maximum": 9999
         },
-        "real": {
-          "type": "boolean"
-        },
         "duration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "real": {
+          "type": "boolean"
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "duration"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -2869,6 +2891,9 @@
         "row": {
           "type": "integer"
         },
+        "customPosition": {
+          "type": "boolean"
+        },
         "target": {
           "type": "string",
           "enum": [
@@ -2877,24 +2902,31 @@
             "Heart"
           ]
         },
-        "customPosition": {
-          "type": "boolean"
-        },
         "rowPosition": {
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/Expression"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/Expression"
+            }
+          ]
         },
         "scale": {
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/Expression"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/Expression"
+            }
+          ]
         },
         "angle": {
           "$ref": "#/definitions/Expression"
@@ -2913,8 +2945,7 @@
         "bar",
         "beat",
         "type",
-        "row",
-        "duration"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -3421,7 +3452,27 @@
         "text": {
           "type": "string"
         },
+        "speed": {
+          "type": "number"
+        },
         "localized": {
+          "type": "boolean"
+        },
+        "panelSide": {
+          "type": "string",
+          "enum": [
+            "Bottom",
+            "Top"
+          ]
+        },
+        "portraitSide": {
+          "type": "string",
+          "enum": [
+            "Left",
+            "Right"
+          ]
+        },
+        "playTextSounds": {
           "type": "boolean"
         },
         "textEnglish": {
@@ -3450,34 +3501,13 @@
         },
         "textGerman": {
           "type": "string"
-        },
-        "panelSide": {
-          "type": "string",
-          "enum": [
-            "Bottom",
-            "Top"
-          ]
-        },
-        "portraitSide": {
-          "type": "string",
-          "enum": [
-            "Left",
-            "Right"
-          ]
-        },
-        "speed": {
-          "type": "number"
-        },
-        "playTextSounds": {
-          "type": "boolean"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "text",
-        "speed"
+        "text"
       ],
       "additionalProperties": false
     },
@@ -3671,18 +3701,22 @@
         "active": {
           "type": "boolean"
         },
-        "fadeOutDuration": {
-          "type": "number"
-        },
         "id": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "fadeOutDuration": {
+          "type": [
+            "number",
+            "null"
+          ]
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "id"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -3811,6 +3845,15 @@
         "active": {
           "type": "boolean"
         },
+        "text": {
+          "type": "string"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
         "tab": {
           "type": "string",
           "enum": [
@@ -3818,15 +3861,6 @@
             "Actions",
             "Rooms"
           ]
-        },
-        "show": {
-          "type": "boolean"
-        },
-        "text": {
-          "type": "string"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
         }
       },
       "required": [
@@ -3864,30 +3898,30 @@
         "active": {
           "type": "boolean"
         },
+        "text": {
+          "type": "string"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
         "tab": {
           "type": "string",
           "const": "Sprites"
         },
         "target": {
           "type": "string"
-        },
-        "show": {
-          "type": "boolean"
-        },
-        "text": {
-          "type": "string"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
+        "text",
         "tab",
-        "target",
-        "text"
+        "target"
       ],
       "additionalProperties": false
     },
@@ -4025,16 +4059,10 @@
         "tintColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
-        "borderOpacity": {
-          "type": "integer"
-        },
-        "tintOpacity": {
-          "type": "integer"
-        },
         "opacity": {
           "type": "integer",
-          "minimum": 0,
-          "maximum": 100
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
         "duration": {
           "type": "number"
@@ -4048,7 +4076,6 @@
         "beat",
         "type",
         "borderColor",
-        "tint",
         "tintColor"
       ],
       "additionalProperties": false
@@ -4308,15 +4335,16 @@
           ]
         },
         "sortOffset": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "methodName",
-        "sortOffset"
+        "methodName"
       ],
       "additionalProperties": false
     },
@@ -4370,23 +4398,24 @@
             "Reset"
           ]
         },
-        "usePosition": {
-          "type": "string",
-          "enum": [
-            "New",
-            "Current"
-          ]
-        },
         "position": {
           "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "reference": {
           "type": "string",
@@ -4395,25 +4424,33 @@
             "Edge"
           ]
         },
-        "useCircle": {
-          "type": "boolean"
-        },
         "speed": {
           "type": "number"
+        },
+        "useCircle": {
+          "type": "boolean"
         },
         "amplitude": {
           "type": "number"
         },
         "amplitudeVector": {
           "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "angle": {
           "type": "number"
@@ -4424,6 +4461,9 @@
         "period": {
           "type": "number"
         },
+        "subEase": {
+          "$ref": "#/definitions/Easing"
+        },
         "easeType": {
           "type": "string",
           "enum": [
@@ -4431,28 +4471,24 @@
             "Mirror"
           ]
         },
-        "subEase": {
-          "$ref": "#/definitions/Easing"
-        },
         "easingDuration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "usePosition": {
+          "type": "string",
+          "enum": [
+            "New",
+            "Current"
+          ]
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "position",
-        "speed",
-        "amplitude",
-        "amplitudeVector",
-        "angle",
-        "frequency",
-        "period",
-        "easingDuration"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -4491,25 +4527,35 @@
         },
         "scale": {
           "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/Expression"
+            }
+          ]
         },
         "pivot": {
           "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "duration": {
           "type": "number"
@@ -4521,10 +4567,7 @@
       "required": [
         "bar",
         "beat",
-        "type",
-        "scale",
-        "pivot",
-        "duration"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -4661,52 +4704,69 @@
         "active": {
           "type": "boolean"
         },
-        "target": {
-          "type": "string"
-        },
         "position": {
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/Expression"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/Expression"
+            }
+          ]
         },
         "scale": {
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/Expression"
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/Expression"
+            }
+          ]
         },
         "angle": {
           "$ref": "#/definitions/Expression"
         },
         "pivot": {
           "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "duration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "target": {
+          "type": "string"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "target",
-        "duration"
+        "target"
       ],
       "additionalProperties": false
     },
@@ -4737,9 +4797,6 @@
         "active": {
           "type": "boolean"
         },
-        "target": {
-          "type": "string"
-        },
         "border": {
           "$ref": "#/definitions/Border"
         },
@@ -4752,32 +4809,27 @@
         "tintColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
-        "borderOpacity": {
-          "type": "integer"
-        },
-        "tintOpacity": {
-          "type": "integer"
-        },
         "opacity": {
           "type": "integer",
-          "minimum": 0,
-          "maximum": 100
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
         "duration": {
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "target": {
+          "type": "string"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "target",
-        "borderColor",
-        "tint",
-        "tintColor"
+        "target"
       ],
       "additionalProperties": false
     },
@@ -4808,10 +4860,10 @@
         "active": {
           "type": "boolean"
         },
-        "target": {
+        "expression": {
           "type": "string"
         },
-        "expression": {
+        "target": {
           "type": "string"
         }
       },
@@ -4819,8 +4871,7 @@
         "bar",
         "beat",
         "type",
-        "target",
-        "expression"
+        "target"
       ],
       "additionalProperties": false
     },
@@ -4851,19 +4902,128 @@
         "active": {
           "type": "boolean"
         },
-        "target": {
-          "type": "string"
-        },
         "visible": {
           "type": "boolean"
+        },
+        "target": {
+          "type": "string"
         }
       },
       "required": [
         "bar",
         "beat",
         "type",
-        "target",
-        "visible"
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "TileSpriteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "Tile"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "tiling": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
+        },
+        "position": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
+        },
+        "speed": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
+        },
+        "tilingType": {
+          "$ref": "#/definitions/TilingType"
+        },
+        "interval": {
+          "type": "number",
+          "minimum": 0.009999999776482582
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar",
+        "beat",
+        "type",
+        "target"
       ],
       "additionalProperties": false
     },
@@ -4880,6 +5040,9 @@
         },
         {
           "$ref": "#/definitions/HideSpriteEvent"
+        },
+        {
+          "$ref": "#/definitions/TileSpriteEvent"
         }
       ]
     },
@@ -4967,31 +5130,53 @@
         },
         "roomPosition": {
           "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "number",
-                "minimum": -10000,
-                "maximum": 10000
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          ]
         },
         "scale": {
           "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "angle": {
           "type": "number",
@@ -5000,14 +5185,22 @@
         },
         "pivot": {
           "type": "array",
-          "items": {
-            "type": [
-              "number",
-              "null"
-            ]
-          },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "duration": {
           "type": "number"
@@ -5019,8 +5212,7 @@
       "required": [
         "bar",
         "beat",
-        "type",
-        "duration"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -5132,6 +5324,27 @@
         "active": {
           "type": "boolean"
         },
+        "image": {
+          "$ref": "#/definitions/ImageSequence"
+        },
+        "sourceRoom": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "keyColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "colorCutoff": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "colorFeathering": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
         "maskType": {
           "type": "string",
           "enum": [
@@ -5148,33 +5361,17 @@
             "Inverted"
           ]
         },
-        "sourceRoom": {
-          "type": "integer"
-        },
-        "image": {
-          "$ref": "#/definitions/ImageSequence"
+        "contentMode": {
+          "$ref": "#/definitions/ContentMode"
         },
         "fps": {
           "type": "number"
-        },
-        "keyColor": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "colorCutoff": {
-          "type": "integer"
-        },
-        "colorFeathering": {
-          "type": "integer"
-        },
-        "contentMode": {
-          "$ref": "#/definitions/ContentMode"
         }
       },
       "required": [
         "bar",
         "beat",
-        "type",
-        "image"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -5284,8 +5481,7 @@
         "bar",
         "beat",
         "type",
-        "cornerPositions",
-        "duration"
+        "cornerPositions"
       ],
       "additionalProperties": false
     },

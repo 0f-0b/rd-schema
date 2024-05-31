@@ -190,10 +190,12 @@ const levelEventInfoType = getCtorIndexByFullName("\0LevelEventInfoAttribute");
 const jsonPropertyType = getCtorIndexByFullName("\0JsonPropertyAttribute");
 const intInfoType = getCtorIndexByFullName("\0IntInfoAttribute");
 const floatInfoType = getCtorIndexByFullName("\0FloatInfoAttribute");
+const float2InfoType = getCtorIndexByFullName("\0Float2InfoAttribute");
 const vector2InfoType = getCtorIndexByFullName("\0Vector2InfoAttribute");
 export const ConditionExpression = z.string().or(z.number().int().array());
 export const ColorOrPaletteIndex = z.string()
   .regex(/^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\d+)$/);
+export const Expression = z.union([z.number(), z.string(), z.null()]);
 export const Sound = z.object({
   filename: z.string(),
   volume: z.number().int().optional(),
@@ -256,6 +258,57 @@ export const Easing = z.enum([
   "OutBounce",
   "InOutBounce",
 ]);
+export const FilterMode = z.enum(["NearestNeighbor", "Bilinear"]);
+export const GameSoundType = z.enum([
+  "ClapSoundP1Classic",
+  "ClapSoundP2Classic",
+  "ClapSoundP1Oneshot",
+  "ClapSoundP2Oneshot",
+  "SmallMistake",
+  "BigMistake",
+  "Hand1PopSound",
+  "Hand2PopSound",
+  "HeartExplosion",
+  "HeartExplosion2",
+  "HeartExplosion3",
+  "ClapSoundHoldLongEnd",
+  "ClapSoundHoldLongStart",
+  "ClapSoundHoldShortEnd",
+  "ClapSoundHoldShortStart",
+  "PulseSoundHoldStart",
+  "PulseSoundHoldShortEnd",
+  "PulseSoundHoldEnd",
+  "PulseSoundHoldStartAlt",
+  "PulseSoundHoldShortEndAlt",
+  "PulseSoundHoldEndAlt",
+  "ClapSoundCPUClassic",
+  "ClapSoundCPUOneshot",
+  "ClapSoundHoldLongEndP2",
+  "ClapSoundHoldLongStartP2",
+  "ClapSoundHoldShortEndP2",
+  "ClapSoundHoldShortStartP2",
+  "PulseSoundHoldStartP2",
+  "PulseSoundHoldShortEndP2",
+  "PulseSoundHoldEndP2",
+  "PulseSoundHoldStartAltP2",
+  "PulseSoundHoldShortEndAltP2",
+  "PulseSoundHoldEndAltP2",
+  "FreezeshotSoundCueLow",
+  "FreezeshotSoundCueHigh",
+  "FreezeshotSoundRiser",
+  "FreezeshotSoundCymbal",
+  "BurnshotSoundCueLow",
+  "BurnshotSoundCueHigh",
+  "BurnshotSoundRiser",
+  "BurnshotSoundCymbal",
+  "ClapSoundHold",
+  "PulseSoundHold",
+  "ClapSoundHoldP2",
+  "PulseSoundHoldP2",
+  "FreezeshotSound",
+  "BurnshotSound",
+  "Skipshot",
+]);
 export const Strength = z.enum(["Low", "Medium", "High"]);
 export const TilingType = z.enum(["Scroll", "Pulse"]);
 export const Language = z.enum([
@@ -315,6 +368,8 @@ const makeAutoPropertyValue = (
       return z.string();
     case 17:
       switch (getFullNameOfTypeByCodedIndex(signature.readPackedUint())) {
+        case "\0AlphaMode":
+          return z.enum(["Normal", "Inverted"]);
         case "\0BorderType":
           return Border;
         case "\0Character":
@@ -323,6 +378,48 @@ const makeAutoPropertyValue = (
           return ColorOrPaletteIndex;
         case "\0ContentMode":
           return ContentMode;
+        case "\0EasingType":
+          return z.enum(["Repeat", "Mirror"]);
+        case "\0Float2": {
+          let minX = -Infinity;
+          let maxX = Infinity;
+          let minY = -Infinity;
+          let maxY = Infinity;
+          const float2Info = getCustomAttribute(
+            PE.MdTableIndex.Field,
+            fieldIndex,
+            float2InfoType,
+          );
+          if (float2Info) {
+            minX = float2Info.readFloat32LE();
+            minY = float2Info.readFloat32LE();
+            maxX = float2Info.readFloat32LE();
+            maxY = float2Info.readFloat32LE();
+          }
+          let propX = z.number();
+          let propY = z.number();
+          if (minX !== -Infinity) {
+            propX = propX.min(minX);
+          }
+          if (maxX !== Infinity) {
+            propX = propX.max(maxX);
+          }
+          if (minY !== -Infinity) {
+            propY = propY.min(minY);
+          }
+          if (maxY !== Infinity) {
+            propY = propY.max(maxY);
+          }
+          return z.tuple([propX.nullable(), propY.nullable()]);
+        }
+        case "\0FloatExpression":
+          return Expression;
+        case "\0FloatExpression2":
+          return z.tuple([Expression, Expression]);
+        case "\0FreezeBurnMode":
+          return z.enum(["Freezeshot", "Burnshot"]);
+        case "\0GameSoundType":
+          return GameSoundType;
         case "\0Hand":
           return Hands;
         case "\0HandAction":
@@ -336,6 +433,18 @@ const makeAutoPropertyValue = (
             "GatherNoCeil",
             "GatherAndCeil",
           ]);
+        case "\0MaskType":
+          return z.enum(["Image", "Room", "Color", "None"]);
+        case "\0MoveRowTarget":
+          return z.enum(["WholeRow", "Character", "Heart"]);
+        case "\0NarrateInfoType":
+          return z.enum([
+            "Connect",
+            "Update",
+            "Disconnect",
+            "Online",
+            "Offline",
+          ]);
         case "\0NarrationCategory":
           return NarrationCategory;
         case "\0OffsetType":
@@ -348,6 +457,8 @@ const makeAutoPropertyValue = (
             "AnyEarlyOrLate",
             "Missed",
           ]);
+        case "\0OneshotPulseType":
+          return z.enum(["Wave", "Square", "Heart", "Triangle"]);
         case "\0OverrideExpression":
           return z.enum([
             "Neutral",
@@ -357,6 +468,8 @@ const makeAutoPropertyValue = (
             "Prehit",
             "Beep",
           ]);
+        case "\0PanelSide":
+          return z.enum(["Bottom", "Top"]);
         case "\0PlayStyleChange":
           return z.enum([
             "Normal",
@@ -371,14 +484,79 @@ const makeAutoPropertyValue = (
             "ScrubToNext",
             "None",
           ]);
+        case "\0PortraitSide":
+          return z.enum(["Left", "Right"]);
         case "\0RDPlayer":
           return z.enum([...Player.options, "NoChange"]);
+        case "\0RDTheme":
+          return z.enum([
+            "None",
+            "Intimate",
+            "IntimateSimple",
+            "InsomniacDay",
+            "InsomniacNight",
+            "Matrix",
+            "NeonMuseum",
+            "CrossesStraight",
+            "CrossesFalling",
+            "CubesFalling",
+            "CubesFallingNiceBlue",
+            "CubesFallingWithBlueBloomAndCrossesAndMatrix",
+            "OrientalTechno",
+            "Kaleidoscope",
+            "PoliticiansRally",
+            "Rooftop",
+            "RooftopSummer",
+            "RooftopAutumn",
+            "BackAlley",
+            "Sky",
+            "NightSky",
+            "HallOfMirrors",
+            "CoffeeShop",
+            "CoffeeShopNight",
+            "Garden",
+            "GardenNight",
+            "TrainDay",
+            "TrainNight",
+            "DesertDay",
+            "DesertNight",
+            "HospitalWard",
+            "HospitalWardNight",
+            "PaigeOffice",
+            "Basement",
+            "ColeWardNight",
+            "ColeWardSunrise",
+            "BoyWard",
+            "GirlWard",
+            "Skyline",
+            "SkylineBlue",
+            "FloatingHeart",
+            "FloatingHeartWithCubes",
+            "FloatingHeartBroken",
+            "FloatingHeartBrokenWithCubes",
+            "ZenGarden",
+            "Space",
+            "Tutorial",
+            "Vaporwave",
+            "RollerDisco",
+            "Stadium",
+            "StadiumStormy",
+            "AthleteWard",
+            "AthleteWardNight",
+            "ProceduralTree",
+          ]);
+        case "\0RDThemeFX":
+          return z.literal("THIS SHOULD NOT APPEAR IN THE OUTPUT");
+        case "\0ReferenceType":
+          return z.enum(["Center", "Edge"]);
         case "\0RowEffect":
           return z.enum(["None", "Electric"]);
         case "\0RowType":
           return RowType;
         case "\0RowVisibilityMode":
           return z.enum(["Visible", "Hidden", "OnlyCharacter", "OnlyRow"]);
+        case "\0SamePresetBehavior":
+          return z.enum(["Keep", "Reset"]);
         case "\0TagAction":
           return z.enum([
             "Run",
@@ -389,11 +567,52 @@ const makeAutoPropertyValue = (
             "DisableAll",
           ]);
         case "\0TextureFilter":
-          return z.enum(["NearestNeighbor", "Bilinear"]);
+          return FilterMode;
+        case "\0TilingType":
+          return TilingType;
+        case "\0WaveType":
+          return z.enum([
+            "BoomAndRush",
+            "Ball",
+            "Spring",
+            "Spike",
+            "SpikeHuge",
+            "Single",
+          ]);
+        case "\0WindowDancePreset":
+          return z.enum(["Move", "Sway", "Wrap", "Ellipse", "ShakePer"]);
         case "DG.Tweening\0Ease":
           return Easing;
         case "RDLevelEditor\0BackgroundType":
           return z.enum(["Color", "Image"]);
+        case "RDLevelEditor\0CountingVoiceSource":
+          return z.enum([
+            "JyiCount",
+            "JyiCountFast",
+            "JyiCountCalm",
+            "JyiCountTired",
+            "JyiCountVeryTired",
+            "JyiCountEnglish",
+            "JyiCountJapanese",
+            "IanCount",
+            "IanCountFast",
+            "IanCountCalm",
+            "IanCountSlow",
+            "IanCountSlower",
+            "IanCountEnglish",
+            "IanCountEnglishFast",
+            "IanCountEnglishCalm",
+            "IanCountEnglishSlow",
+            "BirdCount",
+            "OwlCount",
+            "WhistleCount",
+            "JyiCountLegacy",
+            "ParrotCount",
+            "OrioleCount",
+            "WrenCount",
+            "CanaryCount",
+            "Custom",
+          ]);
         case "RDLevelEditor\0CustomSoundType":
           return z.enum([
             "CueSound",
@@ -404,8 +623,53 @@ const makeAutoPropertyValue = (
           ]);
         case "RDLevelEditor\0FloatingTextMode":
           return z.enum(["FadeOut", "HideAbruptly"]);
+        case "RDLevelEditor\0GameVoiceSource":
+          return z.enum([
+            "Nurse",
+            "NurseTired",
+            "NurseSwing",
+            "NurseSwingCalm",
+            "IanExcited",
+            "IanCalm",
+            "IanSlow",
+            "NoneBottom",
+            "NoneTop",
+          ]);
+        case "RDLevelEditor\0LevelEventExecutionTime":
+          return z.enum(["OnPrebar", "OnBar"]);
+        case "RDLevelEditor\0OneshotPhraseToSay":
+          return z.enum([
+            "SayReaDyGetSetGoNew",
+            "SayGetSetGo",
+            "SayReaDyGetSetOne",
+            "SayGetSetOne",
+            "JustSayRea",
+            "JustSayDy",
+            "JustSayGet",
+            "JustSaySet",
+            "JustSayAnd",
+            "JustSayGo",
+            "JustSayStop",
+            "JustSayAndStop",
+            "Count1",
+            "Count2",
+            "Count3",
+            "Count4",
+            "Count5",
+            "Count6",
+            "Count7",
+            "Count8",
+            "Count9",
+            "Count10",
+            "SayReadyGetSetGo",
+            "JustSayReady",
+          ]);
         case "RDLevelEditor\0PlayerMode":
           return z.enum(["OnePlayer", "TwoPlayers"]);
+        case "RDLevelEditor\0PulseAction":
+          return z.enum(["Increment", "Decrement", "Custom", "Remove"]);
+        case "RDLevelEditor\0SetXs":
+          return z.enum(["ThreeBeat", "FourBeat"]);
         case "RDLevelEditor\0SimpleDuration":
           return z.enum(["Short", "Medium", "Long"]);
         case "RDLevelEditor\0SoundDataStruct":
@@ -418,8 +682,6 @@ const makeAutoPropertyValue = (
           return z.enum(["Left", "Right"]);
         case "RDLevelEditor\0TextExplosionMode":
           return z.enum(["OneColor", "Random"]);
-        case "RDLevelEditor\0TilingType":
-          return TilingType;
         case "RDLevelEditor\0TransitionType":
           return z.enum(["Smooth", "Instant", "Full"]);
         case "UnityEngine\0SystemLanguage":
@@ -532,13 +794,10 @@ export const makeEventBaseProperties = (type: string) => ({
   tag: z.string().optional(),
   active: z.boolean().optional(),
 });
-export const makeRowProperty = () => ({
-  row: z.number().int(),
-});
-export const makeRoomsProperty = () => ({
-  rooms: z.number().int().array().optional(),
-});
-export const makeEventAutoProperties = (type: string) => {
+export const makeEventAutoProperties = (
+  type: string,
+  noBaseProperties?: boolean,
+) => {
   const typeDefIndex = getTypeDefIndexByFullName(
     `RDLevelEditor\0LevelEvent_${type}`,
   );
@@ -552,12 +811,12 @@ export const makeEventAutoProperties = (type: string) => {
   }
   levelEventInfo.skip(8);
   const roomsUsage = levelEventInfo.readInt32LE();
-  levelEventInfo.skip(1);
+  levelEventInfo.skip(4);
   const defaultRow = levelEventInfo.readInt32LE();
   return {
-    ...makeEventBaseProperties(type),
-    ...defaultRow === -10 ? null : makeRowProperty(),
-    ...roomsUsage === 0 ? null : makeRoomsProperty(),
+    ...noBaseProperties ? null : makeEventBaseProperties(type),
+    ...defaultRow === -10 ? null : { row: z.number().int() },
+    ...roomsUsage === 0 ? null : { rooms: z.number().int().array().optional() },
     ...makeAutoProperties(typeDefIndex),
   };
 };
