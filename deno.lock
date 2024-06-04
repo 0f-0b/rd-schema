@@ -2,7 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "jsr:@std/path@^0.225.1": "jsr:@std/path@0.225.1",
+      "jsr:@std/path@^0.225.2": "jsr:@std/path@0.225.2",
       "npm:pe-struct@0.9.4": "npm:pe-struct@0.9.4",
       "npm:type-fest@4.18.3": "npm:type-fest@4.18.3",
       "npm:typescript@5.4.5": "npm:typescript@5.4.5",
@@ -11,8 +11,8 @@
       "npm:zod@3.23.3": "npm:zod@3.23.3"
     },
     "jsr": {
-      "@std/path@0.225.1": {
-        "integrity": "8c3220635a73730eb51fe43de9e10b79e2724a5bb8638b9355d35ae012fd9429"
+      "@std/path@0.225.2": {
+        "integrity": "0f2db41d36b50ef048dcb0399aac720a5348638dd3cb5bf80685bf2a745aa506"
       }
     },
     "npm": {
@@ -50,7 +50,7 @@
   "remote": {},
   "workspace": {
     "dependencies": [
-      "jsr:@std/path@^0.225.1",
+      "jsr:@std/path@^0.225.2",
       "npm:type-fest@4.18.3",
       "npm:zod@3.23.3"
     ]

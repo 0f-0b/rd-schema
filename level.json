@@ -1442,6 +1442,13 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
+        "syncoStyle": {
+          "type": "string",
+          "enum": [
+            "Chirp",
+            "Beep"
+          ]
+        },
         "syncoPlayModifierSound": {
           "type": "boolean"
         }

@@ -557,6 +557,8 @@ const makeAutoPropertyValue = (
           return z.enum(["Visible", "Hidden", "OnlyCharacter", "OnlyRow"]);
         case "\0SamePresetBehavior":
           return z.enum(["Keep", "Reset"]);
+        case "\0SyncoStyle":
+          return z.enum(["Chirp", "Beep"]);
         case "\0TagAction":
           return z.enum([
             "Run",

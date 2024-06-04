@@ -1,6 +1,6 @@
 {
   "imports": {
-    "@std/path": "jsr:@std/path@^0.225.1",
+    "@std/path": "jsr:@std/path@^0.225.2",
     "pe-struct-0": "./deps/pe_struct.ts",
     "type-fest": "npm:type-fest@4.18.3/source",
     "typescript": "./deps/typescript.ts",

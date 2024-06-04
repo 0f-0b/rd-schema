@@ -451,6 +451,7 @@ export type SetBeatModifiersEvent = {
   syncoBeat?: number | undefined;
   syncoSwing?: number | undefined;
   syncoVolume?: number | undefined;
+  syncoStyle?: ("Chirp" | "Beep") | undefined;
   syncoPlayModifierSound?: boolean | undefined;
 };
 export type AddFreeTimeBeatEvent = {
