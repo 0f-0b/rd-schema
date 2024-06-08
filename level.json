@@ -255,9 +255,7 @@
         }
       },
       "required": [
-        "row",
-        "id",
-        "filename"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -1218,8 +1216,7 @@
       "required": [
         "bar",
         "beat",
-        "type",
-        "text"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -3513,8 +3510,7 @@
       "required": [
         "bar",
         "beat",
-        "type",
-        "text"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -3608,7 +3604,10 @@
           "type": "string"
         },
         "times": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -3675,9 +3674,7 @@
       "required": [
         "bar",
         "beat",
-        "type",
-        "text",
-        "times"
+        "type"
       ],
       "additionalProperties": false
     },

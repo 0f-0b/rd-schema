@@ -139,9 +139,8 @@ export const Row = mergeShapesToObject(
     pulseSoundOffset: z.number().int().optional(),
   },
 );
-export const Decoration = mergeShapesToObject(
+export const Decoration = z.object(
   makeEventAutoProperties("MakeSprite", true),
-  { id: [z.string()], filename: [z.string()] },
 );
 const makeLegacySoundProperties = (prefix?: string) => {
   const filenameKey = prefix === undefined ? "filename" : `${prefix}Filename`;
@@ -228,9 +227,8 @@ export const SetBeatSoundEvent = mergeShapesToObject(
 export const SetCountingSoundEvent = z.object(
   makeEventAutoProperties("SetCountingSound"),
 );
-export const ReadNarrationEvent = mergeShapesToObject(
+export const ReadNarrationEvent = z.object(
   makeEventAutoProperties("ReadNarration"),
-  { text: [z.string()] },
 );
 export const NarrateRowInfoEvent = mergeShapesToObject(
   makeEventAutoProperties("NarrateRowInfo"),
@@ -510,7 +508,6 @@ export const TextExplosionEvent = z.object(
 export const ShowDialogueEvent = mergeShapesToObject(
   makeEventAutoProperties("ShowDialogue"),
   {
-    text: [z.string()],
     ...Object.fromEntries(Language.options.map((language) => [
       `text${language}`,
       z.string().optional(),
@@ -522,7 +519,7 @@ export const ShowStatusSignEvent = z.object(
 );
 export const FloatingTextEvent = mergeShapesToObject(
   makeEventAutoProperties("FloatingText"),
-  { text: [z.string()], times: [z.string()] },
+  { times: [z.string().nullable().optional()] },
 );
 export const AdvanceFloatingTextEvent = z.object(
   makeEventAutoProperties("AdvanceText"),

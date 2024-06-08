@@ -2,17 +2,17 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "jsr:@std/path@^0.225.2": "jsr:@std/path@0.225.2",
+      "jsr:@std/path@^1.0.0-rc.1": "jsr:@std/path@1.0.0-rc.1",
       "npm:pe-struct@0.9.4": "npm:pe-struct@0.9.4",
-      "npm:type-fest@4.18.3": "npm:type-fest@4.18.3",
+      "npm:type-fest@4.20.0": "npm:type-fest@4.20.0",
       "npm:typescript@5.4.5": "npm:typescript@5.4.5",
       "npm:zod-to-json-schema@3.23.0": "npm:zod-to-json-schema@3.23.0_zod@3.23.3",
       "npm:zod-to-ts@1.2.0": "npm:zod-to-ts@1.2.0_typescript@5.4.5_zod@3.23.3",
       "npm:zod@3.23.3": "npm:zod@3.23.3"
     },
     "jsr": {
-      "@std/path@0.225.2": {
-        "integrity": "0f2db41d36b50ef048dcb0399aac720a5348638dd3cb5bf80685bf2a745aa506"
+      "@std/path@1.0.0-rc.1": {
+        "integrity": "b8c00ae2f19106a6bb7cbf1ab9be52aa70de1605daeb2dbdc4f87a7cbaf10ff6"
       }
     },
     "npm": {
@@ -20,8 +20,8 @@
         "integrity": "sha512-aGFWx9K+n1yl16YnRS6nkOnKNPF3jjxvKsLZeq4lSuvFNVrmlhgoArIHFIopXyA/zyxQA4tDljPPHFjHMvcSKA==",
         "dependencies": {}
       },
-      "type-fest@4.18.3": {
-        "integrity": "sha512-Q08/0IrpvM+NMY9PA2rti9Jb+JejTddwmwmVQGskAlhtcrw1wsRzoR6ode6mR+OAabNa75w/dxedSUY2mlphaQ==",
+      "type-fest@4.20.0": {
+        "integrity": "sha512-MBh+PHUHHisjXf4tlx0CFWoMdjx8zCMLJHOjnV1prABYZFHqtFOyauCIK2/7w4oIfwkF8iNhLtnJEfVY2vn3iw==",
         "dependencies": {}
       },
       "typescript@5.4.5": {
@@ -50,8 +50,8 @@
   "remote": {},
   "workspace": {
     "dependencies": [
-      "jsr:@std/path@^0.225.2",
-      "npm:type-fest@4.18.3",
+      "jsr:@std/path@^1.0.0-rc.1",
+      "npm:type-fest@4.20.0",
       "npm:zod@3.23.3"
     ]
   }

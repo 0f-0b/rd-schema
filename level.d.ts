@@ -51,8 +51,8 @@ export type Decoration = {
   row: number;
   rooms?: number[] | undefined;
   visible?: boolean | undefined;
-  id: string;
-  filename: string;
+  id?: string | undefined;
+  filename?: string | undefined;
   depth?: number | undefined;
   filter?: FilterMode | undefined;
 };
@@ -389,7 +389,7 @@ export type ReadNarrationEvent = {
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
-  text: string;
+  text?: string | undefined;
   category?: NarrationCategory | undefined;
 };
 export type NarrateRowInfoEvent = {
@@ -1114,7 +1114,7 @@ export type ShowDialogueEvent = {
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
-  text: string;
+  text?: string | undefined;
   speed?: number | undefined;
   localized?: boolean | undefined;
   panelSide?: ("Bottom" | "Top") | undefined;
@@ -1153,8 +1153,8 @@ export type FloatingTextEvent = {
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   id?: number | undefined;
-  text: string;
-  times: string;
+  text?: string | undefined;
+  times?: (string | null) | undefined;
   color?: ColorOrPaletteIndex | undefined;
   outlineColor?: ColorOrPaletteIndex | undefined;
   textPosition?: [
