@@ -4827,6 +4827,12 @@
         },
         "target": {
           "type": "string"
+        },
+        "borderOpacity": {
+          "type": "integer"
+        },
+        "tintOpacity": {
+          "type": "integer"
         }
       },
       "required": [

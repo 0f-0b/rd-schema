@@ -1482,6 +1482,8 @@ export type PaintSpriteEvent = {
   duration?: number | undefined;
   ease?: Easing | undefined;
   target: string;
+  borderOpacity?: number | undefined;
+  tintOpacity?: number | undefined;
 };
 export type PlayAnimationEvent = {
   bar: number;

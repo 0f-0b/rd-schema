@@ -624,7 +624,11 @@ export const MoveSpriteEvent = mergeShapesToObject(
 );
 export const PaintSpriteEvent = mergeShapesToObject(
   makeEventAutoProperties("Tint"),
-  { target: z.string() },
+  {
+    target: z.string(),
+    borderOpacity: z.number().int().optional(),
+    tintOpacity: z.number().int().optional(),
+  },
 );
 export const PlayAnimationEvent = mergeShapesToObject(
   makeEventAutoProperties("PlayAnimation"),
