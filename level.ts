@@ -174,6 +174,11 @@ export const SetBeatsPerMinuteEvent = z.object(
 );
 export const SetClapSoundsEvent = mergeShapesToObject(
   makeEventAutoProperties("SetClapSounds"),
+  {
+    p1Sound: [Sound.nullable().optional()],
+    p2Sound: [Sound.nullable().optional()],
+    cpuSound: [Sound.nullable().optional()],
+  },
   makeLegacySoundProperties("p1"),
   makeLegacySoundProperties("p2"),
   makeLegacySoundProperties("cpu"),
@@ -232,10 +237,7 @@ export const ReadNarrationEvent = z.object(
 );
 export const NarrateRowInfoEvent = mergeShapesToObject(
   makeEventAutoProperties("NarrateRowInfo"),
-  {
-    narrateSkipBeats: [z.enum(["on", "custom", "off"]).optional()],
-    customPattern: [z.string().regex(/^[-x]{6}$/).optional()],
-  },
+  { customPattern: [z.string().regex(/^[-x]{6}$/).optional()] },
 );
 export const SoundEvent = z.union([
   PlaySongEvent,
@@ -258,15 +260,15 @@ export const AddClassicBeatEvent = mergeShapesToObject(
 );
 export const SetBeatModifiersEvent = mergeShapesToObject(
   makeEventAutoProperties("SetRowXs"),
-  { pattern: [z.string().regex(/^[-xudbr]{6}$/)] },
+  { pattern: [z.string().regex(/^[-xudbr]{6}$/).optional()] },
 );
 export const AddFreeTimeBeatEvent = mergeShapesToObject(
   makeEventAutoProperties("AddFreeTimeBeat"),
-  { pulse: [z.number().int().min(0).max(6)] },
+  { pulse: [z.number().int().min(0).max(6).optional()] },
 );
 export const PulseFreeTimeBeatEvent = mergeShapesToObject(
   makeEventAutoProperties("PulseFreeTimeBeat"),
-  { customPulse: [z.number().int().min(0).max(6)] },
+  { customPulse: [z.number().int().min(0).max(6).optional()] },
 );
 export const AddOneshotBeatEvent = mergeShapesToObject(
   makeEventAutoProperties("AddOneshotBeat"),
@@ -336,6 +338,7 @@ export const OrdinaryVFXPreset = z.enum([
   "Sepia",
   "NumbersAbovePulses",
   "Funk",
+  "Balloons",
 ]);
 export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -345,8 +348,7 @@ export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     intensity: [],
     color: [],
-    floatX: [],
-    floatY: [],
+    speed: [],
     duration: [],
     ease: [],
   },
@@ -375,8 +377,17 @@ export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
     enable: [z.literal(true).optional()],
     threshold: [],
     color: [],
-    floatX: [],
-    floatY: [],
+    speed: [],
+  },
+);
+export const ColoredVFXPreset = z.enum(["Diamonds", "Tutorial"]);
+export const EnableColoredVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [ColoredVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    speed: [],
   },
 );
 export const BloomVFXPreset = z.enum(["Bloom"]);
@@ -385,9 +396,7 @@ export const EnableBloomVFXPresetEvent = mergeShapesToObject(
   {
     preset: [BloomVFXPreset],
     enable: [z.literal(true).optional()],
-    color: [ColorOrPaletteIndex],
-    floatX: [],
-    floatY: [],
+    speed: [],
   },
 );
 export const ScreenVFXPreset = z.enum(["TileN", "CustomScreenScroll"]);
@@ -399,6 +408,8 @@ export const EnableScreenVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     intensity: [],
     color: [],
+    floatX: z.number().optional(),
+    floatY: z.number().optional(),
   },
 );
 export const DisableVFXPresetEvent = mergeShapesToObject(
@@ -416,8 +427,7 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     intensity: [],
     color: [],
-    floatX: [],
-    floatY: [],
+    speed: [],
     duration: [],
     ease: [],
   },
@@ -430,8 +440,7 @@ export const DisableAllVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     intensity: [],
     color: [],
-    floatX: [],
-    floatY: [],
+    speed: [],
     duration: [],
     ease: [],
   },
@@ -439,6 +448,7 @@ export const DisableAllVFXPresetEvent = mergeShapesToObject(
 export const SetVFXPresetEvent = z.union([
   EnableOrdinaryVFXPresetEvent,
   EnableEaseableVFXPresetEvent,
+  EnableColoredVFXPresetEvent,
   EnableBloomVFXPresetEvent,
   EnableScreenVFXPresetEvent,
   DisableVFXPresetEvent,
@@ -447,13 +457,18 @@ export const SetVFXPresetEvent = z.union([
 export const ImageSequence = z.string().array().or(z.string());
 export const SetBackgroundEvent = mergeShapesToObject(
   makeEventAutoProperties("SetBackgroundColor"),
-  { image: [ImageSequence.optional()] },
+  {
+    image: [ImageSequence.optional()],
+    scrollX: z.number().optional(),
+    scrollY: z.number().optional(),
+  },
 );
 export const SetForegroundEvent = mergeShapesToObject(
   makeEventAutoProperties("SetForeground"),
   {
-    color: [ColorOrPaletteIndex.optional()],
     image: [ImageSequence.optional()],
+    scrollX: z.number().optional(),
+    scrollY: z.number().optional(),
   },
 );
 export const SetSpeedEvent = z.object(
@@ -494,7 +509,13 @@ export const ShakeScreenEvent = z.object(
 );
 export const FlipScreenEvent = mergeShapesToObject(
   makeEventAutoProperties("FlipScreen"),
-  { x: z.boolean().optional(), y: z.boolean().optional() },
+  {
+    x: z.boolean().optional(),
+    y: z.boolean().optional(),
+    flipX: z.boolean().optional(),
+    flipY: z.boolean().optional(),
+    flip: [z.boolean().array().length(2).optional()],
+  },
 );
 export const InvertColorsEvent = z.object(
   makeEventAutoProperties("InvertColors"),
@@ -532,20 +553,11 @@ export const FinishLevelEvent = z.object(
 );
 export const OrdinaryCommentEvent = mergeShapesToObject(
   makeEventAutoProperties("Comment"),
-  {
-    text: [z.string()],
-    color: [ColorOrPaletteIndex.optional()],
-    tab: z.enum(["Song", "Actions", "Rooms"]).optional(),
-  },
+  { text: [z.string()], tab: z.enum(["Song", "Actions", "Rooms"]).optional() },
 );
 export const SpriteCommentEvent = mergeShapesToObject(
   makeEventAutoProperties("Comment"),
-  {
-    text: [z.string()],
-    color: [ColorOrPaletteIndex.optional()],
-    tab: z.literal("Sprites"),
-    target: z.string(),
-  },
+  { text: [z.string()], tab: z.literal("Sprites"), target: z.string() },
 );
 export const CommentEvent = z.union([
   OrdinaryCommentEvent,
@@ -554,9 +566,8 @@ export const CommentEvent = z.union([
 export const ShowHandsEvent = z.object(
   makeEventAutoProperties("ShowHands"),
 );
-export const PaintHandsEvent = mergeShapesToObject(
+export const PaintHandsEvent = z.object(
   makeEventAutoProperties("PaintHands"),
-  { borderColor: [ColorOrPaletteIndex], tintColor: [ColorOrPaletteIndex] },
 );
 export const AssignHandsEvent = z.object(
   makeEventAutoProperties("SetHandOwner"),
@@ -663,10 +674,7 @@ export const SetRoomContentModeEvent = z.object(
 );
 export const MaskRoomEvent = mergeShapesToObject(
   makeEventAutoProperties("MaskRoom"),
-  {
-    image: [ImageSequence.optional()],
-    keyColor: [ColorOrPaletteIndex.optional()],
-  },
+  { image: [ImageSequence.optional()] },
 );
 export const FadeRoomEvent = z.object(
   makeEventAutoProperties("FadeRoom"),
@@ -775,6 +783,7 @@ export const levelTypedefs = {
   ColorOrPaletteIndex,
   Easing,
   EnableEaseableVFXPresetEvent,
+  EnableColoredVFXPresetEvent,
   EnableBloomVFXPresetEvent,
   EnableScreenVFXPresetEvent,
   DisableVFXPresetEvent,

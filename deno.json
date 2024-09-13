@@ -2,8 +2,8 @@
   "imports": {
     "@std/path": "jsr:@std/path@^1.0.0",
     "pe-struct-0": "./deps/pe_struct.ts",
-    "type-fest": "npm:type-fest@4.21.0",
-    "type-fest/": "npm:/type-fest@4.21.0/source/",
+    "type-fest": "npm:type-fest@^4.0.0",
+    "type-fest/": "npm:/type-fest@^4.0.0/source/",
     "typescript": "./deps/typescript.ts",
     "zod": "npm:zod@3.23.3",
     "zod-to-json-schema": "./deps/zod_to_json_schema.ts",
@@ -11,8 +11,7 @@
   },
   "compilerOptions": {
     "noImplicitOverride": true,
-    "exactOptionalPropertyTypes": true,
-    "useUnknownInCatchVariables": true
+    "exactOptionalPropertyTypes": true
   },
   "lint": {
     "rules": {

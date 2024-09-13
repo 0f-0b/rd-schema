@@ -194,6 +194,9 @@
         "muteBeats": {
           "type": "boolean"
         },
+        "muteIn1P": {
+          "type": "boolean"
+        },
         "pulseSound": {
           "type": "string"
         },
@@ -353,8 +356,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -393,12 +394,10 @@
         },
         "visualBeatMultiplier": {
           "type": "number",
-          "minimum": 0
+          "minimum": 1
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -440,9 +439,6 @@
             }
           ]
         },
-        "isCustom": {
-          "type": "boolean"
-        },
         "customSoundType": {
           "type": "string",
           "enum": [
@@ -452,6 +448,9 @@
             "HitSound",
             "OtherSound"
           ]
+        },
+        "isCustom": {
+          "type": "boolean"
         },
         "filename": {
           "type": "string"
@@ -470,8 +469,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -510,8 +507,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -653,8 +648,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -693,8 +686,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -740,8 +731,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -826,8 +815,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -932,8 +919,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -1000,8 +985,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "soundSubtypes"
       ],
@@ -1074,8 +1057,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -1160,8 +1141,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -1214,8 +1193,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -1266,22 +1243,20 @@
         "narrateSkipBeats": {
           "type": "string",
           "enum": [
-            "on",
-            "custom",
-            "off"
+            "On",
+            "Custom",
+            "Off"
           ]
+        },
+        "skipsUnstable": {
+          "type": "boolean"
         },
         "customPattern": {
           "type": "string",
           "pattern": "^[-x]{6}$"
-        },
-        "skipsUnstable": {
-          "type": "boolean"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -1383,8 +1358,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -1451,11 +1424,8 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
-        "row",
-        "pattern"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -1499,11 +1469,8 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
-        "row",
-        "pulse"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -1546,21 +1513,18 @@
             "Remove"
           ]
         },
+        "hold": {
+          "type": "number"
+        },
         "customPulse": {
           "type": "integer",
           "minimum": 0,
           "maximum": 6
-        },
-        "hold": {
-          "type": "number"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
-        "row",
-        "customPulse"
+        "row"
       ],
       "additionalProperties": false
     },
@@ -1645,8 +1609,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -1705,8 +1667,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -1830,11 +1790,12 @@
           "type": "integer",
           "minimum": -2147483648,
           "maximum": 2147483647
+        },
+        "skipPaintEffects": {
+          "type": "boolean"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -1915,7 +1876,8 @@
             "BlackAndWhite",
             "Sepia",
             "NumbersAbovePulses",
-            "Funk"
+            "Funk",
+            "Balloons"
           ]
         },
         "enable": {
@@ -1924,8 +1886,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -2029,7 +1989,9 @@
           "const": true
         },
         "intensity": {
-          "type": "number"
+          "type": "number",
+          "minimum": -999,
+          "maximum": 999
         },
         "duration": {
           "type": "number"
@@ -2039,8 +2001,71 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "EnableColoredVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Diamonds",
+            "Tutorial"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": -999,
+          "maximum": 999
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
         "type",
         "preset"
       ],
@@ -2093,7 +2118,9 @@
           "type": "number"
         },
         "intensity": {
-          "type": "number"
+          "type": "number",
+          "minimum": -999,
+          "maximum": 999
         },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -2106,11 +2133,8 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
-        "preset",
-        "color"
+        "preset"
       ],
       "additionalProperties": false
     },
@@ -2158,22 +2182,39 @@
           "type": "boolean",
           "const": true
         },
-        "floatX": {
-          "type": "number"
-        },
-        "floatY": {
-          "type": "number"
+        "speed": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "duration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "floatX": {
+          "type": "number"
+        },
+        "floatY": {
+          "type": "number"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "preset"
       ],
@@ -2256,6 +2297,7 @@
             "Sepia",
             "NumbersAbovePulses",
             "Funk",
+            "Balloons",
             "HueShift",
             "Brightness",
             "Contrast",
@@ -2282,8 +2324,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "enable"
       ],
@@ -2328,8 +2368,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "preset"
       ],
@@ -2342,6 +2380,9 @@
         },
         {
           "$ref": "#/definitions/EnableEaseableVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableColoredVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/EnableBloomVFXPresetEvent"
@@ -2428,11 +2469,15 @@
             "Image"
           ]
         },
+        "image": {
+          "$ref": "#/definitions/ImageSequence"
+        },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
-        "image": {
-          "$ref": "#/definitions/ImageSequence"
+        "fps": {
+          "type": "number",
+          "minimum": 0
         },
         "contentMode": {
           "$ref": "#/definitions/ContentMode"
@@ -2443,11 +2488,24 @@
         "tilingType": {
           "$ref": "#/definitions/TilingType"
         },
-        "scrollX": {
-          "type": "number"
-        },
-        "scrollY": {
-          "type": "number"
+        "speed": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
         },
         "duration": {
           "type": "number",
@@ -2460,14 +2518,14 @@
         "ease": {
           "$ref": "#/definitions/Easing"
         },
-        "fps": {
-          "type": "number",
-          "minimum": 0
+        "scrollX": {
+          "type": "number"
+        },
+        "scrollY": {
+          "type": "number"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -2505,11 +2563,15 @@
             "type": "integer"
           }
         },
+        "image": {
+          "$ref": "#/definitions/ImageSequence"
+        },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
-        "image": {
-          "$ref": "#/definitions/ImageSequence"
+        "fps": {
+          "type": "number",
+          "minimum": 0
         },
         "contentMode": {
           "$ref": "#/definitions/ContentMode"
@@ -2517,28 +2579,44 @@
         "tilingType": {
           "$ref": "#/definitions/TilingType"
         },
+        "speed": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "interval": {
+          "type": "number",
+          "minimum": 0.009999999776482582
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
         "scrollX": {
           "type": "number"
         },
         "scrollY": {
           "type": "number"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "interval": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        },
-        "fps": {
-          "type": "number"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -2583,8 +2661,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -2632,8 +2708,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -2671,12 +2745,6 @@
             "type": "integer"
           }
         },
-        "background": {
-          "type": "boolean"
-        },
-        "duration": {
-          "type": "number"
-        },
         "startColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
@@ -2693,13 +2761,17 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
+        "background": {
+          "type": "boolean"
+        },
+        "duration": {
+          "type": "number"
+        },
         "ease": {
           "$ref": "#/definitions/Easing"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -2789,8 +2861,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -2851,8 +2921,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -2895,9 +2963,6 @@
         "row": {
           "type": "integer"
         },
-        "customPosition": {
-          "type": "boolean"
-        },
         "target": {
           "type": "string",
           "enum": [
@@ -2905,6 +2970,9 @@
             "Character",
             "Heart"
           ]
+        },
+        "customPosition": {
+          "type": "boolean"
         },
         "rowPosition": {
           "type": "array",
@@ -2946,8 +3014,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -3002,8 +3068,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -3092,8 +3156,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "row"
       ],
@@ -3145,8 +3207,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3189,8 +3249,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3235,19 +3293,25 @@
             "type": "integer"
           }
         },
+        "flip": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "x": {
+          "type": "boolean"
+        },
         "flipX": {
           "type": "boolean"
         },
         "flipY": {
           "type": "boolean"
-        },
-        "x": {
-          "type": "boolean"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3290,8 +3354,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3345,8 +3407,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3406,8 +3466,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3508,8 +3566,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3556,8 +3612,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3672,8 +3726,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3718,8 +3770,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3781,8 +3831,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3816,8 +3864,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -3852,11 +3898,11 @@
         "text": {
           "type": "string"
         },
-        "show": {
-          "type": "boolean"
-        },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "show": {
+          "type": "boolean"
         },
         "tab": {
           "type": "string",
@@ -3868,8 +3914,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "text"
       ],
@@ -3905,11 +3949,11 @@
         "text": {
           "type": "string"
         },
-        "show": {
-          "type": "boolean"
-        },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "show": {
+          "type": "boolean"
         },
         "tab": {
           "type": "string",
@@ -3920,8 +3964,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "text",
         "tab",
@@ -3994,23 +4036,21 @@
             "Lower"
           ]
         },
-        "align": {
-          "type": "boolean"
-        },
-        "instant": {
-          "type": "boolean"
-        },
         "extent": {
           "type": "string",
           "enum": [
             "Full",
             "Short"
           ]
+        },
+        "align": {
+          "type": "boolean"
+        },
+        "instant": {
+          "type": "boolean"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -4069,18 +4109,15 @@
           "maximum": 2147483647
         },
         "duration": {
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         },
         "ease": {
           "$ref": "#/definitions/Easing"
         }
       },
       "required": [
-        "bar",
-        "beat",
-        "type",
-        "borderColor",
-        "tintColor"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -4125,8 +4162,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -4174,8 +4209,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "Tag"
       ],
@@ -4234,8 +4267,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -4273,6 +4304,13 @@
             "type": "integer"
           }
         },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Add",
+            "Cancel"
+          ]
+        },
         "sourceBeat": {
           "type": "number",
           "minimum": 1
@@ -4285,18 +4323,9 @@
           "type": "integer",
           "minimum": -2147483648,
           "maximum": 2147483647
-        },
-        "action": {
-          "type": "string",
-          "enum": [
-            "Add",
-            "Cancel"
-          ]
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -4345,8 +4374,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "methodName"
       ],
@@ -4490,8 +4517,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -4569,8 +4594,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -4767,8 +4790,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "target"
       ],
@@ -4836,8 +4857,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "target"
       ],
@@ -4878,8 +4897,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "target"
       ],
@@ -4920,8 +4937,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "target"
       ],
@@ -5030,8 +5045,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "target"
       ],
@@ -5089,9 +5102,6 @@
             "type": "integer"
           }
         },
-        "transitionTime": {
-          "type": "number"
-        },
         "heights": {
           "type": "array",
           "items": {
@@ -5100,13 +5110,14 @@
             "maximum": 2147483647
           }
         },
+        "transitionTime": {
+          "type": "number"
+        },
         "ease": {
           "$ref": "#/definitions/Easing"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -5220,8 +5231,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -5263,8 +5272,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -5301,8 +5308,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -5334,8 +5339,20 @@
         "active": {
           "type": "boolean"
         },
+        "maskType": {
+          "type": "string",
+          "enum": [
+            "Image",
+            "Room",
+            "Color",
+            "None"
+          ]
+        },
         "image": {
           "$ref": "#/definitions/ImageSequence"
+        },
+        "fps": {
+          "type": "number"
         },
         "sourceRoom": {
           "type": "integer",
@@ -5355,32 +5372,15 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
-        "maskType": {
-          "type": "string",
-          "enum": [
-            "Image",
-            "Room",
-            "Color",
-            "None"
-          ]
-        },
         "alphaMode": {
           "type": "string",
           "enum": [
             "Normal",
             "Inverted"
           ]
-        },
-        "contentMode": {
-          "$ref": "#/definitions/ContentMode"
-        },
-        "fps": {
-          "type": "number"
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -5425,8 +5425,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type"
       ],
       "additionalProperties": false
@@ -5488,8 +5486,6 @@
         }
       },
       "required": [
-        "bar",
-        "beat",
         "type",
         "cornerPositions"
       ],

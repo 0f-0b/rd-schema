@@ -192,6 +192,10 @@ const intInfoType = getCtorIndexByFullName("\0IntInfoAttribute");
 const floatInfoType = getCtorIndexByFullName("\0FloatInfoAttribute");
 const float2InfoType = getCtorIndexByFullName("\0Float2InfoAttribute");
 const vector2InfoType = getCtorIndexByFullName("\0Vector2InfoAttribute");
+const descriptionType = getCtorIndexByFullName(
+  "RDLevelEditor\0DescriptionAttribute",
+);
+const buttonType = getCtorIndexByFullName("RDLevelEditor\0ButtonAttribute");
 export const ConditionExpression = z.string().or(z.number().int().array());
 export const ColorOrPaletteIndex = z.string()
   .regex(/^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\d+)$/);
@@ -370,6 +374,8 @@ const makeAutoPropertyValue = (
       switch (getFullNameOfTypeByCodedIndex(signature.readPackedUint())) {
         case "\0AlphaMode":
           return z.enum(["Normal", "Inverted"]);
+        case "\0BackgroundType":
+          return z.enum(["Color", "Image"]);
         case "\0BorderType":
           return Border;
         case "\0Character":
@@ -557,6 +563,8 @@ const makeAutoPropertyValue = (
           return z.enum(["Visible", "Hidden", "OnlyCharacter", "OnlyRow"]);
         case "\0SamePresetBehavior":
           return z.enum(["Keep", "Reset"]);
+        case "\0StutterAction":
+          return z.enum(["Add", "Cancel"]);
         case "\0SyncoStyle":
           return z.enum(["Chirp", "Beep"]);
         case "\0TagAction":
@@ -568,10 +576,16 @@ const makeAutoPropertyValue = (
             "EnableAll",
             "DisableAll",
           ]);
+        case "\0TextExplosionDirection":
+          return z.enum(["Left", "Right"]);
+        case "\0TextExplosionMode":
+          return z.enum(["OneColor", "Random"]);
         case "\0TextureFilter":
           return FilterMode;
         case "\0TilingType":
           return TilingType;
+        case "\0TransitionType":
+          return z.enum(["Smooth", "Instant", "Full"]);
         case "\0WaveType":
           return z.enum([
             "BoomAndRush",
@@ -585,8 +599,6 @@ const makeAutoPropertyValue = (
           return z.enum(["Move", "Sway", "Wrap", "Ellipse", "ShakePer"]);
         case "DG.Tweening\0Ease":
           return Easing;
-        case "RDLevelEditor\0BackgroundType":
-          return z.enum(["Color", "Image"]);
         case "RDLevelEditor\0CountingVoiceSource":
           return z.enum([
             "JyiCount",
@@ -639,6 +651,8 @@ const makeAutoPropertyValue = (
           ]);
         case "RDLevelEditor\0LevelEventExecutionTime":
           return z.enum(["OnPrebar", "OnBar"]);
+        case "RDLevelEditor\0NarrateSkipBeats":
+          return z.enum(["On", "Custom", "Off"]);
         case "RDLevelEditor\0OneshotPhraseToSay":
           return z.enum([
             "SayReaDyGetSetGoNew",
@@ -678,14 +692,6 @@ const makeAutoPropertyValue = (
           return Sound;
         case "RDLevelEditor\0StrengthLevel":
           return Strength;
-        case "RDLevelEditor\0StutterAction":
-          return z.enum(["Add", "Cancel"]);
-        case "RDLevelEditor\0TextExplosionDirection":
-          return z.enum(["Left", "Right"]);
-        case "RDLevelEditor\0TextExplosionMode":
-          return z.enum(["OneColor", "Random"]);
-        case "RDLevelEditor\0TransitionType":
-          return z.enum(["Smooth", "Instant", "Full"]);
         case "UnityEngine\0SystemLanguage":
           return Language;
         case "UnityEngine\0TextAnchor":
@@ -769,7 +775,11 @@ const makeAutoProperties = (typeDefIndex: number) => {
       fieldIndex,
       jsonPropertyType,
     );
-    if (!jsonProperty) {
+    if (
+      !jsonProperty ||
+      getCustomAttribute(PE.MdTableIndex.Field, fieldIndex, descriptionType) ||
+      getCustomAttribute(PE.MdTableIndex.Field, fieldIndex, buttonType)
+    ) {
       continue;
     }
     const name = jsonProperty.readSerString() || getString(field.Name.value);
@@ -781,6 +791,7 @@ const makeAutoProperties = (typeDefIndex: number) => {
     if (!prop) {
       const typeDef = typeDefTable[typeDefIndex];
       console.warn(`${getString(typeDef.Name.value)}.${name}: Unknown type`);
+      props[name] = z.any().describe("unknown type");
       continue;
     }
     props[name] = prop.optional();
@@ -788,8 +799,8 @@ const makeAutoProperties = (typeDefIndex: number) => {
   return props;
 };
 export const makeEventBaseProperties = (type: string) => ({
-  bar: z.number().int().min(1),
-  beat: z.number().min(1),
+  bar: z.number().int().min(1).optional(),
+  beat: z.number().min(1).optional(),
   y: z.number().int().optional(),
   type: z.literal(type),
   if: ConditionExpression.optional(),
