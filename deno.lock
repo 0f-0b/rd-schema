@@ -5,7 +5,7 @@
     "npm:pe-struct@0.9.4": "0.9.4",
     "npm:type-fest@4": "4.26.1",
     "npm:typescript@5.6.2": "5.6.2",
-    "npm:zod-to-json-schema@3.23.2": "3.23.2_zod@3.23.3",
+    "npm:zod-to-json-schema@3.23.3": "3.23.3_zod@3.23.3",
     "npm:zod-to-ts@1.2.0": "1.2.0_typescript@5.6.2_zod@3.23.3",
     "npm:zod@3.23.3": "3.23.3"
   },
@@ -24,8 +24,8 @@
     "typescript@5.6.2": {
       "integrity": "sha512-NW8ByodCSNCwZeghjN3o+JX5OFH0Ojg6sadjEKY4huZ52TqbJTJnDo5+Tw98lSy63NZvi4n+ez5m2u5d4PkZyw=="
     },
-    "zod-to-json-schema@3.23.2_zod@3.23.3": {
-      "integrity": "sha512-uSt90Gzc/tUfyNqxnjlfBs8W6WSGpNBv0rVsNxP/BVSMHMKGdthPYff4xtCHYloJGM0CFxFsb3NbC0eqPhfImw==",
+    "zod-to-json-schema@3.23.3_zod@3.23.3": {
+      "integrity": "sha512-TYWChTxKQbRJp5ST22o/Irt9KC5nj7CdBKYB/AosCRdj/wxEMvv4NNaj9XVUHDOIp53ZxArGhnw5HMZziPFjog==",
       "dependencies": [
         "zod"
       ]

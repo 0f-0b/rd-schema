@@ -751,7 +751,7 @@ const makeAutoPropertyValue = (
                 );
               }
               const prop = makeAutoPropertyValue(fieldIndex, signature);
-              return prop ? prop.nullable() : null;
+              return prop && prop.nullable();
             }
           }
           break;
@@ -760,7 +760,7 @@ const makeAutoPropertyValue = (
     }
     case 29: {
       const prop = makeAutoPropertyValue(fieldIndex, signature);
-      return prop ? prop.array() : null;
+      return prop && prop.array();
     }
   }
   return null;
@@ -798,19 +798,10 @@ const makeAutoProperties = (typeDefIndex: number) => {
   }
   return props;
 };
-export const makeEventBaseProperties = (type: string) => ({
-  bar: z.number().int().min(1).optional(),
-  beat: z.number().min(1).optional(),
-  y: z.number().int().optional(),
-  type: z.literal(type),
-  if: ConditionExpression.optional(),
-  tag: z.string().optional(),
-  active: z.boolean().optional(),
-});
 export const makeEventAutoProperties = (
   type: string,
-  noBaseProperties?: boolean,
-) => {
+  fixedY?: boolean,
+): Record<string, ZodType> => {
   const typeDefIndex = getTypeDefIndexByFullName(
     `RDLevelEditor\0LevelEvent_${type}`,
   );
@@ -824,27 +815,39 @@ export const makeEventAutoProperties = (
   }
   levelEventInfo.skip(8);
   const roomsUsage = levelEventInfo.readInt32LE();
-  levelEventInfo.skip(4);
+  const hasBar = levelEventInfo.readUint8() !== 0;
+  const hasBeat = levelEventInfo.readUint8() !== 0;
+  const hasType = levelEventInfo.readUint8() !== 0;
+  const hasTarget = levelEventInfo.readUint8() !== 0;
   const defaultRow = levelEventInfo.readInt32LE();
+  const hasY = !fixedY && !hasTarget;
+  const hasRow = defaultRow !== -10;
+  const hasRooms = roomsUsage !== 0;
   return {
-    ...noBaseProperties ? null : makeEventBaseProperties(type),
-    ...defaultRow === -10 ? null : { row: z.number().int() },
-    ...roomsUsage === 0 ? null : { rooms: z.number().int().array().optional() },
+    ...hasBar ? { bar: z.number().int().min(1).optional() } : null,
+    ...hasBeat ? { beat: z.number().min(1).optional() } : null,
+    ...hasY ? { y: z.number().int().optional() } : null,
+    ...hasType ? { type: z.literal(type) } : null,
+    if: ConditionExpression.optional(),
+    tag: z.string().optional(),
+    active: z.boolean().optional(),
+    ...hasRooms ? { rooms: z.number().int().array().optional() } : null,
+    ...hasRow ? { row: z.number().int() } : null,
+    ...hasTarget ? { target: z.string() } : null,
     ...makeAutoProperties(typeDefIndex),
   };
 };
-export const makeConditionalBaseProperties = (type: string) => ({
-  type: z.literal(type),
-  tag: z.string().optional(),
-  name: z.string(),
-  id: z.number().int(),
-});
-export const makeConditionalAutoProperties = (type: string) => {
+export const makeConditionalAutoProperties = (
+  type: string,
+): Record<string, ZodType> => {
   const typeDefIndex = getTypeDefIndexByFullName(
     `RDLevelEditor\0Conditional_${type}`,
   );
   return {
-    ...makeConditionalBaseProperties(type),
+    type: z.literal(type),
+    tag: z.string().optional(),
+    name: z.string(),
+    id: z.number().int(),
     ...makeAutoProperties(typeDefIndex),
   };
 };

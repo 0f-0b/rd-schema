@@ -629,29 +629,24 @@ export const ActionEvent = z.union([
   WindowDanceEvent,
   ResizeWindowEvent,
 ]);
-export const MoveSpriteEvent = mergeShapesToObject(
+export const MoveSpriteEvent = z.object(
   makeEventAutoProperties("Move"),
-  { target: z.string() },
 );
 export const PaintSpriteEvent = mergeShapesToObject(
   makeEventAutoProperties("Tint"),
   {
-    target: z.string(),
     borderOpacity: z.number().int().optional(),
     tintOpacity: z.number().int().optional(),
   },
 );
-export const PlayAnimationEvent = mergeShapesToObject(
+export const PlayAnimationEvent = z.object(
   makeEventAutoProperties("PlayAnimation"),
-  { target: z.string() },
 );
-export const HideSpriteEvent = mergeShapesToObject(
+export const HideSpriteEvent = z.object(
   makeEventAutoProperties("SetVisible"),
-  { target: z.string() },
 );
-export const TileSpriteEvent = mergeShapesToObject(
+export const TileSpriteEvent = z.object(
   makeEventAutoProperties("Tile"),
-  { target: z.string() },
 );
 export const DecorationEvent = z.union([
   MoveSpriteEvent,

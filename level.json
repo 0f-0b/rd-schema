@@ -162,14 +162,23 @@
     "Row": {
       "type": "object",
       "properties": {
-        "row": {
-          "type": "integer"
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
         },
         "rooms": {
           "type": "array",
           "items": {
             "type": "integer"
           }
+        },
+        "row": {
+          "type": "integer"
         },
         "rowType": {
           "$ref": "#/definitions/RowType"
@@ -230,14 +239,23 @@
     "Decoration": {
       "type": "object",
       "properties": {
-        "row": {
-          "type": "integer"
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
         },
         "rooms": {
           "type": "array",
           "items": {
             "type": "integer"
           }
+        },
+        "row": {
+          "type": "integer"
         },
         "visible": {
           "type": "boolean"
@@ -306,10 +324,6 @@
           "type": "integer",
           "minimum": 1
         },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
         "y": {
           "type": "integer"
         },
@@ -365,10 +379,6 @@
       "properties": {
         "bar": {
           "type": "integer",
-          "minimum": 1
-        },
-        "beat": {
-          "type": "number",
           "minimum": 1
         },
         "y": {
@@ -657,10 +667,6 @@
       "properties": {
         "bar": {
           "type": "integer",
-          "minimum": 1
-        },
-        "beat": {
-          "type": "number",
           "minimum": 1
         },
         "y": {
@@ -3108,14 +3114,14 @@
         "active": {
           "type": "boolean"
         },
-        "row": {
-          "type": "integer"
-        },
         "rooms": {
           "type": "array",
           "items": {
             "type": "integer"
           }
+        },
+        "row": {
+          "type": "integer"
         },
         "border": {
           "$ref": "#/definitions/Border"
@@ -4715,9 +4721,6 @@
           "type": "number",
           "minimum": 1
         },
-        "y": {
-          "type": "integer"
-        },
         "type": {
           "type": "string",
           "const": "Move"
@@ -4730,6 +4733,9 @@
         },
         "active": {
           "type": "boolean"
+        },
+        "target": {
+          "type": "string"
         },
         "position": {
           "type": "array",
@@ -4784,9 +4790,6 @@
         },
         "ease": {
           "$ref": "#/definitions/Easing"
-        },
-        "target": {
-          "type": "string"
         }
       },
       "required": [
@@ -4806,9 +4809,6 @@
           "type": "number",
           "minimum": 1
         },
-        "y": {
-          "type": "integer"
-        },
         "type": {
           "type": "string",
           "const": "Tint"
@@ -4821,6 +4821,9 @@
         },
         "active": {
           "type": "boolean"
+        },
+        "target": {
+          "type": "string"
         },
         "border": {
           "$ref": "#/definitions/Border"
@@ -4846,9 +4849,6 @@
         "ease": {
           "$ref": "#/definitions/Easing"
         },
-        "target": {
-          "type": "string"
-        },
         "borderOpacity": {
           "type": "integer"
         },
@@ -4873,9 +4873,6 @@
           "type": "number",
           "minimum": 1
         },
-        "y": {
-          "type": "integer"
-        },
         "type": {
           "type": "string",
           "const": "PlayAnimation"
@@ -4889,10 +4886,10 @@
         "active": {
           "type": "boolean"
         },
-        "expression": {
+        "target": {
           "type": "string"
         },
-        "target": {
+        "expression": {
           "type": "string"
         }
       },
@@ -4913,9 +4910,6 @@
           "type": "number",
           "minimum": 1
         },
-        "y": {
-          "type": "integer"
-        },
         "type": {
           "type": "string",
           "const": "SetVisible"
@@ -4929,11 +4923,11 @@
         "active": {
           "type": "boolean"
         },
-        "visible": {
-          "type": "boolean"
-        },
         "target": {
           "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -4953,9 +4947,6 @@
           "type": "number",
           "minimum": 1
         },
-        "y": {
-          "type": "integer"
-        },
         "type": {
           "type": "string",
           "const": "Tile"
@@ -4968,6 +4959,9 @@
         },
         "active": {
           "type": "boolean"
+        },
+        "target": {
+          "type": "string"
         },
         "tiling": {
           "type": "array",
@@ -5039,9 +5033,6 @@
         },
         "ease": {
           "$ref": "#/definitions/Easing"
-        },
-        "target": {
-          "type": "string"
         }
       },
       "required": [

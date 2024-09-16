@@ -31,8 +31,11 @@ export type Settings = {
 export type RowType = "Classic" | "Oneshot";
 export type Player = "P1" | "P2" | "CPU";
 export type Row = {
-  row: number;
+  if?: (string | number[]) | undefined;
+  tag?: string | undefined;
+  active?: boolean | undefined;
   rooms?: number[] | undefined;
+  row: number;
   rowType?: RowType | undefined;
   player?: Player | undefined;
   character: string;
@@ -49,8 +52,11 @@ export type Row = {
 };
 export type FilterMode = "NearestNeighbor" | "Bilinear";
 export type Decoration = {
-  row: number;
+  if?: (string | number[]) | undefined;
+  tag?: string | undefined;
+  active?: boolean | undefined;
   rooms?: number[] | undefined;
+  row: number;
   visible?: boolean | undefined;
   id?: string | undefined;
   filename?: string | undefined;
@@ -67,7 +73,6 @@ export type Sound = {
 export type ConditionExpression = string | number[];
 export type PlaySongEvent = {
   bar?: number | undefined;
-  beat?: number | undefined;
   y?: number | undefined;
   type: "PlaySong";
   if?: ConditionExpression | undefined;
@@ -85,7 +90,6 @@ export type PlaySongEvent = {
 };
 export type SetCrotchetsPerBarEvent = {
   bar?: number | undefined;
-  beat?: number | undefined;
   y?: number | undefined;
   type: "SetCrotchetsPerBar";
   if?: ConditionExpression | undefined;
@@ -156,7 +160,6 @@ export type SetClapSoundsEvent = {
 };
 export type SetHeartExplodeVolumeEvent = {
   bar?: number | undefined;
-  beat?: number | undefined;
   y?: number | undefined;
   type: "SetHeartExplodeVolume";
   if?: ConditionExpression | undefined;
@@ -1042,8 +1045,8 @@ export type PaintRowsEvent = {
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
-  row: number;
   rooms?: number[] | undefined;
+  row: number;
   border?: Border | undefined;
   borderColor?: ColorOrPaletteIndex | undefined;
   tint?: boolean | undefined;
@@ -1478,11 +1481,11 @@ export type ActionEvent =
 export type MoveSpriteEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
-  y?: number | undefined;
   type: "Move";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
+  target: string;
   position?: [
     Expression,
     Expression,
@@ -1498,16 +1501,15 @@ export type MoveSpriteEvent = {
   ] | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
-  target: string;
 };
 export type PaintSpriteEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
-  y?: number | undefined;
   type: "Tint";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
+  target: string;
   border?: Border | undefined;
   borderColor?: ColorOrPaletteIndex | undefined;
   tint?: boolean | undefined;
@@ -1515,40 +1517,37 @@ export type PaintSpriteEvent = {
   opacity?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
-  target: string;
   borderOpacity?: number | undefined;
   tintOpacity?: number | undefined;
 };
 export type PlayAnimationEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
-  y?: number | undefined;
   type: "PlayAnimation";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
-  expression?: string | undefined;
   target: string;
+  expression?: string | undefined;
 };
 export type HideSpriteEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
-  y?: number | undefined;
   type: "SetVisible";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
-  visible?: boolean | undefined;
   target: string;
+  visible?: boolean | undefined;
 };
 export type TileSpriteEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
-  y?: number | undefined;
   type: "Tile";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
+  target: string;
   tiling?: [
     number | null,
     number | null,
@@ -1565,7 +1564,6 @@ export type TileSpriteEvent = {
   interval?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
-  target: string;
 };
 export type DecorationEvent =
   | MoveSpriteEvent
