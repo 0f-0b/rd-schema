@@ -10,7 +10,6 @@
     "zod-to-ts": "./deps/zod_to_ts.ts"
   },
   "compilerOptions": {
-    "noImplicitOverride": true,
     "exactOptionalPropertyTypes": true
   },
   "lint": {
