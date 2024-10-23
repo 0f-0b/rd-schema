@@ -96,9 +96,10 @@ const blobHeap = new DataView(
 );
 const typeRefTable = assembly.mdtTypeRef!.values;
 const typeDefTable = assembly.mdtTypeDef!.values;
-const fieldTable = assembly.mdtField!.values;
 const methodDefTable = assembly.mdtMethodDef!.values;
 const customAttributeTable = assembly.mdtCustomAttribute!.values;
+const propertyMapTable = assembly.mdtPropertyMap!.values;
+const propertyTable = assembly.mdtProperty!.values;
 const getString = (offset: number) =>
   new DataReader(stringsHeap, offset).readCString();
 const getBlob = (offset: number) =>
@@ -129,13 +130,19 @@ const getMethodListByTypeDefIndex = (
     methodDefTable.length,
   ),
 ];
-const getFieldListByTypeDefIndex = (typeDefIndex: number): [number, number] => [
-  typeDefTable[typeDefIndex].FieldList.value - 1,
-  Math.min(
-    (typeDefTable[typeDefIndex + 1]?.FieldList.value ?? Infinity) - 1,
-    fieldTable.length,
-  ),
-];
+const getPropertyListByTypeDefIndex = (
+  typeDefIndex: number,
+): [number, number] => {
+  const index = propertyMapTable
+    .findIndex((row) => row.Parent.value - 1 === typeDefIndex);
+  return index === -1 ? [0, 0] : [
+    propertyMapTable[index].PropertyList.value - 1,
+    Math.min(
+      (propertyMapTable[index + 1]?.PropertyList.value ?? Infinity) - 1,
+      propertyTable.length,
+    ),
+  ];
+};
 const getCtorIndicesByFullName = (fullName: string) => {
   const typeDefIndex = getTypeDefIndexByFullName(fullName);
   const [methodDefStart, methodDefEnd] = getMethodListByTypeDefIndex(
@@ -327,7 +334,7 @@ export const Language = z.enum([
   "German",
 ]);
 const makeAutoPropertyValue = (
-  fieldIndex: number,
+  propertyIndex: number,
   signature: DataReader,
 ): ZodType | null => {
   switch (signature.readUint8()) {
@@ -337,8 +344,8 @@ const makeAutoPropertyValue = (
       let min = -0x80000000;
       let max = 0x7fffffff;
       const intInfo = getCustomAttribute(
-        PE.MdTableIndex.Field,
-        fieldIndex,
+        PE.MdTableIndex.Property,
+        propertyIndex,
         intInfoType,
       );
       if (intInfo && clampInts) {
@@ -351,8 +358,8 @@ const makeAutoPropertyValue = (
       let min = -Infinity;
       let max = Infinity;
       const floatInfo = getCustomAttribute(
-        PE.MdTableIndex.Field,
-        fieldIndex,
+        PE.MdTableIndex.Property,
+        propertyIndex,
         floatInfoType,
       );
       if (floatInfo) {
@@ -392,8 +399,8 @@ const makeAutoPropertyValue = (
           let minY = -Infinity;
           let maxY = Infinity;
           const float2Info = getCustomAttribute(
-            PE.MdTableIndex.Field,
-            fieldIndex,
+            PE.MdTableIndex.Property,
+            propertyIndex,
             float2InfoType,
           );
           if (float2Info) {
@@ -712,8 +719,8 @@ const makeAutoPropertyValue = (
           let minY = -Infinity;
           let maxY = Infinity;
           const vector2Info = getCustomAttribute(
-            PE.MdTableIndex.Field,
-            fieldIndex,
+            PE.MdTableIndex.Property,
+            propertyIndex,
             vector2InfoType,
           );
           if (vector2Info) {
@@ -750,7 +757,7 @@ const makeAutoPropertyValue = (
                   "Nullable should have exactly 1 type argument",
                 );
               }
-              const prop = makeAutoPropertyValue(fieldIndex, signature);
+              const prop = makeAutoPropertyValue(propertyIndex, signature);
               return prop && prop.nullable();
             }
           }
@@ -759,35 +766,49 @@ const makeAutoPropertyValue = (
       break;
     }
     case 29: {
-      const prop = makeAutoPropertyValue(fieldIndex, signature);
+      const prop = makeAutoPropertyValue(propertyIndex, signature);
       return prop && prop.array();
     }
   }
   return null;
 };
 const makeAutoProperties = (typeDefIndex: number) => {
-  const [fieldStart, fieldEnd] = getFieldListByTypeDefIndex(typeDefIndex);
+  const [propertyStart, propertyEnd] = getPropertyListByTypeDefIndex(
+    typeDefIndex,
+  );
   const props: Record<string, ZodType> = {};
-  for (let fieldIndex = fieldStart; fieldIndex < fieldEnd; fieldIndex++) {
-    const field = fieldTable[fieldIndex];
+  for (
+    let propertyIndex = propertyStart;
+    propertyIndex < propertyEnd;
+    propertyIndex++
+  ) {
+    const property = propertyTable[propertyIndex];
     const jsonProperty = getCustomAttribute(
-      PE.MdTableIndex.Field,
-      fieldIndex,
+      PE.MdTableIndex.Property,
+      propertyIndex,
       jsonPropertyType,
     );
     if (
       !jsonProperty ||
-      getCustomAttribute(PE.MdTableIndex.Field, fieldIndex, descriptionType) ||
-      getCustomAttribute(PE.MdTableIndex.Field, fieldIndex, buttonType)
+      getCustomAttribute(
+        PE.MdTableIndex.Property,
+        propertyIndex,
+        descriptionType,
+      ) ||
+      getCustomAttribute(
+        PE.MdTableIndex.Property,
+        propertyIndex,
+        buttonType,
+      )
     ) {
       continue;
     }
-    const name = jsonProperty.readSerString() || getString(field.Name.value);
-    const signature = new DataReader(getBlob(field.Signature.value));
-    if (signature.readUint8() !== 6) {
-      throw new TypeError("Invalid field signature");
+    const name = jsonProperty.readSerString() || getString(property.Name.value);
+    const signature = new DataReader(getBlob(property.Type.value));
+    if (signature.readUint8() !== 40 || signature.readPackedUint() !== 0) {
+      throw new TypeError("Invalid instance property signature");
     }
-    const prop = makeAutoPropertyValue(fieldIndex, signature);
+    const prop = makeAutoPropertyValue(propertyIndex, signature);
     if (!prop) {
       const typeDef = typeDefTable[typeDefIndex];
       console.warn(`${getString(typeDef.Name.value)}.${name}: Unknown type`);

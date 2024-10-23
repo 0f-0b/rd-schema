@@ -1996,8 +1996,8 @@
         },
         "intensity": {
           "type": "number",
-          "minimum": -999,
-          "maximum": 999
+          "minimum": -9999,
+          "maximum": 9999
         },
         "duration": {
           "type": "number"
@@ -2058,8 +2058,8 @@
         },
         "intensity": {
           "type": "number",
-          "minimum": -999,
-          "maximum": 999
+          "minimum": -9999,
+          "maximum": 9999
         },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -2125,8 +2125,8 @@
         },
         "intensity": {
           "type": "number",
-          "minimum": -999,
-          "maximum": 999
+          "minimum": -9999,
+          "maximum": 9999
         },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -3516,6 +3516,12 @@
         },
         "active": {
           "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
         },
         "text": {
           "type": "string"

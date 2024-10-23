@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write=character.json,level.json --allow-env=RD_ASSEMBLY_PATH
+#!/usr/bin/env -S deno run --no-prompt --allow-import=jsr.io:443 --allow-read --allow-write=character.json,level.json --allow-env=RD_ASSEMBLY_PATH
 
 import type { ZodType } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --no-prompt --allow-read --allow-write=character.d.ts,level.d.ts --allow-env=RD_ASSEMBLY_PATH --allow-run=./scripts/deno_fmt.sh
+#!/usr/bin/env -S deno run --no-prompt --allow-import=jsr.io:443 --allow-read --allow-write=character.d.ts,level.d.ts --allow-env=RD_ASSEMBLY_PATH --allow-run=./scripts/deno_fmt.sh
 
 import { fromFileUrl } from "@std/path/from-file-url";
 import { ts } from "typescript";

@@ -13,6 +13,10 @@
     "exactOptionalPropertyTypes": true
   },
   "lint": {
+    "exclude": [
+      "character.d.ts",
+      "level.d.ts"
+    ],
     "rules": {
       "include": [
         "verbatim-module-syntax"
@@ -20,7 +24,7 @@
     }
   },
   "tasks": {
-    "cache": "deno cache scripts/generate_dts.ts scripts/generate_json_schemas.ts",
-    "lint": "deno fmt --check && deno lint && deno check --all scripts/generate_dts.ts && deno check --all scripts/generate_json_schemas.ts"
+    "cache": "deno cache --allow-import=jsr.io:443 scripts/generate_dts.ts scripts/generate_json_schemas.ts",
+    "lint": "deno fmt --check && deno lint && deno check --all --allow-import=jsr.io:443 scripts/generate_dts.ts && deno check --all scripts/generate_json_schemas.ts"
   }
 }

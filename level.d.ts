@@ -1151,6 +1151,7 @@ export type ShowDialogueEvent = {
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   active?: boolean | undefined;
+  rooms?: number[] | undefined;
   text?: string | undefined;
   speed?: number | undefined;
   localized?: boolean | undefined;
