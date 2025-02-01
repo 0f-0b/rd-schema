@@ -5,7 +5,7 @@
     "type-fest": "npm:type-fest@^4.0.0",
     "type-fest/": "npm:/type-fest@^4.0.0/source/",
     "typescript": "./deps/typescript.ts",
-    "zod": "npm:zod@3.23.3",
+    "zod": "./deps/zod.ts",
     "zod-to-json-schema": "./deps/zod_to_json_schema.ts",
     "zod-to-ts": "./deps/zod_to_ts.ts"
   },

@@ -2,7 +2,7 @@ import { PE } from "pe-struct-0";
 import { z, type ZodType } from "zod";
 
 const clampInts = false;
-const decoder = new TextDecoder(undefined, { fatal: true, ignoreBOM: false });
+const decoder = new TextDecoder(undefined, { fatal: true, ignoreBOM: true });
 
 class DataReader {
   readonly #view: DataView;

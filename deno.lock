@@ -1,51 +1,50 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@std/path@1": "1.0.6",
+    "jsr:@std/path@1": "1.0.8",
     "npm:pe-struct@0.9.4": "0.9.4",
-    "npm:type-fest@4": "4.26.1",
-    "npm:typescript@5.6.3": "5.6.3",
-    "npm:zod-to-json-schema@3.23.3": "3.23.3_zod@3.23.3",
-    "npm:zod-to-ts@1.2.0": "1.2.0_typescript@5.6.3_zod@3.23.3",
-    "npm:zod@3.23.3": "3.23.3"
+    "npm:type-fest@4": "4.33.0",
+    "npm:typescript@5.7.3": "5.7.3",
+    "npm:zod-to-json-schema@3.24.1": "3.24.1_zod@3.24.1",
+    "npm:zod-to-ts@1.2.0": "1.2.0_typescript@5.7.3_zod@3.24.1",
+    "npm:zod@3.24.1": "3.24.1"
   },
   "jsr": {
-    "@std/path@1.0.6": {
-      "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
+    "@std/path@1.0.8": {
+      "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
     }
   },
   "npm": {
     "pe-struct@0.9.4": {
       "integrity": "sha512-aGFWx9K+n1yl16YnRS6nkOnKNPF3jjxvKsLZeq4lSuvFNVrmlhgoArIHFIopXyA/zyxQA4tDljPPHFjHMvcSKA=="
     },
-    "type-fest@4.26.1": {
-      "integrity": "sha512-yOGpmOAL7CkKe/91I5O3gPICmJNLJ1G4zFYVAsRHg7M64biSnPtRj0WNQt++bRkjYOqjWXrhnUw1utzmVErAdg=="
+    "type-fest@4.33.0": {
+      "integrity": "sha512-s6zVrxuyKbbAsSAD5ZPTB77q4YIdRctkTbJ2/Dqlinwz+8ooH2gd+YA7VA6Pa93KML9GockVvoxjZ2vHP+mu8g=="
     },
-    "typescript@5.6.3": {
-      "integrity": "sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw=="
+    "typescript@5.7.3": {
+      "integrity": "sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw=="
     },
-    "zod-to-json-schema@3.23.3_zod@3.23.3": {
-      "integrity": "sha512-TYWChTxKQbRJp5ST22o/Irt9KC5nj7CdBKYB/AosCRdj/wxEMvv4NNaj9XVUHDOIp53ZxArGhnw5HMZziPFjog==",
+    "zod-to-json-schema@3.24.1_zod@3.24.1": {
+      "integrity": "sha512-3h08nf3Vw3Wl3PK+q3ow/lIil81IT2Oa7YpQyUUDsEWbXveMesdfK1xBd2RhCkynwZndAxixji/7SYJJowr62w==",
       "dependencies": [
         "zod"
       ]
     },
-    "zod-to-ts@1.2.0_typescript@5.6.3_zod@3.23.3": {
+    "zod-to-ts@1.2.0_typescript@5.7.3_zod@3.24.1": {
       "integrity": "sha512-x30XE43V+InwGpvTySRNz9kB7qFU8DlyEy7BsSTCHPH1R0QasMmHWZDCzYm6bVXtj/9NNJAZF3jW8rzFvH5OFA==",
       "dependencies": [
         "typescript",
         "zod"
       ]
     },
-    "zod@3.23.3": {
-      "integrity": "sha512-tPvq1B/2Yu/dh2uAIH2/BhUlUeLIUvAjr6dpL/75I0pCYefHgjhXk1o1Kob3kTU8C7yU1j396jFHlsVWFi9ogg=="
+    "zod@3.24.1": {
+      "integrity": "sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A=="
     }
   },
   "workspace": {
     "dependencies": [
       "jsr:@std/path@1",
-      "npm:type-fest@4",
-      "npm:zod@3.23.3"
+      "npm:type-fest@4"
     ]
   }
 }
