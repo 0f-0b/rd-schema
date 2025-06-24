@@ -1100,7 +1100,7 @@ export type ReorderRowEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
-  newRoom?: (("Room1" | "Room2" | "Room3" | "Room4") | null) | undefined;
+  newRoom?: (number | null) | undefined;
   order?: (number | null) | undefined;
   transition?: ("Smooth" | "Instant" | "None") | undefined;
 };

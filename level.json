@@ -3300,13 +3300,9 @@
         "newRoom": {
           "anyOf": [
             {
-              "type": "string",
-              "enum": [
-                "Room1",
-                "Room2",
-                "Room3",
-                "Room4"
-              ]
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3
             },
             {
               "type": "null"
