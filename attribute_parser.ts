@@ -387,12 +387,16 @@ const makeAutoPropertyValue = (
           return Border;
         case "\0Character":
           return z.string();
+        case "\0CharacterReorderType":
+          return z.enum(["Smooth", "Instant", "None"]);
         case "\0ColorOrPalette":
           return ColorOrPaletteIndex;
         case "\0ContentMode":
           return ContentMode;
         case "\0EasingType":
           return z.enum(["Repeat", "Mirror"]);
+        case "\0EditorShakeType":
+          return z.enum(["Normal", "Smooth", "Rotate", "BassDrop"]);
         case "\0Float2": {
           let minX = -Infinity;
           let maxX = Infinity;
@@ -562,6 +566,8 @@ const makeAutoPropertyValue = (
           return z.literal("THIS SHOULD NOT APPEAR IN THE OUTPUT");
         case "\0ReferenceType":
           return z.enum(["Center", "Edge"]);
+        case "\0RoomSelectType":
+          return z.enum(["Room1", "Room2", "Room3", "Room4"]);
         case "\0RowEffect":
           return z.enum(["None", "Electric"]);
         case "\0RowType":
@@ -570,6 +576,8 @@ const makeAutoPropertyValue = (
           return z.enum(["Visible", "Hidden", "OnlyCharacter", "OnlyRow"]);
         case "\0SamePresetBehavior":
           return z.enum(["Keep", "Reset"]);
+        case "\0SpriteBlendType":
+          return z.enum(["None", "Additive", "Multiply", "Invert"]);
         case "\0StutterAction":
           return z.enum(["Add", "Cancel"]);
         case "\0SyncoStyle":
@@ -674,6 +682,9 @@ const makeAutoPropertyValue = (
             "JustSayGo",
             "JustSayStop",
             "JustSayAndStop",
+            "SaySwitch",
+            "SayWatch",
+            "SayListen",
             "Count1",
             "Count2",
             "Count3",
@@ -688,7 +699,7 @@ const makeAutoPropertyValue = (
             "JustSayReady",
           ]);
         case "RDLevelEditor\0PlayerMode":
-          return z.enum(["OnePlayer", "TwoPlayers"]);
+          return z.enum(["OnePlayer", "TwoPlayers", "OneOrTwoPlayers"]);
         case "RDLevelEditor\0PulseAction":
           return z.enum(["Increment", "Decrement", "Custom", "Remove"]);
         case "RDLevelEditor\0SetXs":
@@ -851,6 +862,7 @@ export const makeEventAutoProperties = (
     ...hasType ? { type: z.literal(type) } : null,
     if: ConditionExpression.optional(),
     tag: z.string().optional(),
+    runTag: z.boolean().optional(),
     active: z.boolean().optional(),
     ...hasRooms ? { rooms: z.number().int().array().optional() } : null,
     ...hasRow ? { row: z.number().int() } : null,

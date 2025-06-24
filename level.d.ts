@@ -33,6 +33,7 @@ export type Player = "P1" | "P2" | "CPU";
 export type Row = {
   if?: (string | number[]) | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   row: number;
@@ -54,6 +55,7 @@ export type FilterMode = "NearestNeighbor" | "Bilinear";
 export type Decoration = {
   if?: (string | number[]) | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   row: number;
@@ -77,6 +79,7 @@ export type PlaySongEvent = {
   type: "PlaySong";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   song?: Sound | undefined;
   bpm?: number | undefined;
@@ -94,6 +97,7 @@ export type SetCrotchetsPerBarEvent = {
   type: "SetCrotchetsPerBar";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   crotchetsPerBar?: number | undefined;
   visualBeatMultiplier?: number | undefined;
@@ -105,6 +109,7 @@ export type PlaySoundEvent = {
   type: "PlaySound";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   sound?: (Sound | string) | undefined;
   customSoundType?:
@@ -124,6 +129,7 @@ export type SetBeatsPerMinuteEvent = {
   type: "SetBeatsPerMinute";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   beatsPerMinute?: number | undefined;
 };
@@ -134,6 +140,7 @@ export type SetClapSoundsEvent = {
   type: "SetClapSounds";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rowType?: RowType | undefined;
   p1Sound?: ((Sound | null) | string) | undefined;
@@ -164,6 +171,7 @@ export type SetHeartExplodeVolumeEvent = {
   type: "SetHeartExplodeVolume";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   volume?: number | undefined;
 };
@@ -174,6 +182,7 @@ export type SetHeartExplosionIntervalEvent = {
   type: "SetHeartExplodeInterval";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   intervalType?:
     | ("OneBeatAfter" | "Instant" | "GatherNoCeil" | "GatherAndCeil")
@@ -187,6 +196,7 @@ export type SayReadyGetSetGoEvent = {
   type: "SayReadyGetSetGo";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   phraseToSay?:
     | (
@@ -202,6 +212,9 @@ export type SayReadyGetSetGoEvent = {
       | "JustSayGo"
       | "JustSayStop"
       | "JustSayAndStop"
+      | "SaySwitch"
+      | "SayWatch"
+      | "SayListen"
       | "Count1"
       | "Count2"
       | "Count3"
@@ -288,6 +301,7 @@ export type SetSingleGameSoundEvent = {
   type: "SetGameSound";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   soundType?: GameSoundType | undefined;
   filename?: string | undefined;
@@ -303,6 +317,7 @@ export type SetGameSoundGroupEvent = {
   type: "SetGameSound";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   soundType?: GameSoundType | undefined;
   soundSubtypes: {
@@ -325,6 +340,7 @@ export type SetBeatSoundEvent = {
   type: "SetBeatSound";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   sound?: (Sound | string) | undefined;
@@ -341,6 +357,7 @@ export type SetCountingSoundEvent = {
   type: "SetCountingSound";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   voiceSource?:
@@ -392,6 +409,7 @@ export type ReadNarrationEvent = {
   type: "ReadNarration";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   text?: string | undefined;
   category?: NarrationCategory | undefined;
@@ -403,6 +421,7 @@ export type NarrateRowInfoEvent = {
   type: "NarrateRowInfo";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   infoType?:
@@ -412,6 +431,7 @@ export type NarrateRowInfoEvent = {
   narrateSkipBeats?: ("On" | "Custom" | "Off") | undefined;
   skipsUnstable?: boolean | undefined;
   customPattern?: string | undefined;
+  customPlayer: "AutoDetect" | "P1" | "P2";
 };
 export type SoundEvent =
   | PlaySongEvent
@@ -434,6 +454,7 @@ export type AddClassicBeatEvent = {
   type: "AddClassicBeat";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   tick?: number | undefined;
@@ -449,6 +470,7 @@ export type SetBeatModifiersEvent = {
   type: "SetRowXs";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   pattern?: string | undefined;
@@ -465,6 +487,7 @@ export type AddFreeTimeBeatEvent = {
   type: "AddFreeTimeBeat";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   pulse?: number | undefined;
@@ -477,6 +500,7 @@ export type PulseFreeTimeBeatEvent = {
   type: "PulseFreeTimeBeat";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   action?: ("Increment" | "Decrement" | "Custom" | "Remove") | undefined;
@@ -490,6 +514,7 @@ export type AddOneshotBeatEvent = {
   type: "AddOneshotBeat";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   pulseType?: ("Wave" | "Square" | "Heart" | "Triangle") | undefined;
@@ -511,6 +536,7 @@ export type SetOneshotWaveEvent = {
   type: "SetOneshotWave";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   waveType?:
@@ -533,6 +559,7 @@ export type SetThemeEvent = {
   type: "SetTheme";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset?:
@@ -603,6 +630,7 @@ export type EnableOrdinaryVFXPresetEvent = {
   type: "SetVFXPreset";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset?:
@@ -614,7 +642,6 @@ export type EnableOrdinaryVFXPresetEvent = {
       | "BassDropOnHit"
       | "ShakeOnHeartBeat"
       | "ShakeOnHit"
-      | "WavyRows"
       | "Tile2"
       | "Tile3"
       | "Tile4"
@@ -694,6 +721,7 @@ export type EnableEaseableVFXPresetEvent = {
   type: "SetVFXPreset";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset:
@@ -711,7 +739,8 @@ export type EnableEaseableVFXPresetEvent = {
     | "Aberration"
     | "Blur"
     | "RadialBlur"
-    | "Dots";
+    | "Dots"
+    | "Fisheye";
   enable?: true | undefined;
   intensity?: number | undefined;
   duration?: number | undefined;
@@ -724,12 +753,30 @@ export type EnableColoredVFXPresetEvent = {
   type: "SetVFXPreset";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset: "Diamonds" | "Tutorial";
   enable?: true | undefined;
   intensity?: number | undefined;
   color?: ColorOrPaletteIndex | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+};
+export type EnableWavyRowsVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "WavyRows";
+  enable?: true | undefined;
+  intensity?: number | undefined;
+  speedPerc?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -740,6 +787,7 @@ export type EnableBloomVFXPresetEvent = {
   type: "SetVFXPreset";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset: "Bloom";
@@ -757,6 +805,7 @@ export type EnableScreenVFXPresetEvent = {
   type: "SetVFXPreset";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset: "TileN" | "CustomScreenScroll";
@@ -777,6 +826,7 @@ export type DisableVFXPresetEvent = {
   type: "SetVFXPreset";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset?:
@@ -788,7 +838,6 @@ export type DisableVFXPresetEvent = {
       | "BassDropOnHit"
       | "ShakeOnHeartBeat"
       | "ShakeOnHit"
-      | "WavyRows"
       | "Tile2"
       | "Tile3"
       | "Tile4"
@@ -838,6 +887,10 @@ export type DisableVFXPresetEvent = {
       | "Blur"
       | "RadialBlur"
       | "Dots"
+      | "Fisheye"
+      | "Diamonds"
+      | "Tutorial"
+      | "WavyRows"
       | "Bloom"
       | "TileN"
       | "CustomScreenScroll"
@@ -852,6 +905,7 @@ export type DisableAllVFXPresetEvent = {
   type: "SetVFXPreset";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset: "DisableAll";
@@ -860,6 +914,7 @@ export type SetVFXPresetEvent =
   | EnableOrdinaryVFXPresetEvent
   | EnableEaseableVFXPresetEvent
   | EnableColoredVFXPresetEvent
+  | EnableWavyRowsVFXPresetEvent
   | EnableBloomVFXPresetEvent
   | EnableScreenVFXPresetEvent
   | DisableVFXPresetEvent
@@ -880,6 +935,7 @@ export type SetBackgroundEvent = {
   type: "SetBackgroundColor";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   backgroundType?: ("Color" | "Image") | undefined;
@@ -906,6 +962,7 @@ export type SetForegroundEvent = {
   type: "SetForeground";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   image?: ImageSequence | undefined;
@@ -930,6 +987,7 @@ export type SetSpeedEvent = {
   type: "SetSpeed";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   speed?: number | undefined;
   duration?: number | undefined;
@@ -942,6 +1000,7 @@ export type FlashEvent = {
   type: "Flash";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   duration?: ("Short" | "Medium" | "Long") | undefined;
@@ -953,6 +1012,7 @@ export type CustomFlashEvent = {
   type: "CustomFlash";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   startColor?: ColorOrPaletteIndex | undefined;
@@ -970,14 +1030,17 @@ export type MoveCameraEvent = {
   type: "MoveCamera";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  cameraPosition?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  cameraPosition?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
   zoom?: number | undefined;
-  angle?: number | undefined;
+  angle?: (number | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   real?: boolean | undefined;
@@ -989,6 +1052,7 @@ export type HideRowEvent = {
   type: "HideRow";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   show?:
@@ -1004,22 +1068,41 @@ export type MoveRowEvent = {
   type: "MoveRow";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   target?: ("WholeRow" | "Character" | "Heart") | undefined;
   customPosition?: boolean | undefined;
-  rowPosition?: [
-    Expression,
-    Expression,
-  ] | undefined;
-  scale?: [
-    Expression,
-    Expression,
-  ] | undefined;
-  angle?: Expression | undefined;
-  pivot?: number | undefined;
+  rowPosition?:
+    | ([
+      Expression,
+      Expression,
+    ] | null)
+    | undefined;
+  scale?:
+    | ([
+      Expression,
+      Expression,
+    ] | null)
+    | undefined;
+  angle?: (Expression | null) | undefined;
+  pivot?: (number | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
+};
+export type ReorderRowEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "ReorderRow";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  row: number;
+  newRoom?: (("Room1" | "Room2" | "Room3" | "Room4") | null) | undefined;
+  order?: (number | null) | undefined;
+  transition?: ("Smooth" | "Instant" | "None") | undefined;
 };
 export type PlayExpressionEvent = {
   bar?: number | undefined;
@@ -1028,6 +1111,7 @@ export type PlayExpressionEvent = {
   type: "PlayExpression";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
   expression?: string | undefined;
@@ -1035,6 +1119,19 @@ export type PlayExpressionEvent = {
   target?:
     | ("Neutral" | "Happy" | "Barely" | "Missed" | "Prehit" | "Beep")
     | undefined;
+};
+export type ChangeCharacterEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "ChangeCharacter";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  row: number;
+  character?: string | undefined;
+  transition?: ("Smooth" | "Instant" | "Full") | undefined;
 };
 export type Border = "None" | "Outline" | "Glow";
 export type PaintRowsEvent = {
@@ -1044,19 +1141,20 @@ export type PaintRowsEvent = {
   type: "TintRows";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   row: number;
   border?: Border | undefined;
   borderColor?: ColorOrPaletteIndex | undefined;
+  borderOpacity?: number | undefined;
   tint?: boolean | undefined;
   tintColor?: ColorOrPaletteIndex | undefined;
+  tintOpacity?: number | undefined;
   opacity?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   effect?: ("None" | "Electric") | undefined;
-  borderOpacity?: number | undefined;
-  tintOpacity?: number | undefined;
 };
 export type Strength = "Low" | "Medium" | "High";
 export type BassDropEvent = {
@@ -1066,9 +1164,27 @@ export type BassDropEvent = {
   type: "BassDrop";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   strength?: Strength | undefined;
+};
+export type CustomShakeEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "ShakeScreenCustom";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  shakeType?: ("Normal" | "Smooth" | "Rotate" | "BassDrop") | undefined;
+  duration?: number | undefined;
+  amplitude?: number | undefined;
+  frequency?: number | undefined;
+  fadeOut?: boolean | undefined;
+  useBeats?: boolean | undefined;
 };
 export type ShakeScreenEvent = {
   bar?: number | undefined;
@@ -1077,9 +1193,11 @@ export type ShakeScreenEvent = {
   type: "ShakeScreen";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   shakeLevel?: Strength | undefined;
+  shakeType?: ("Normal" | "Smooth" | "Rotate" | "BassDrop") | undefined;
 };
 export type FlipScreenEvent = {
   bar?: number | undefined;
@@ -1088,6 +1206,7 @@ export type FlipScreenEvent = {
   type: "FlipScreen";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   flip?: boolean[] | undefined;
@@ -1102,6 +1221,7 @@ export type InvertColorsEvent = {
   type: "InvertColors";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   enable?: boolean | undefined;
@@ -1113,6 +1233,7 @@ export type PulseCameraEvent = {
   type: "PulseCamera";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   strength?: number | undefined;
@@ -1126,12 +1247,15 @@ export type TextExplosionEvent = {
   type: "TextExplosion";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   text?: string | undefined;
   color?: ColorOrPaletteIndex | undefined;
   mode?: ("OneColor" | "Random") | undefined;
   direction?: ("Left" | "Right") | undefined;
+  speed?: number | undefined;
+  ease?: Easing | undefined;
 };
 export type Language =
   | "English"
@@ -1150,6 +1274,7 @@ export type ShowDialogueEvent = {
   type: "ShowDialogue";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   text?: string | undefined;
@@ -1175,6 +1300,7 @@ export type ShowStatusSignEvent = {
   type: "ShowStatusSign";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   text?: string | undefined;
   duration?: number | undefined;
@@ -1188,6 +1314,7 @@ export type FloatingTextEvent = {
   type: "FloatingText";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   id?: number | undefined;
@@ -1227,6 +1354,7 @@ export type AdvanceFloatingTextEvent = {
   type: "AdvanceText";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   id?: number | undefined;
   fadeOutDuration?: (number | null) | undefined;
@@ -1238,8 +1366,9 @@ export type ChangePlayersRowsEvent = {
   type: "ChangePlayersRows";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
-  playerMode?: ("OnePlayer" | "TwoPlayers") | undefined;
+  playerMode?: ("OnePlayer" | "TwoPlayers" | "OneOrTwoPlayers") | undefined;
   players?: ("P1" | "P2" | "CPU" | "NoChange")[] | undefined;
   cpuMarkers?: string[] | undefined;
   flashingOnBeat?: boolean | undefined;
@@ -1251,6 +1380,7 @@ export type FinishLevelEvent = {
   type: "FinishLevel";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
 };
 export type OrdinaryCommentEvent = {
@@ -1260,6 +1390,7 @@ export type OrdinaryCommentEvent = {
   type: "Comment";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   text: string;
   color?: ColorOrPaletteIndex | undefined;
@@ -1273,6 +1404,7 @@ export type SpriteCommentEvent = {
   type: "Comment";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   text: string;
   color?: ColorOrPaletteIndex | undefined;
@@ -1289,11 +1421,13 @@ export type ShowHandsEvent = {
   type: "ShowHands";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   hand?: Hands | undefined;
   action?: ("Show" | "Hide" | "Raise" | "Lower") | undefined;
   extent?: ("Full" | "Short") | undefined;
+  forceRaise?: boolean | undefined;
   align?: boolean | undefined;
   instant?: boolean | undefined;
 };
@@ -1304,6 +1438,7 @@ export type PaintHandsEvent = {
   type: "PaintHands";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   hands?: Hands | undefined;
@@ -1322,6 +1457,7 @@ export type AssignHandsEvent = {
   type: "SetHandOwner";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   hand?: Hands | undefined;
@@ -1334,6 +1470,7 @@ export type TagActionEvent = {
   type: "TagAction";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   Action?:
     | ("Run" | "RunAll" | "Enable" | "Disable" | "EnableAll" | "DisableAll")
@@ -1347,6 +1484,7 @@ export type SetPlayStyleEvent = {
   type: "SetPlayStyle";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   PlayStyle?:
     | (
@@ -1373,6 +1511,7 @@ export type StutterEvent = {
   type: "Stutter";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   action?: ("Add" | "Cancel") | undefined;
@@ -1387,6 +1526,7 @@ export type CallCustomMethodEvent = {
   type: "CallCustomMethod";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   methodName: string;
   executionTime?: ("OnPrebar" | "OnBar") | undefined;
@@ -1399,6 +1539,7 @@ export type WindowDanceEvent = {
   type: "NewWindowDance";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   preset?: ("Move" | "Sway" | "Wrap" | "Ellipse" | "ShakePer") | undefined;
@@ -1431,16 +1572,21 @@ export type ResizeWindowEvent = {
   type: "WindowResize";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  scale?: [
-    Expression,
-    Expression,
-  ] | undefined;
-  pivot?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  scale?:
+    | ([
+      Expression,
+      Expression,
+    ] | null)
+    | undefined;
+  pivot?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -1455,9 +1601,12 @@ export type ActionEvent =
   | MoveCameraEvent
   | HideRowEvent
   | MoveRowEvent
+  | ReorderRowEvent
   | PlayExpressionEvent
+  | ChangeCharacterEvent
   | PaintRowsEvent
   | BassDropEvent
+  | CustomShakeEvent
   | ShakeScreenEvent
   | FlipScreenEvent
   | InvertColorsEvent
@@ -1485,21 +1634,28 @@ export type MoveSpriteEvent = {
   type: "Move";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
-  position?: [
-    Expression,
-    Expression,
-  ] | undefined;
-  scale?: [
-    Expression,
-    Expression,
-  ] | undefined;
-  angle?: Expression | undefined;
-  pivot?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  position?:
+    | ([
+      Expression,
+      Expression,
+    ] | null)
+    | undefined;
+  scale?:
+    | ([
+      Expression,
+      Expression,
+    ] | null)
+    | undefined;
+  angle?: (Expression | null) | undefined;
+  pivot?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -1509,6 +1665,7 @@ export type PaintSpriteEvent = {
   type: "Tint";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
   border?: Border | undefined;
@@ -1527,6 +1684,7 @@ export type PlayAnimationEvent = {
   type: "PlayAnimation";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
   expression?: string | undefined;
@@ -1537,9 +1695,22 @@ export type HideSpriteEvent = {
   type: "SetVisible";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
   visible?: boolean | undefined;
+};
+export type ReorderSpriteEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  type: "ReorderSprite";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  target: string;
+  newRoom?: (("Room1" | "Room2" | "Room3" | "Room4") | null) | undefined;
+  depth?: (number | null) | undefined;
 };
 export type TileSpriteEvent = {
   bar?: number | undefined;
@@ -1547,31 +1718,51 @@ export type TileSpriteEvent = {
   type: "Tile";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
-  tiling?: [
-    number | null,
-    number | null,
-  ] | undefined;
-  position?: [
-    number | null,
-    number | null,
-  ] | undefined;
-  speed?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  tiling?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
+  position?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
+  speed?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
   tilingType?: TilingType | undefined;
   interval?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
+};
+export type BlendSpriteEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  type: "Blend";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  target: string;
+  blendType?: ("None" | "Additive" | "Multiply" | "Invert") | undefined;
 };
 export type DecorationEvent =
   | MoveSpriteEvent
   | PaintSpriteEvent
   | PlayAnimationEvent
   | HideSpriteEvent
-  | TileSpriteEvent;
+  | ReorderSpriteEvent
+  | TileSpriteEvent
+  | BlendSpriteEvent;
 export type ShowRoomsHorizontallyEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
@@ -1579,6 +1770,7 @@ export type ShowRoomsHorizontallyEvent = {
   type: "ShowRooms";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   heights?: number[] | undefined;
@@ -1592,20 +1784,27 @@ export type MoveRoomEvent = {
   type: "MoveRoom";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
-  roomPosition?: [
-    number | null,
-    number | null,
-  ] | undefined;
-  scale?: [
-    number | null,
-    number | null,
-  ] | undefined;
-  angle?: number | undefined;
-  pivot?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  roomPosition?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
+  scale?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
+  angle?: (number | null) | undefined;
+  pivot?:
+    | ([
+      number | null,
+      number | null,
+    ] | null)
+    | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -1616,6 +1815,7 @@ export type ReorderRoomsEvent = {
   type: "ReorderRooms";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   order?: number[] | undefined;
 };
@@ -1626,6 +1826,7 @@ export type SetRoomContentModeEvent = {
   type: "SetRoomContentMode";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   mode?: ContentMode | undefined;
 };
@@ -1636,6 +1837,7 @@ export type MaskRoomEvent = {
   type: "MaskRoom";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   maskType?: ("Image" | "Room" | "Color" | "None") | undefined;
   image?: ImageSequence | undefined;
@@ -1653,6 +1855,7 @@ export type FadeRoomEvent = {
   type: "FadeRoom";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   opacity?: number | undefined;
   duration?: number | undefined;
@@ -1665,6 +1868,7 @@ export type SetRoomPerspectiveEvent = {
   type: "SetRoomPerspective";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
+  runTag?: boolean | undefined;
   active?: boolean | undefined;
   cornerPositions: (number | null)[][];
   duration?: number | undefined;

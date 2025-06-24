@@ -237,7 +237,10 @@ export const ReadNarrationEvent = z.object(
 );
 export const NarrateRowInfoEvent = mergeShapesToObject(
   makeEventAutoProperties("NarrateRowInfo"),
-  { customPattern: [z.string().regex(/^[-x]{6}$/).optional()] },
+  {
+    customPattern: [z.string().regex(/^[-x]{6}$/).optional()],
+    customPlayer: [z.enum(["AutoDetect", "P1", "P2"])],
+  },
 );
 export const SoundEvent = z.union([
   PlaySongEvent,
@@ -304,7 +307,6 @@ export const OrdinaryVFXPreset = z.enum([
   "BassDropOnHit",
   "ShakeOnHeartBeat",
   "ShakeOnHit",
-  "WavyRows",
   "Tile2",
   "Tile3",
   "Tile4",
@@ -349,6 +351,7 @@ export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     speed: [],
+    speedPerc: [],
     duration: [],
     ease: [],
   },
@@ -369,6 +372,7 @@ export const EaseableVFXPreset = z.enum([
   "Blur",
   "RadialBlur",
   "Dots",
+  "Fisheye",
 ]);
 export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -378,6 +382,7 @@ export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     color: [],
     speed: [],
+    speedPerc: [],
   },
 );
 export const ColoredVFXPreset = z.enum(["Diamonds", "Tutorial"]);
@@ -388,6 +393,18 @@ export const EnableColoredVFXPresetEvent = mergeShapesToObject(
     enable: [z.literal(true).optional()],
     threshold: [],
     speed: [],
+    speedPerc: [],
+  },
+);
+export const WavyRowsVFXPreset = z.enum(["WavyRows"]);
+export const EnableWavyRowsVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [WavyRowsVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    color: [],
+    speed: [],
   },
 );
 export const BloomVFXPreset = z.enum(["Bloom"]);
@@ -397,6 +414,7 @@ export const EnableBloomVFXPresetEvent = mergeShapesToObject(
     preset: [BloomVFXPreset],
     enable: [z.literal(true).optional()],
     speed: [],
+    speedPerc: [],
   },
 );
 export const ScreenVFXPreset = z.enum(["TileN", "CustomScreenScroll"]);
@@ -410,6 +428,7 @@ export const EnableScreenVFXPresetEvent = mergeShapesToObject(
     color: [],
     floatX: z.number().optional(),
     floatY: z.number().optional(),
+    speedPerc: [],
   },
 );
 export const DisableVFXPresetEvent = mergeShapesToObject(
@@ -419,6 +438,8 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
       z.enum([
         ...OrdinaryVFXPreset.options,
         ...EaseableVFXPreset.options,
+        ...ColoredVFXPreset.options,
+        ...WavyRowsVFXPreset.options,
         ...BloomVFXPreset.options,
         ...ScreenVFXPreset.options,
       ]).optional(),
@@ -428,6 +449,7 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     speed: [],
+    speedPerc: [],
     duration: [],
     ease: [],
   },
@@ -441,6 +463,7 @@ export const DisableAllVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     speed: [],
+    speedPerc: [],
     duration: [],
     ease: [],
   },
@@ -449,6 +472,7 @@ export const SetVFXPresetEvent = z.union([
   EnableOrdinaryVFXPresetEvent,
   EnableEaseableVFXPresetEvent,
   EnableColoredVFXPresetEvent,
+  EnableWavyRowsVFXPresetEvent,
   EnableBloomVFXPresetEvent,
   EnableScreenVFXPresetEvent,
   DisableVFXPresetEvent,
@@ -491,18 +515,23 @@ export const HideRowEvent = mergeShapesToObject(
 export const MoveRowEvent = z.object(
   makeEventAutoProperties("MoveRow"),
 );
+export const ReorderRowEvent = z.object(
+  makeEventAutoProperties("ReorderRow"),
+);
 export const PlayExpressionEvent = z.object(
   makeEventAutoProperties("PlayExpression"),
 );
-export const PaintRowsEvent = mergeShapesToObject(
+export const ChangeCharacterEvent = z.object(
+  makeEventAutoProperties("ChangeCharacter"),
+);
+export const PaintRowsEvent = z.object(
   makeEventAutoProperties("TintRows"),
-  {
-    borderOpacity: z.number().int().optional(),
-    tintOpacity: z.number().int().optional(),
-  },
 );
 export const BassDropEvent = z.object(
   makeEventAutoProperties("BassDrop"),
+);
+export const CustomShakeEvent = z.object(
+  makeEventAutoProperties("ShakeScreenCustom"),
 );
 export const ShakeScreenEvent = z.object(
   makeEventAutoProperties("ShakeScreen"),
@@ -604,9 +633,12 @@ export const ActionEvent = z.union([
   MoveCameraEvent,
   HideRowEvent,
   MoveRowEvent,
+  ReorderRowEvent,
   PlayExpressionEvent,
+  ChangeCharacterEvent,
   PaintRowsEvent,
   BassDropEvent,
+  CustomShakeEvent,
   ShakeScreenEvent,
   FlipScreenEvent,
   InvertColorsEvent,
@@ -645,15 +677,23 @@ export const PlayAnimationEvent = z.object(
 export const HideSpriteEvent = z.object(
   makeEventAutoProperties("SetVisible"),
 );
+export const ReorderSpriteEvent = z.object(
+  makeEventAutoProperties("ReorderSprite"),
+);
 export const TileSpriteEvent = z.object(
   makeEventAutoProperties("Tile"),
+);
+export const BlendSpriteEvent = z.object(
+  makeEventAutoProperties("Blend"),
 );
 export const DecorationEvent = z.union([
   MoveSpriteEvent,
   PaintSpriteEvent,
   PlayAnimationEvent,
   HideSpriteEvent,
+  ReorderSpriteEvent,
   TileSpriteEvent,
+  BlendSpriteEvent,
 ]);
 export const ShowRoomsHorizontallyEvent = z.object(
   makeEventAutoProperties("ShowRooms"),
@@ -779,6 +819,7 @@ export const levelTypedefs = {
   Easing,
   EnableEaseableVFXPresetEvent,
   EnableColoredVFXPresetEvent,
+  EnableWavyRowsVFXPresetEvent,
   EnableBloomVFXPresetEvent,
   EnableScreenVFXPresetEvent,
   DisableVFXPresetEvent,
@@ -796,11 +837,14 @@ export const levelTypedefs = {
   HideRowEvent,
   Expression,
   MoveRowEvent,
+  ReorderRowEvent,
   PlayExpressionEvent,
+  ChangeCharacterEvent,
   Border,
   PaintRowsEvent,
   Strength,
   BassDropEvent,
+  CustomShakeEvent,
   ShakeScreenEvent,
   FlipScreenEvent,
   InvertColorsEvent,
@@ -831,7 +875,9 @@ export const levelTypedefs = {
   PaintSpriteEvent,
   PlayAnimationEvent,
   HideSpriteEvent,
+  ReorderSpriteEvent,
   TileSpriteEvent,
+  BlendSpriteEvent,
   DecorationEvent,
   ShowRoomsHorizontallyEvent,
   MoveRoomEvent,

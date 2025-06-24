@@ -1,8 +1,11 @@
-import { zodToJsonSchema as zodToJsonSchemaFn } from "npm:zod-to-json-schema@3.24.1";
+import {
+  type Options,
+  zodToJsonSchema as zodToJsonSchemaFn,
+} from "npm:zod-to-json-schema@3.24.5";
 import type { LiteralUnion } from "type-fest/literal-union";
 import type { ZodType } from "zod";
 
-type Id<T> = T;
+export * from "npm:zod-to-json-schema@3.24.5";
 export type JsonSchemaType = typeof zodToJsonSchemaFn<"jsonSchema7"> extends
   (type: ZodType) => { definitions?: Record<string, infer T> | undefined } ? T
   : JsonSchemaType;
@@ -12,20 +15,13 @@ type GetDefinitionPath<T extends { definitionPath?: string }> =
     : DefaultDefinitionPath;
 type Result<S, P extends string> = Partial<Record<P, Record<string, S>>> & S;
 
-export interface ZodToOpenApiOptions
-  extends Omit<ZodToJsonSchemaOptions, "target"> {
-  target: "openApi3";
-}
+export interface ZodToOpenApiOptions extends Partial<Options<"openApi3">> {}
 
 export type ZodToOpenApiResult<P extends string = DefaultDefinitionPath> =
   Result<Record<string, unknown>, P>;
 
-export interface ZodToJsonSchemaOptions extends
-  Id<
-    typeof zodToJsonSchemaFn<"jsonSchema7"> extends
-      (type: never, options?: string | infer T) => unknown ? T
-      : ZodToJsonSchemaOptions
-  > {
+export interface ZodToJsonSchemaOptions
+  extends Partial<Options<"jsonSchema7">> {
   definitionPath?: LiteralUnion<"definitions" | "$defs", string>;
 }
 

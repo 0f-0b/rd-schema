@@ -168,6 +168,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -244,6 +247,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -337,6 +343,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -394,6 +403,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -435,6 +447,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -507,6 +522,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -544,6 +562,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -682,6 +703,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -719,6 +743,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -765,6 +792,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -783,6 +813,9 @@
             "JustSayGo",
             "JustSayStop",
             "JustSayAndStop",
+            "SaySwitch",
+            "SayWatch",
+            "SayListen",
             "Count1",
             "Count2",
             "Count3",
@@ -902,6 +935,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -952,6 +988,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -1030,6 +1069,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1091,6 +1133,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -1188,6 +1233,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1227,6 +1275,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1260,11 +1311,20 @@
         "customPattern": {
           "type": "string",
           "pattern": "^[-x]{6}$"
+        },
+        "customPlayer": {
+          "type": "string",
+          "enum": [
+            "AutoDetect",
+            "P1",
+            "P2"
+          ]
         }
       },
       "required": [
         "type",
-        "row"
+        "row",
+        "customPlayer"
       ],
       "additionalProperties": false
     },
@@ -1335,6 +1395,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1392,6 +1455,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -1459,6 +1525,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1503,6 +1572,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -1557,6 +1629,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -1644,6 +1719,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1723,6 +1801,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -1830,6 +1911,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1849,7 +1933,6 @@
             "BassDropOnHit",
             "ShakeOnHeartBeat",
             "ShakeOnHit",
-            "WavyRows",
             "Tile2",
             "Tile3",
             "Tile4",
@@ -1961,6 +2044,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -1987,7 +2073,8 @@
             "Aberration",
             "Blur",
             "RadialBlur",
-            "Dots"
+            "Dots",
+            "Fisheye"
           ]
         },
         "enable": {
@@ -2036,6 +2123,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -2077,6 +2167,75 @@
       ],
       "additionalProperties": false
     },
+    "EnableWavyRowsVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "WavyRows"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": -9999,
+          "maximum": 9999
+        },
+        "speedPerc": {
+          "type": "number",
+          "minimum": -9999,
+          "maximum": 9999
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
     "EnableBloomVFXPresetEvent": {
       "type": "object",
       "properties": {
@@ -2100,6 +2259,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -2167,6 +2329,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -2250,6 +2415,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -2269,7 +2437,6 @@
             "BassDropOnHit",
             "ShakeOnHeartBeat",
             "ShakeOnHit",
-            "WavyRows",
             "Tile2",
             "Tile3",
             "Tile4",
@@ -2319,6 +2486,10 @@
             "Blur",
             "RadialBlur",
             "Dots",
+            "Fisheye",
+            "Diamonds",
+            "Tutorial",
+            "WavyRows",
             "Bloom",
             "TileN",
             "CustomScreenScroll"
@@ -2359,6 +2530,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -2389,6 +2563,9 @@
         },
         {
           "$ref": "#/definitions/EnableColoredVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableWavyRowsVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/EnableBloomVFXPresetEvent"
@@ -2458,6 +2635,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -2560,6 +2740,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -2651,6 +2834,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -2694,6 +2880,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -2741,6 +2930,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -2806,6 +2998,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -2816,33 +3011,40 @@
           }
         },
         "cameraPosition": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "anyOf": [
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
                 {
-                  "type": "number",
-                  "minimum": -100,
-                  "maximum": 200
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -100,
+                      "maximum": 200
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 {
-                  "type": "null"
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -100,
+                      "maximum": 200
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
               ]
             },
             {
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": -100,
-                  "maximum": 200
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "type": "null"
             }
           ]
         },
@@ -2852,9 +3054,16 @@
           "maximum": 9999
         },
         "angle": {
-          "type": "number",
-          "minimum": -9999,
-          "maximum": 9999
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "duration": {
           "type": "number"
@@ -2894,6 +3103,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -2963,6 +3175,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -2981,42 +3196,142 @@
           "type": "boolean"
         },
         "rowPosition": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "$ref": "#/definitions/Expression"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "$ref": "#/definitions/Expression"
+                },
+                {
+                  "$ref": "#/definitions/Expression"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/Expression"
+              "type": "null"
             }
           ]
         },
         "scale": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "$ref": "#/definitions/Expression"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "$ref": "#/definitions/Expression"
+                },
+                {
+                  "$ref": "#/definitions/Expression"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/Expression"
+              "type": "null"
             }
           ]
         },
         "angle": {
-          "$ref": "#/definitions/Expression"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "pivot": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "duration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "ReorderRowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ReorderRow"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "newRoom": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "Room1",
+                "Room2",
+                "Room3",
+                "Room4"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transition": {
+          "type": "string",
+          "enum": [
+            "Smooth",
+            "Instant",
+            "None"
+          ]
         }
       },
       "required": [
@@ -3049,6 +3364,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3070,6 +3388,57 @@
             "Missed",
             "Prehit",
             "Beep"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "ChangeCharacterEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ChangeCharacter"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer"
+        },
+        "character": {
+          "type": "string"
+        },
+        "transition": {
+          "type": "string",
+          "enum": [
+            "Smooth",
+            "Instant",
+            "Full"
           ]
         }
       },
@@ -3111,6 +3480,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3129,11 +3501,21 @@
         "borderColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
+        "borderOpacity": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
         "tint": {
           "type": "boolean"
         },
         "tintColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "tintOpacity": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
         "opacity": {
           "type": "integer",
@@ -3153,12 +3535,6 @@
             "None",
             "Electric"
           ]
-        },
-        "borderOpacity": {
-          "type": "integer"
-        },
-        "tintOpacity": {
-          "type": "integer"
         }
       },
       "required": [
@@ -3199,6 +3575,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3210,6 +3589,77 @@
         },
         "strength": {
           "$ref": "#/definitions/Strength"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "CustomShakeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string",
+          "const": "ShakeScreenCustom"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "shakeType": {
+          "type": "string",
+          "enum": [
+            "Normal",
+            "Smooth",
+            "Rotate",
+            "BassDrop"
+          ]
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "amplitude": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "frequency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "fadeOut": {
+          "type": "boolean"
+        },
+        "useBeats": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -3241,6 +3691,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3252,6 +3705,15 @@
         },
         "shakeLevel": {
           "$ref": "#/definitions/Strength"
+        },
+        "shakeType": {
+          "type": "string",
+          "enum": [
+            "Normal",
+            "Smooth",
+            "Rotate",
+            "BassDrop"
+          ]
         }
       },
       "required": [
@@ -3289,6 +3751,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -3346,6 +3811,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3387,6 +3855,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -3441,6 +3912,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3469,6 +3943,14 @@
             "Left",
             "Right"
           ]
+        },
+        "speed": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -3513,6 +3995,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -3606,6 +4091,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3651,6 +4139,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -3766,6 +4257,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3810,6 +4304,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -3817,7 +4314,8 @@
           "type": "string",
           "enum": [
             "OnePlayer",
-            "TwoPlayers"
+            "TwoPlayers",
+            "OneOrTwoPlayers"
           ]
         },
         "players": {
@@ -3871,6 +4369,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         }
@@ -3903,6 +4404,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -3954,6 +4458,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -4027,6 +4534,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4054,6 +4564,9 @@
             "Full",
             "Short"
           ]
+        },
+        "forceRaise": {
+          "type": "boolean"
         },
         "align": {
           "type": "boolean"
@@ -4090,6 +4603,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -4157,6 +4673,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4201,6 +4720,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -4249,6 +4771,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -4306,6 +4831,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -4366,6 +4894,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4414,6 +4945,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -4557,6 +5091,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4567,34 +5104,48 @@
           }
         },
         "scale": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "$ref": "#/definitions/Expression"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "$ref": "#/definitions/Expression"
+                },
+                {
+                  "$ref": "#/definitions/Expression"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/Expression"
+              "type": "null"
             }
           ]
         },
         "pivot": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "null"
             }
           ]
         },
@@ -4643,13 +5194,22 @@
           "$ref": "#/definitions/MoveRowEvent"
         },
         {
+          "$ref": "#/definitions/ReorderRowEvent"
+        },
+        {
           "$ref": "#/definitions/PlayExpressionEvent"
+        },
+        {
+          "$ref": "#/definitions/ChangeCharacterEvent"
         },
         {
           "$ref": "#/definitions/PaintRowsEvent"
         },
         {
           "$ref": "#/definitions/BassDropEvent"
+        },
+        {
+          "$ref": "#/definitions/CustomShakeEvent"
         },
         {
           "$ref": "#/definitions/ShakeScreenEvent"
@@ -4737,6 +5297,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4744,50 +5307,78 @@
           "type": "string"
         },
         "position": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "$ref": "#/definitions/Expression"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "$ref": "#/definitions/Expression"
+                },
+                {
+                  "$ref": "#/definitions/Expression"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/Expression"
+              "type": "null"
             }
           ]
         },
         "scale": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "$ref": "#/definitions/Expression"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "$ref": "#/definitions/Expression"
+                },
+                {
+                  "$ref": "#/definitions/Expression"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/Expression"
+              "type": "null"
             }
           ]
         },
         "angle": {
-          "$ref": "#/definitions/Expression"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "pivot": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "null"
             }
           ]
         },
@@ -4824,6 +5415,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -4889,6 +5483,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4926,6 +5523,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4934,6 +5534,71 @@
         },
         "visible": {
           "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "ReorderSpriteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "ReorderSprite"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "newRoom": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "Room1",
+                "Room2",
+                "Room3",
+                "Room4"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "depth": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -4963,6 +5628,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -4970,59 +5638,80 @@
           "type": "string"
         },
         "tiling": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "null"
             }
           ]
         },
         "position": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "null"
             }
           ]
         },
         "speed": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "null"
             }
           ]
         },
@@ -5047,6 +5736,52 @@
       ],
       "additionalProperties": false
     },
+    "BlendSpriteEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "Blend"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "blendType": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Additive",
+            "Multiply",
+            "Invert"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "target"
+      ],
+      "additionalProperties": false
+    },
     "DecorationEvent": {
       "anyOf": [
         {
@@ -5062,7 +5797,13 @@
           "$ref": "#/definitions/HideSpriteEvent"
         },
         {
+          "$ref": "#/definitions/ReorderSpriteEvent"
+        },
+        {
           "$ref": "#/definitions/TileSpriteEvent"
+        },
+        {
+          "$ref": "#/definitions/BlendSpriteEvent"
         }
       ]
     },
@@ -5089,6 +5830,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -5143,80 +5887,111 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
         "roomPosition": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "anyOf": [
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
                 {
-                  "type": "number",
-                  "minimum": -10000,
-                  "maximum": 10000
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 {
-                  "type": "null"
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
               ]
             },
             {
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": -10000,
-                  "maximum": 10000
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "type": "null"
             }
           ]
         },
         "scale": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "null"
             }
           ]
         },
         "angle": {
-          "type": "number",
-          "minimum": -9999,
-          "maximum": 9999
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "pivot": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "null"
             }
           ]
         },
@@ -5255,6 +6030,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -5297,6 +6075,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -5332,6 +6113,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
@@ -5406,6 +6190,9 @@
         "tag": {
           "type": "string"
         },
+        "runTag": {
+          "type": "boolean"
+        },
         "active": {
           "type": "boolean"
         },
@@ -5449,6 +6236,9 @@
         },
         "tag": {
           "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
         },
         "active": {
           "type": "boolean"
