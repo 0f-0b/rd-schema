@@ -1709,7 +1709,7 @@ export type ReorderSpriteEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
-  newRoom?: (("Room1" | "Room2" | "Room3" | "Room4") | null) | undefined;
+  newRoom?: (number | null) | undefined;
   depth?: (number | null) | undefined;
 };
 export type TileSpriteEvent = {

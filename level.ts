@@ -515,9 +515,8 @@ export const HideRowEvent = mergeShapesToObject(
 export const MoveRowEvent = z.object(
   makeEventAutoProperties("MoveRow"),
 );
-export const ReorderRowEvent = mergeShapesToObject(
+export const ReorderRowEvent = z.object(
   makeEventAutoProperties("ReorderRow"),
-  { newRoom: [z.number().int().min(0).max(3).nullable().optional()] },
 );
 export const PlayExpressionEvent = z.object(
   makeEventAutoProperties("PlayExpression"),

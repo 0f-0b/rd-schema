@@ -567,7 +567,7 @@ const makeAutoPropertyValue = (
         case "\0ReferenceType":
           return z.enum(["Center", "Edge"]);
         case "\0RoomSelectType":
-          return z.enum(["Room1", "Room2", "Room3", "Room4"]);
+          return z.number().int().min(0).max(3);
         case "\0RowEffect":
           return z.enum(["None", "Electric"]);
         case "\0RowType":
