@@ -371,8 +371,8 @@ export const EaseableVFXPreset = z.enum([
   "Aberration",
   "Blur",
   "RadialBlur",
-  "Dots",
   "Fisheye",
+  "Dots",
 ]);
 export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
