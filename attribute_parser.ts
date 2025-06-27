@@ -49,7 +49,7 @@ class DataReader {
   }
 
   readSerString(): string | null {
-    return this.#view.getUint8(this.#offset) == 255
+    return this.#view.getUint8(this.#offset) === 255
       ? null
       : decoder.decode(this.readBuffer());
   }
