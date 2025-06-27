@@ -2073,8 +2073,8 @@
             "Aberration",
             "Blur",
             "RadialBlur",
-            "Dots",
-            "Fisheye"
+            "Fisheye",
+            "Dots"
           ]
         },
         "enable": {
@@ -2485,8 +2485,8 @@
             "Aberration",
             "Blur",
             "RadialBlur",
-            "Dots",
             "Fisheye",
+            "Dots",
             "Diamonds",
             "Tutorial",
             "WavyRows",

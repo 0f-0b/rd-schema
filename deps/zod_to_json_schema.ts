@@ -1,11 +1,11 @@
 import {
   type Options,
   zodToJsonSchema as zodToJsonSchemaFn,
-} from "npm:zod-to-json-schema@3.24.5";
+} from "npm:zod-to-json-schema@3.24.6";
 import type { LiteralUnion } from "type-fest/literal-union";
 import type { ZodType } from "zod";
 
-export * from "npm:zod-to-json-schema@3.24.5";
+export * from "npm:zod-to-json-schema@3.24.6";
 export type JsonSchemaType = typeof zodToJsonSchemaFn<"jsonSchema7"> extends
   (type: ZodType) => { definitions?: Record<string, infer T> | undefined } ? T
   : JsonSchemaType;

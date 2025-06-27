@@ -739,8 +739,8 @@ export type EnableEaseableVFXPresetEvent = {
     | "Aberration"
     | "Blur"
     | "RadialBlur"
-    | "Dots"
-    | "Fisheye";
+    | "Fisheye"
+    | "Dots";
   enable?: true | undefined;
   intensity?: number | undefined;
   duration?: number | undefined;
@@ -886,8 +886,8 @@ export type DisableVFXPresetEvent = {
       | "Aberration"
       | "Blur"
       | "RadialBlur"
-      | "Dots"
       | "Fisheye"
+      | "Dots"
       | "Diamonds"
       | "Tutorial"
       | "WavyRows"
