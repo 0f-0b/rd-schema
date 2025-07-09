@@ -1015,10 +1015,10 @@ export type CustomFlashEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  startColor?: ColorOrPaletteIndex | undefined;
-  endColor?: ColorOrPaletteIndex | undefined;
-  startOpacity?: number | undefined;
-  endOpacity?: number | undefined;
+  startColor?: (ColorOrPaletteIndex | null) | undefined;
+  startOpacity?: (number | null) | undefined;
+  endColor?: (ColorOrPaletteIndex | null) | undefined;
+  endOpacity?: (number | null) | undefined;
   background?: boolean | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;

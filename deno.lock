@@ -1,18 +1,25 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@std/path@1": "1.1.0",
+    "jsr:@std/internal@^1.0.9": "1.0.9",
+    "jsr:@std/path@1": "1.1.1",
     "npm:@types/node@*": "22.15.15",
     "npm:pe-struct@0.9.4": "0.9.4",
     "npm:type-fest@4": "4.41.0",
     "npm:typescript@5.8.3": "5.8.3",
-    "npm:zod-to-json-schema@3.24.6": "3.24.6_zod@3.25.67",
-    "npm:zod-to-ts@1.2.0": "1.2.0_typescript@5.8.3_zod@3.25.67",
-    "npm:zod@3.25.67": "3.25.67"
+    "npm:zod-to-json-schema@3.24.6": "3.24.6_zod@3.25.76",
+    "npm:zod-to-ts@1.2.0": "1.2.0_typescript@5.8.3_zod@3.25.76",
+    "npm:zod@3.25.76": "3.25.76"
   },
   "jsr": {
-    "@std/path@1.1.0": {
-      "integrity": "ddc94f8e3c275627281cbc23341df6b8bcc874d70374f75fec2533521e3d6886"
+    "@std/internal@1.0.9": {
+      "integrity": "bdfb97f83e4db7a13e8faab26fb1958d1b80cc64366501af78a0aee151696eb8"
+    },
+    "@std/path@1.1.1": {
+      "integrity": "fe00026bd3a7e6a27f73709b83c607798be40e20c81dde655ce34052fd82ec76",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
     }
   },
   "npm": {
@@ -35,21 +42,21 @@
     "undici-types@6.21.0": {
       "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="
     },
-    "zod-to-json-schema@3.24.6_zod@3.25.67": {
+    "zod-to-json-schema@3.24.6_zod@3.25.76": {
       "integrity": "sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg==",
       "dependencies": [
         "zod"
       ]
     },
-    "zod-to-ts@1.2.0_typescript@5.8.3_zod@3.25.67": {
+    "zod-to-ts@1.2.0_typescript@5.8.3_zod@3.25.76": {
       "integrity": "sha512-x30XE43V+InwGpvTySRNz9kB7qFU8DlyEy7BsSTCHPH1R0QasMmHWZDCzYm6bVXtj/9NNJAZF3jW8rzFvH5OFA==",
       "dependencies": [
         "typescript",
         "zod"
       ]
     },
-    "zod@3.25.67": {
-      "integrity": "sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw=="
+    "zod@3.25.76": {
+      "integrity": "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="
     }
   },
   "workspace": {

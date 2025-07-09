@@ -1,6 +1,8 @@
 import { PE } from "pe-struct-0";
 import { z, type ZodType } from "zod";
 
+import { requireEnv } from "./env.ts";
+
 const clampInts = false;
 const decoder = new TextDecoder(undefined, { fatal: true, ignoreBOM: true });
 
@@ -79,10 +81,7 @@ class DataReader {
   }
 }
 
-const assemblyPath = Deno.env.get("RD_ASSEMBLY_PATH");
-if (assemblyPath === undefined) {
-  throw new TypeError("'RD_ASSEMBLY_PATH' is not set");
-}
+const assemblyPath = requireEnv("RD_ASSEMBLY_PATH");
 const assembly = PE.load(Deno.readFileSync(assemblyPath).slice().buffer);
 const stringsHeap = new DataView(
   assembly.data.buffer,
