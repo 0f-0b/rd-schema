@@ -1,4 +1,4 @@
-import { PE } from "pe-struct-0";
+import PE from "pe-struct";
 import { z, type ZodType } from "zod";
 
 import { requireEnv } from "./env.ts";
@@ -202,18 +202,28 @@ const descriptionType = getCtorIndexByFullName(
   "RDLevelEditor\0DescriptionAttribute",
 );
 const buttonType = getCtorIndexByFullName("RDLevelEditor\0ButtonAttribute");
-export const ConditionExpression = z.string().or(z.number().int().array());
+export const ConditionExpression = z.string().or(z.int32().array())
+  .meta({ id: "ConditionExpression" });
 export const ColorOrPaletteIndex = z.string()
-  .regex(/^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\d+)$/);
-export const Expression = z.union([z.number(), z.string(), z.null()]);
+  .regex(/^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\d+)$/)
+  .meta({ id: "ColorOrPaletteIndex" });
+export const Expression = z.union([
+  z.number(),
+  z.string(),
+  z.null(),
+]).meta({ id: "Expression" });
 export const Sound = z.object({
   filename: z.string(),
-  volume: z.number().int().optional(),
-  pitch: z.number().int().optional(),
-  pan: z.number().int().optional(),
-  offset: z.number().int().optional(),
-});
-export const Border = z.enum(["None", "Outline", "Glow"]);
+  volume: z.int32().optional(),
+  pitch: z.int32().optional(),
+  pan: z.int32().optional(),
+  offset: z.int32().optional(),
+}).meta({ id: "Sound" });
+export const Border = z.enum([
+  "None",
+  "Outline",
+  "Glow",
+]).meta({ id: "Border" });
 export const ContentMode = z.enum([
   "ScaleToFill",
   "AspectFit",
@@ -221,8 +231,14 @@ export const ContentMode = z.enum([
   "Center",
   "Tiled",
   "Real",
-]);
-export const Hands = z.enum(["Left", "Right", "p1", "p2", "Both"]);
+]).meta({ id: "ContentMode" });
+export const Hands = z.enum([
+  "Left",
+  "Right",
+  "p1",
+  "p2",
+  "Both",
+]).meta({ id: "Hands" });
 export const NarrationCategory = z.enum([
   "Fallback",
   "Navigation",
@@ -231,9 +247,9 @@ export const NarrationCategory = z.enum([
   "Dialogue",
   "Description",
   "Subtitles",
-]);
-export const Player = z.enum(["P1", "P2", "CPU"]);
-export const RowType = z.enum(["Classic", "Oneshot"]);
+]).meta({ id: "NarrationCategory" });
+export const Player = z.enum(["P1", "P2", "CPU"]).meta({ id: "Player" });
+export const RowType = z.enum(["Classic", "Oneshot"]).meta({ id: "RowType" });
 export const Easing = z.enum([
   "Unset",
   "Linear",
@@ -267,8 +283,11 @@ export const Easing = z.enum([
   "InBounce",
   "OutBounce",
   "InOutBounce",
-]);
-export const FilterMode = z.enum(["NearestNeighbor", "Bilinear"]);
+]).meta({ id: "Easing" });
+export const FilterMode = z.enum([
+  "NearestNeighbor",
+  "Bilinear",
+]).meta({ id: "FilterMode" });
 export const GameSoundType = z.enum([
   "ClapSoundP1Classic",
   "ClapSoundP2Classic",
@@ -318,9 +337,16 @@ export const GameSoundType = z.enum([
   "FreezeshotSound",
   "BurnshotSound",
   "Skipshot",
-]);
-export const Strength = z.enum(["Low", "Medium", "High"]);
-export const TilingType = z.enum(["Scroll", "Pulse"]);
+]).meta({ id: "GameSoundType" });
+export const Strength = z.enum([
+  "Low",
+  "Medium",
+  "High",
+]).meta({ id: "Strength" });
+export const TilingType = z.enum([
+  "Scroll",
+  "Pulse",
+]).meta({ id: "TilingType" });
 export const Language = z.enum([
   "English",
   "Spanish",
@@ -331,7 +357,7 @@ export const Language = z.enum([
   "Polish",
   "Japanese",
   "German",
-]);
+]).meta({ id: "Language" });
 const makeAutoPropertyValue = (
   propertyIndex: number,
   signature: DataReader,
@@ -351,7 +377,7 @@ const makeAutoPropertyValue = (
         min = intInfo.readInt32LE();
         max = intInfo.readInt32LE();
       }
-      return z.number().int().min(min).max(max);
+      return z.int32().min(min).max(max);
     }
     case 12: {
       let min = -Infinity;
@@ -365,14 +391,7 @@ const makeAutoPropertyValue = (
         min = floatInfo.readFloat32LE();
         max = floatInfo.readFloat32LE();
       }
-      let prop = z.number();
-      if (min !== -Infinity) {
-        prop = prop.min(min);
-      }
-      if (max !== Infinity) {
-        prop = prop.max(max);
-      }
-      return prop;
+      return z.number().min(min).max(max);
     }
     case 14:
       return z.string();
@@ -566,7 +585,7 @@ const makeAutoPropertyValue = (
         case "\0ReferenceType":
           return z.enum(["Center", "Edge"]);
         case "\0RoomSelectType":
-          return z.number().int().min(0).max(3);
+          return z.int32().min(0).max(3);
         case "\0RowEffect":
           return z.enum(["None", "Electric"]);
         case "\0RowType":
@@ -855,16 +874,16 @@ export const makeEventAutoProperties = (
   const hasRow = defaultRow !== -10;
   const hasRooms = roomsUsage !== 0;
   return {
-    ...hasBar ? { bar: z.number().int().min(1).optional() } : null,
+    ...hasBar ? { bar: z.int32().min(1).optional() } : null,
     ...hasBeat ? { beat: z.number().min(1).optional() } : null,
-    ...hasY ? { y: z.number().int().optional() } : null,
+    ...hasY ? { y: z.int32().optional() } : null,
     ...hasType ? { type: z.literal(type) } : null,
     if: ConditionExpression.optional(),
     tag: z.string().optional(),
     runTag: z.boolean().optional(),
     active: z.boolean().optional(),
-    ...hasRooms ? { rooms: z.number().int().array().optional() } : null,
-    ...hasRow ? { row: z.number().int() } : null,
+    ...hasRooms ? { rooms: z.int32().array().optional() } : null,
+    ...hasRow ? { row: z.int32() } : null,
     ...hasTarget ? { target: z.string() } : null,
     ...makeAutoProperties(typeDefIndex),
   };
@@ -879,7 +898,7 @@ export const makeConditionalAutoProperties = (
     type: z.literal(type),
     tag: z.string().optional(),
     name: z.string(),
-    id: z.number().int(),
+    id: z.int32(),
     ...makeAutoProperties(typeDefIndex),
   };
 };

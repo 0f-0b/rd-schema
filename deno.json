@@ -1,13 +1,11 @@
 {
   "imports": {
+    "@dprint/formatter": "jsr:@dprint/formatter@^0.4.0",
+    "@dprint/typescript": "npm:@dprint/typescript@^0.95.0",
     "@std/path": "jsr:@std/path@^1.0.0",
-    "pe-struct-0": "./deps/pe_struct.ts",
-    "type-fest": "npm:type-fest@^4.0.0",
-    "type-fest/": "npm:/type-fest@^4.0.0/source/",
-    "typescript": "./deps/typescript.ts",
-    "zod": "./deps/zod.ts",
-    "zod-to-json-schema": "./deps/zod_to_json_schema.ts",
-    "zod-to-ts": "./deps/zod_to_ts.ts"
+    "pe-struct": "npm:pe-struct@0.9.4",
+    "type-fest": "npm:type-fest@^5.0.0",
+    "zod": "jsr:@zod/zod@4.1.12"
   },
   "compilerOptions": {
     "exactOptionalPropertyTypes": true
@@ -24,7 +22,7 @@
     }
   },
   "tasks": {
-    "cache": "deno cache --allow-import=jsr.io:443 scripts/generate_dts.ts scripts/generate_json_schemas.ts",
-    "lint": "deno fmt --check && deno lint && deno check --all --allow-import=jsr.io:443 scripts/generate_dts.ts && deno check --all scripts/generate_json_schemas.ts"
+    "cache": "deno cache --unstable-raw-imports --allow-import=jsr.io:443 scripts/generate_dts.ts scripts/generate_json_schemas.ts",
+    "lint": "deno fmt --check && deno lint && deno check --unstable-raw-imports --all --allow-import=jsr.io:443 scripts/generate_dts.ts && deno check --all --allow-import=jsr.io:443 scripts/generate_json_schemas.ts"
   }
 }

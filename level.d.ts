@@ -28,10 +28,11 @@ export type Settings = {
   mods?: (string[] | string) | undefined;
   rankDescription: string[];
 };
+export type ConditionExpression = string | number[];
 export type RowType = "Classic" | "Oneshot";
 export type Player = "P1" | "P2" | "CPU";
 export type Row = {
-  if?: (string | number[]) | undefined;
+  if?: ConditionExpression | undefined;
   tag?: string | undefined;
   runTag?: boolean | undefined;
   active?: boolean | undefined;
@@ -53,7 +54,7 @@ export type Row = {
 };
 export type FilterMode = "NearestNeighbor" | "Bilinear";
 export type Decoration = {
-  if?: (string | number[]) | undefined;
+  if?: ConditionExpression | undefined;
   tag?: string | undefined;
   runTag?: boolean | undefined;
   active?: boolean | undefined;
@@ -72,7 +73,6 @@ export type Sound = {
   pan?: number | undefined;
   offset?: number | undefined;
 };
-export type ConditionExpression = string | number[];
 export type PlaySongEvent = {
   bar?: number | undefined;
   y?: number | undefined;
@@ -680,7 +680,6 @@ export type EnableOrdinaryVFXPresetEvent = {
     | undefined;
   enable?: true | undefined;
 };
-export type ColorOrPaletteIndex = string;
 export type Easing =
   | "Unset"
   | "Linear"
@@ -746,6 +745,7 @@ export type EnableEaseableVFXPresetEvent = {
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
+export type ColorOrPaletteIndex = string;
 export type EnableColoredVFXPresetEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
@@ -810,10 +810,7 @@ export type EnableScreenVFXPresetEvent = {
   rooms?: number[] | undefined;
   preset: "TileN" | "CustomScreenScroll";
   enable?: true | undefined;
-  speed?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  speed?: [(number | null), (number | null)] | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   floatX?: number | undefined;
@@ -945,10 +942,7 @@ export type SetBackgroundEvent = {
   contentMode?: ContentMode | undefined;
   filter?: FilterMode | undefined;
   tilingType?: TilingType | undefined;
-  speed?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  speed?: [(number | null), (number | null)] | undefined;
   duration?: number | undefined;
   interval?: number | undefined;
   ease?: Easing | undefined;
@@ -970,10 +964,7 @@ export type SetForegroundEvent = {
   fps?: number | undefined;
   contentMode?: ContentMode | undefined;
   tilingType?: TilingType | undefined;
-  speed?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  speed?: [(number | null), (number | null)] | undefined;
   duration?: number | undefined;
   interval?: number | undefined;
   ease?: Easing | undefined;
@@ -1033,12 +1024,7 @@ export type MoveCameraEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  cameraPosition?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
+  cameraPosition?: ([(number | null), (number | null)] | null) | undefined;
   zoom?: number | undefined;
   angle?: (number | null) | undefined;
   duration?: number | undefined;
@@ -1073,18 +1059,8 @@ export type MoveRowEvent = {
   row: number;
   target?: ("WholeRow" | "Character" | "Heart") | undefined;
   customPosition?: boolean | undefined;
-  rowPosition?:
-    | ([
-      Expression,
-      Expression,
-    ] | null)
-    | undefined;
-  scale?:
-    | ([
-      Expression,
-      Expression,
-    ] | null)
-    | undefined;
+  rowPosition?: ([Expression, Expression] | null) | undefined;
+  scale?: ([Expression, Expression] | null) | undefined;
   angle?: (Expression | null) | undefined;
   pivot?: (number | null) | undefined;
   duration?: number | undefined;
@@ -1257,16 +1233,6 @@ export type TextExplosionEvent = {
   speed?: number | undefined;
   ease?: Easing | undefined;
 };
-export type Language =
-  | "English"
-  | "Spanish"
-  | "Portuguese"
-  | "ChineseSimplified"
-  | "ChineseTraditional"
-  | "Korean"
-  | "Polish"
-  | "Japanese"
-  | "German";
 export type ShowDialogueEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
@@ -1322,10 +1288,7 @@ export type FloatingTextEvent = {
   times?: (string | null) | undefined;
   color?: ColorOrPaletteIndex | undefined;
   outlineColor?: ColorOrPaletteIndex | undefined;
-  textPosition?: [
-    number,
-    number,
-  ] | undefined;
+  textPosition?: [number, number] | undefined;
   size?: number | undefined;
   angle?: number | undefined;
   showChildren?: boolean | undefined;
@@ -1544,18 +1507,12 @@ export type WindowDanceEvent = {
   rooms?: number[] | undefined;
   preset?: ("Move" | "Sway" | "Wrap" | "Ellipse" | "ShakePer") | undefined;
   samePresetBehavior?: ("Keep" | "Reset") | undefined;
-  position?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  position?: [(number | null), (number | null)] | undefined;
   reference?: ("Center" | "Edge") | undefined;
   speed?: number | undefined;
   useCircle?: boolean | undefined;
   amplitude?: number | undefined;
-  amplitudeVector?: [
-    number | null,
-    number | null,
-  ] | undefined;
+  amplitudeVector?: [(number | null), (number | null)] | undefined;
   angle?: number | undefined;
   frequency?: number | undefined;
   period?: number | undefined;
@@ -1575,18 +1532,8 @@ export type ResizeWindowEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  scale?:
-    | ([
-      Expression,
-      Expression,
-    ] | null)
-    | undefined;
-  pivot?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
+  scale?: ([Expression, Expression] | null) | undefined;
+  pivot?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -1637,25 +1584,10 @@ export type MoveSpriteEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
-  position?:
-    | ([
-      Expression,
-      Expression,
-    ] | null)
-    | undefined;
-  scale?:
-    | ([
-      Expression,
-      Expression,
-    ] | null)
-    | undefined;
+  position?: ([Expression, Expression] | null) | undefined;
+  scale?: ([Expression, Expression] | null) | undefined;
   angle?: (Expression | null) | undefined;
-  pivot?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
+  pivot?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -1721,24 +1653,9 @@ export type TileSpriteEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
-  tiling?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
-  position?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
-  speed?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
+  tiling?: ([(number | null), (number | null)] | null) | undefined;
+  position?: ([(number | null), (number | null)] | null) | undefined;
+  speed?: ([(number | null), (number | null)] | null) | undefined;
   tilingType?: TilingType | undefined;
   interval?: number | undefined;
   duration?: number | undefined;
@@ -1786,25 +1703,10 @@ export type MoveRoomEvent = {
   tag?: string | undefined;
   runTag?: boolean | undefined;
   active?: boolean | undefined;
-  roomPosition?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
-  scale?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
+  roomPosition?: ([(number | null), (number | null)] | null) | undefined;
+  scale?: ([(number | null), (number | null)] | null) | undefined;
   angle?: (number | null) | undefined;
-  pivot?:
-    | ([
-      number | null,
-      number | null,
-    ] | null)
-    | undefined;
+  pivot?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -1920,6 +1822,16 @@ export type TimesExecutedConditional = {
   id: number;
   maxTimes?: number | undefined;
 };
+export type Language =
+  | "English"
+  | "Spanish"
+  | "Portuguese"
+  | "ChineseSimplified"
+  | "ChineseTraditional"
+  | "Korean"
+  | "Polish"
+  | "Japanese"
+  | "German";
 export type LanguageConditional = {
   type: "Language";
   tag?: string | undefined;
@@ -1940,11 +1852,7 @@ export type Conditional =
   | TimesExecutedConditional
   | LanguageConditional
   | PlayerModeConditional;
-export type Bookmark = {
-  bar: number;
-  beat: number;
-  color: number;
-};
+export type Bookmark = { bar: number; beat: number; color: number };
 export type Color = string;
 export type Level = {
   $schema?: string | undefined;

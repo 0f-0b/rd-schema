@@ -1,83 +1,8 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://0f-0b.github.io/rd-schema/character.json",
   "$ref": "#/definitions/Character",
   "definitions": {
-    "Clip": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "frames": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "loopStart": {
-          "type": "integer"
-        },
-        "loop": {
-          "type": "string",
-          "enum": [
-            "yes",
-            "onBeat",
-            "no"
-          ]
-        },
-        "fps": {
-          "type": "number"
-        },
-        "pivotOffset": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "portraitOffset": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "portraitSize": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "portraitScale": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "name",
-        "frames",
-        "loop",
-        "fps"
-      ],
-      "additionalProperties": false
-    },
     "Character": {
       "type": "object",
       "properties": {
@@ -93,14 +18,16 @@
         },
         "size": {
           "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
           "items": [
             {
-              "type": "integer"
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
             },
             {
-              "type": "integer"
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
             }
           ]
         },
@@ -112,8 +39,6 @@
         },
         "rowPreviewOffset": {
           "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
           "items": [
             {
               "type": "number"
@@ -124,12 +49,12 @@
           ]
         },
         "rowPreviewFrame": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
         },
         "pivotOffset": {
           "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
           "items": [
             {
               "type": "number"
@@ -141,8 +66,6 @@
         },
         "portraitOffset": {
           "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
           "items": [
             {
               "type": "number"
@@ -154,14 +77,12 @@
         },
         "portraitSize": {
           "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
           "items": [
             {
-              "type": "integer"
+              "type": "number"
             },
             {
-              "type": "integer"
+              "type": "number"
             }
           ]
         },
@@ -174,8 +95,81 @@
         "clips"
       ],
       "additionalProperties": false
+    },
+    "Clip": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "loopStart": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "loop": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "onBeat",
+            "no"
+          ]
+        },
+        "fps": {
+          "type": "number"
+        },
+        "pivotOffset": {
+          "type": "array",
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "portraitOffset": {
+          "type": "array",
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "portraitSize": {
+          "type": "array",
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "portraitScale": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "frames",
+        "loop",
+        "fps"
+      ],
+      "additionalProperties": false
     }
-  },
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://0f-0b.github.io/rd-schema/character.json"
+  }
 }
