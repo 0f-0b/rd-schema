@@ -7707,6 +7707,9 @@
         },
         {
           "$ref": "#/definitions/PlayerModeConditional"
+        },
+        {
+          "$ref": "#/definitions/NarrationConditional"
         }
       ]
     },
@@ -7877,6 +7880,35 @@
           "maximum": 2147483647
         },
         "twoPlayerMode": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "NarrationConditional": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Narration"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "narration": {
           "type": "boolean"
         }
       },

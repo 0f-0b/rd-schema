@@ -2055,12 +2055,20 @@ export type PlayerModeConditional = {
   id: number;
   twoPlayerMode?: boolean | undefined;
 };
+export type NarrationConditional = {
+  type: "Narration";
+  tag?: string | undefined;
+  name: string;
+  id: number;
+  narration?: boolean | undefined;
+};
 export type Conditional =
   | LastHitConditional
   | CustomConditional
   | TimesExecutedConditional
   | LanguageConditional
-  | PlayerModeConditional;
+  | PlayerModeConditional
+  | NarrationConditional;
 export type Bookmark = { bar: number; beat: number; color: number };
 export type Color = string;
 export type Level = {

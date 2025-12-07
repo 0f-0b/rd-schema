@@ -898,12 +898,16 @@ export const LanguageConditional = mergeShapesToObject(
 export const PlayerModeConditional = z.object(
   makeConditionalAutoProperties("PlayerMode"),
 ).meta({ id: "PlayerModeConditional" });
+export const NarrationConditional = z.object(
+  makeConditionalAutoProperties("Narration"),
+).meta({ id: "NarrationConditional" });
 export const Conditional = z.union([
   LastHitConditional,
   CustomConditional,
   TimesExecutedConditional,
   LanguageConditional,
   PlayerModeConditional,
+  NarrationConditional,
 ]).meta({ id: "Conditional" });
 export const Bookmark = z.object({
   bar: z.int32().min(1),
