@@ -134,6 +134,7 @@ export const Row = mergeShapesToObject(
   {
     character: [z.string()],
     player: [Player.optional()],
+    length: [z.int32().min(1).max(7).nullable().optional()],
     pulseSound: z.string(),
     pulseSoundVolume: z.int32().optional(),
     pulseSoundPitch: z.int32().optional(),
@@ -261,7 +262,10 @@ export const SoundEvent = z.union([
 ]).meta({ id: "SoundEvent" });
 export const AddClassicBeatEvent = mergeShapesToObject(
   makeEventAutoProperties("AddClassicBeat"),
-  { swing: [z.number().min(0).optional()] },
+  {
+    swing: [z.number().min(0).optional()],
+    length: [z.int32().min(1).max(7).nullable().optional()],
+  },
 ).meta({ id: "AddClassicBeatEvent" });
 export const SetBeatModifiersEvent = mergeShapesToObject(
   makeEventAutoProperties("SetRowXs"),
