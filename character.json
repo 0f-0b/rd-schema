@@ -53,6 +53,9 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
+        "rowPreviewScale": {
+          "type": "number"
+        },
         "pivotOffset": {
           "type": "array",
           "items": [
@@ -63,6 +66,9 @@
               "type": "number"
             }
           ]
+        },
+        "reflectionOffset": {
+          "type": "number"
         },
         "portraitOffset": {
           "type": "array",
@@ -136,6 +142,9 @@
               "type": "number"
             }
           ]
+        },
+        "reflectionOffset": {
+          "type": "number"
         },
         "portraitOffset": {
           "type": "array",

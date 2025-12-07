@@ -16,6 +16,7 @@ import {
   NarrationCategory,
   Player,
   RowType,
+  SortingLayer,
   Sound,
   Strength,
   TilingType,
@@ -35,6 +36,7 @@ export {
   NarrationCategory,
   Player,
   RowType,
+  SortingLayer,
   Sound,
   Strength,
   TilingType,
@@ -295,27 +297,124 @@ export const RowEvent = z.union([
   AddOneshotBeatEvent,
   SetOneshotWaveEvent,
 ]).meta({ id: "RowEvent" });
-export const SetThemeEvent = mergeShapesToObject(
+export const OrdinaryTheme = z.enum([
+  "None",
+  "IntimateSimple",
+  "InsomniacNight",
+  "Matrix",
+  "NeonMuseum",
+  "CrossesFalling",
+  "CubesFallingNiceBlue",
+  "CubesFallingWithBlueBloomAndCrossesAndMatrix",
+  "OrientalTechno",
+  "Kaleidoscope",
+  "PoliticiansRally",
+  "RooftopSummer",
+  "RooftopAutumn",
+  "BackAlley",
+  "NightSky",
+  "HallOfMirrors",
+  "CoffeeShopNight",
+  "GardenNight",
+  "HospitalWardNight",
+  "ColeWardSunrise",
+  "BoyWard",
+  "GirlWard",
+  "SkylineBlue",
+  "FloatingHeartWithCubes",
+  "FloatingHeartBrokenWithCubes",
+  "ZenGarden",
+  "Space",
+  "Tutorial",
+  "Vaporwave",
+  "StadiumStormy",
+  "ProceduralTree",
+]);
+export const SetOrdinaryThemeEvent = mergeShapesToObject(
   makeEventAutoProperties("SetTheme"),
-  { firstRowOnFloor: [] },
-).meta({ id: "SetThemeEvent" });
+  {
+    preset: [OrdinaryTheme],
+    variant: [],
+    enablePosition: [],
+    positionX: [],
+    positionDuration: [],
+    positionEase: [],
+    firstRowOnFloor: [],
+  },
+).meta({ id: "SetOrdinaryThemeEvent" });
+export const VariableTheme = z.enum([
+  "Intimate",
+  "InsomniacDay",
+  "CrossesStraight",
+  "CubesFalling",
+  "Rooftop",
+  "Sky",
+  "CoffeeShop",
+  "Garden",
+  "ColeWardNight",
+  "Skyline",
+  "FloatingHeart",
+  "FloatingHeartBroken",
+  "Stadium",
+]);
+export const SetVariableThemeEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetTheme"),
+  {
+    preset: [VariableTheme],
+    enablePosition: [],
+    positionX: [],
+    positionDuration: [],
+    positionEase: [],
+    firstRowOnFloor: [],
+  },
+).meta({ id: "SetVariableThemeEvent" });
+export const PositionableTheme = z.enum([
+  "TrainNight",
+  "DesertNight",
+  "PaigeOffice",
+  "Basement",
+  "RollerDisco",
+  "AthleteWardNight",
+  "Airport",
+  "RecordsRoom",
+  "AbandonedWard",
+]);
+export const SetPositionableThemeEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetTheme"),
+  { preset: [PositionableTheme], variant: [], firstRowOnFloor: [] },
+).meta({ id: "SetPositionableThemeEvent" });
+export const VariablePositionableTheme = z.enum([
+  "TrainDay",
+  "DesertDay",
+  "HospitalWard",
+  "AthleteWard",
+]);
+export const SetVariablePositionableThemeEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetTheme"),
+  { preset: [VariablePositionableTheme], firstRowOnFloor: [] },
+).meta({ id: "SetVariablePositionableThemeEvent" });
+export const SetThemeEvent = z.union([
+  SetOrdinaryThemeEvent,
+  SetVariableThemeEvent,
+  SetPositionableThemeEvent,
+  SetVariablePositionableThemeEvent,
+]).meta({ id: "SetThemeEvent" });
 export const OrdinaryVFXPreset = z.enum([
-  "SilhouettesOnHBeat",
   "Vignette",
   "VignetteFlicker",
   "ColourfulShockwaves",
   "BassDropOnHit",
+  "SilhouettesOnHBeat",
   "ShakeOnHeartBeat",
   "ShakeOnHit",
   "Tile2",
   "Tile3",
   "Tile4",
   "LightStripVert",
-  "VHS",
-  "ScreenScrollX",
   "ScreenScroll",
-  "ScreenScrollXSansVHS",
+  "ScreenScrollX",
   "ScreenScrollSansVHS",
+  "ScreenScrollXSansVHS",
   "RowGlowWhite",
   "RowOutline",
   "RowShadow",
@@ -328,10 +427,10 @@ export const OrdinaryVFXPreset = z.enum([
   "GlitchObstruction",
   "Matrix",
   "MiawMiaw",
-  "Confetti",
   "FallingPetals",
   "FallingPetalsInstant",
   "FallingPetalsSnow",
+  "FallingLeaves",
   "Snow",
   "OrangeBloom",
   "BlueBloom",
@@ -340,7 +439,11 @@ export const OrdinaryVFXPreset = z.enum([
   "Sepia",
   "NumbersAbovePulses",
   "Funk",
+  "VHS",
+  "Confetti",
   "Balloons",
+  "ConfettiBurst",
+  "GlassShatter",
 ]);
 export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -350,17 +453,13 @@ export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     intensity: [],
     color: [],
-    speed: [],
+    amount: [],
     speedPerc: [],
     duration: [],
     ease: [],
   },
 ).meta({ id: "EnableOrdinaryVFXPresetEvent" });
 export const EaseableVFXPreset = z.enum([
-  "HueShift",
-  "Brightness",
-  "Contrast",
-  "Saturation",
   "Rain",
   "JPEG",
   "Mosaic",
@@ -369,10 +468,14 @@ export const EaseableVFXPreset = z.enum([
   "Blizzard",
   "Drawing",
   "Aberration",
+  "HueShift",
   "Blur",
   "RadialBlur",
-  "Fisheye",
   "Dots",
+  "Brightness",
+  "Contrast",
+  "Saturation",
+  "Fisheye",
 ]);
 export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -381,7 +484,7 @@ export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
     enable: [z.literal(true).optional()],
     threshold: [],
     color: [],
-    speed: [],
+    amount: [],
     speedPerc: [],
   },
 ).meta({ id: "EnableEaseableVFXPresetEvent" });
@@ -392,7 +495,7 @@ export const EnableColoredVFXPresetEvent = mergeShapesToObject(
     preset: [ColoredVFXPreset],
     enable: [z.literal(true).optional()],
     threshold: [],
-    speed: [],
+    amount: [],
     speedPerc: [],
   },
 ).meta({ id: "EnableColoredVFXPresetEvent" });
@@ -404,7 +507,7 @@ export const EnableWavyRowsVFXPresetEvent = mergeShapesToObject(
     enable: [z.literal(true).optional()],
     threshold: [],
     color: [],
-    speed: [],
+    amount: [],
   },
 ).meta({ id: "EnableWavyRowsVFXPresetEvent" });
 export const BloomVFXPreset = z.enum(["Bloom"]);
@@ -413,7 +516,7 @@ export const EnableBloomVFXPresetEvent = mergeShapesToObject(
   {
     preset: [BloomVFXPreset],
     enable: [z.literal(true).optional()],
-    speed: [],
+    amount: [],
     speedPerc: [],
   },
 ).meta({ id: "EnableBloomVFXPresetEvent" });
@@ -448,7 +551,7 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     intensity: [],
     color: [],
-    speed: [],
+    amount: [],
     speedPerc: [],
     duration: [],
     ease: [],
@@ -462,7 +565,7 @@ export const DisableAllVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     intensity: [],
     color: [],
-    speed: [],
+    amount: [],
     speedPerc: [],
     duration: [],
     ease: [],
@@ -499,16 +602,19 @@ export const SetForegroundEvent = mergeShapesToObject(
 export const SetSpeedEvent = z.object(
   makeEventAutoProperties("SetSpeed"),
 ).meta({ id: "SetSpeedEvent" });
-export const FlashEvent = z.object(
-  makeEventAutoProperties("Flash"),
-).meta({ id: "FlashEvent" });
 export const CustomFlashEvent = z.object(
   makeEventAutoProperties("CustomFlash"),
 ).meta({ id: "CustomFlashEvent" });
+export const FlashEvent = z.object(
+  makeEventAutoProperties("Flash"),
+).meta({ id: "FlashEvent" });
 export const MoveCameraEvent = mergeShapesToObject(
   makeEventAutoProperties("MoveCamera"),
   { zoom: [z.int32().min(1).max(9999).optional()] },
 ).meta({ id: "MoveCameraEvent" });
+export const PulseCameraEvent = z.object(
+  makeEventAutoProperties("PulseCamera"),
+).meta({ id: "PulseCameraEvent" });
 export const HideRowEvent = mergeShapesToObject(
   makeEventAutoProperties("HideRow"),
   { show: z.boolean() },
@@ -525,6 +631,9 @@ export const PlayExpressionEvent = z.object(
 export const ChangeCharacterEvent = z.object(
   makeEventAutoProperties("ChangeCharacter"),
 ).meta({ id: "ChangeCharacterEvent" });
+export const SpinningRowsEvent = z.object(
+  makeEventAutoProperties("SpinningRows"),
+).meta({ id: "SpinningRowsEvent" });
 export const PaintRowsEvent = z.object(
   makeEventAutoProperties("TintRows"),
 ).meta({ id: "PaintRowsEvent" });
@@ -537,6 +646,9 @@ export const CustomShakeEvent = z.object(
 export const ShakeScreenEvent = z.object(
   makeEventAutoProperties("ShakeScreen"),
 ).meta({ id: "ShakeScreenEvent" });
+export const InvertColorsEvent = z.object(
+  makeEventAutoProperties("InvertColors"),
+).meta({ id: "InvertColorsEvent" });
 export const FlipScreenEvent = mergeShapesToObject(
   makeEventAutoProperties("FlipScreen"),
   {
@@ -547,15 +659,6 @@ export const FlipScreenEvent = mergeShapesToObject(
     flip: [z.boolean().array().length(2).optional()],
   },
 ).meta({ id: "FlipScreenEvent" });
-export const InvertColorsEvent = z.object(
-  makeEventAutoProperties("InvertColors"),
-).meta({ id: "InvertColorsEvent" });
-export const PulseCameraEvent = z.object(
-  makeEventAutoProperties("PulseCamera"),
-).meta({ id: "PulseCameraEvent" });
-export const TextExplosionEvent = z.object(
-  makeEventAutoProperties("TextExplosion"),
-).meta({ id: "TextExplosionEvent" });
 export const ShowDialogueEvent = mergeShapesToObject(
   makeEventAutoProperties("ShowDialogue"),
   {
@@ -575,24 +678,18 @@ export const FloatingTextEvent = mergeShapesToObject(
 export const AdvanceFloatingTextEvent = z.object(
   makeEventAutoProperties("AdvanceText"),
 ).meta({ id: "AdvanceFloatingTextEvent" });
+export const TextExplosionEvent = z.object(
+  makeEventAutoProperties("TextExplosion"),
+).meta({ id: "TextExplosionEvent" });
 export const ChangePlayersRowsEvent = z.object(
   makeEventAutoProperties("ChangePlayersRows"),
 ).meta({ id: "ChangePlayersRowsEvent" });
 export const FinishLevelEvent = z.object(
   makeEventAutoProperties("FinishLevel"),
 ).meta({ id: "FinishLevelEvent" });
-export const OrdinaryCommentEvent = mergeShapesToObject(
-  makeEventAutoProperties("Comment"),
-  { text: [z.string()], tab: z.enum(["Song", "Actions", "Rooms"]).optional() },
-).meta({ id: "OrdinaryCommentEvent" });
-export const SpriteCommentEvent = mergeShapesToObject(
-  makeEventAutoProperties("Comment"),
-  { text: [z.string()], tab: z.literal("Sprites"), target: z.string() },
-).meta({ id: "SpriteCommentEvent" });
-export const CommentEvent = z.union([
-  OrdinaryCommentEvent,
-  SpriteCommentEvent,
-]).meta({ id: "CommentEvent" });
+export const StutterEvent = z.object(
+  makeEventAutoProperties("Stutter"),
+).meta({ id: "StutterEvent" });
 export const ShowHandsEvent = z.object(
   makeEventAutoProperties("ShowHands"),
 ).meta({ id: "ShowHandsEvent" });
@@ -606,61 +703,65 @@ export const TagActionEvent = mergeShapesToObject(
   makeEventAutoProperties("TagAction"),
   { Tag: [z.string()] },
 ).meta({ id: "TagActionEvent" });
-export const SetPlayStyleEvent = z.object(
-  makeEventAutoProperties("SetPlayStyle"),
-).meta({ id: "SetPlayStyleEvent" });
-export const StutterEvent = z.object(
-  makeEventAutoProperties("Stutter"),
-).meta({ id: "StutterEvent" });
 export const CallCustomMethodEvent = mergeShapesToObject(
   makeEventAutoProperties("CallCustomMethod"),
   { methodName: [z.string()] },
 ).meta({ id: "CallCustomMethodEvent" });
-export const WindowDanceEvent = mergeShapesToObject(
-  makeEventAutoProperties("NewWindowDance"),
-  { usePosition: z.enum(["New", "Current"]).optional() },
-).meta({ id: "WindowDanceEvent" });
-export const ResizeWindowEvent = z.object(
-  makeEventAutoProperties("WindowResize"),
-).meta({ id: "ResizeWindowEvent" });
+export const SetPlayStyleEvent = z.object(
+  makeEventAutoProperties("SetPlayStyle"),
+).meta({ id: "SetPlayStyleEvent" });
+export const OrdinaryCommentEvent = mergeShapesToObject(
+  makeEventAutoProperties("Comment"),
+  {
+    text: [z.string()],
+    tab: z.enum(["Song", "Actions", "Rooms", "Windows"]).optional(),
+  },
+).meta({ id: "OrdinaryCommentEvent" });
+export const SpriteCommentEvent = mergeShapesToObject(
+  makeEventAutoProperties("Comment"),
+  { text: [z.string()], tab: z.literal("Sprites"), target: z.string(), y: [] },
+).meta({ id: "SpriteCommentEvent" });
+export const CommentEvent = z.union([
+  OrdinaryCommentEvent,
+  SpriteCommentEvent,
+]).meta({ id: "CommentEvent" });
 export const ActionEvent = z.union([
   SetThemeEvent,
   SetVFXPresetEvent,
   SetBackgroundEvent,
   SetForegroundEvent,
   SetSpeedEvent,
-  FlashEvent,
   CustomFlashEvent,
+  FlashEvent,
   MoveCameraEvent,
+  PulseCameraEvent,
   HideRowEvent,
   MoveRowEvent,
   ReorderRowEvent,
   PlayExpressionEvent,
   ChangeCharacterEvent,
+  SpinningRowsEvent,
   PaintRowsEvent,
   BassDropEvent,
   CustomShakeEvent,
   ShakeScreenEvent,
-  FlipScreenEvent,
   InvertColorsEvent,
-  PulseCameraEvent,
-  TextExplosionEvent,
+  FlipScreenEvent,
   ShowDialogueEvent,
   ShowStatusSignEvent,
   FloatingTextEvent,
   AdvanceFloatingTextEvent,
+  TextExplosionEvent,
   ChangePlayersRowsEvent,
   FinishLevelEvent,
-  CommentEvent,
+  StutterEvent,
   ShowHandsEvent,
   PaintHandsEvent,
   AssignHandsEvent,
   TagActionEvent,
-  SetPlayStyleEvent,
-  StutterEvent,
   CallCustomMethodEvent,
-  WindowDanceEvent,
-  ResizeWindowEvent,
+  SetPlayStyleEvent,
+  CommentEvent,
 ]).meta({ id: "ActionEvent" });
 export const MoveSpriteEvent = z.object(
   makeEventAutoProperties("Move"),
@@ -730,12 +831,51 @@ export const RoomEvent = z.union([
   FadeRoomEvent,
   SetRoomPerspectiveEvent,
 ]).meta({ id: "RoomEvent" });
+export const WindowDanceEvent = mergeShapesToObject(
+  makeEventAutoProperties("NewWindowDance"),
+  {
+    tab: z.enum(["Actions", "Windows"]).optional(),
+    usePosition: z.enum(["New", "Current"]).optional(),
+  },
+).meta({ id: "WindowDanceEvent" });
+export const ResizeWindowEvent = z.object(
+  makeEventAutoProperties("WindowResize"),
+).meta({ id: "ResizeWindowEvent" });
+export const SetWindowContentEvent = z.object(
+  makeEventAutoProperties("SetWindowContent"),
+).meta({ id: "SetWindowContentEvent" });
+export const ReorderWindowsEvent = z.object(
+  makeEventAutoProperties("ReorderWindows"),
+).meta({ id: "ReorderWindowsEvent" });
+export const HideWindowEvent = z.object(
+  makeEventAutoProperties("HideWindow"),
+).meta({ id: "HideWindowEvent" });
+export const SetMainWindowEvent = z.object(
+  makeEventAutoProperties("SetMainWindow"),
+).meta({ id: "SetMainWindowEvent" });
+export const RenameWindowEvent = z.object(
+  makeEventAutoProperties("RenameWindow"),
+).meta({ id: "RenameWindowEvent" });
+export const SetDesktopColorEvent = z.object(
+  makeEventAutoProperties("DesktopColor"),
+).meta({ id: "SetDesktopColorEvent" });
+export const WindowEvent = z.union([
+  WindowDanceEvent,
+  ResizeWindowEvent,
+  SetWindowContentEvent,
+  ReorderWindowsEvent,
+  HideWindowEvent,
+  SetMainWindowEvent,
+  RenameWindowEvent,
+  SetDesktopColorEvent,
+]).meta({ id: "WindowEvent" });
 export const Event = z.union([
   SoundEvent,
   RowEvent,
   ActionEvent,
   DecorationEvent,
   RoomEvent,
+  WindowEvent,
 ]).meta({ id: "Event" });
 export const LastHitConditional = z.object(
   makeConditionalAutoProperties("LastHit"),

@@ -258,6 +258,18 @@
         "muteIn1P": {
           "type": "boolean"
         },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "pulseSound": {
           "type": "string"
         },
@@ -350,10 +362,16 @@
         "visible": {
           "type": "boolean"
         },
+        "preview": {
+          "type": "boolean"
+        },
         "id": {
           "type": "string"
         },
         "filename": {
+          "type": "string"
+        },
+        "character": {
           "type": "string"
         },
         "depth": {
@@ -393,6 +411,9 @@
         },
         {
           "$ref": "#/definitions/RoomEvent"
+        },
+        {
+          "$ref": "#/definitions/WindowEvent"
         }
       ]
     },
@@ -965,7 +986,8 @@
             "OneBeatAfter",
             "Instant",
             "GatherNoCeil",
-            "GatherAndCeil"
+            "GatherAndCeil",
+            "Disabled"
           ]
         },
         "interval": {
@@ -1009,6 +1031,14 @@
         },
         "active": {
           "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
         },
         "phraseToSay": {
           "type": "string",
@@ -1414,14 +1444,15 @@
             "IanCountEnglishFast",
             "IanCountEnglishCalm",
             "IanCountEnglishSlow",
-            "BirdCount",
-            "OwlCount",
             "WhistleCount",
-            "JyiCountLegacy",
+            "BirdCount",
             "ParrotCount",
+            "OwlCount",
             "OrioleCount",
             "WrenCount",
             "CanaryCount",
+            "SpearCount",
+            "JyiCountLegacy",
             "Custom"
           ]
         },
@@ -1579,6 +1610,18 @@
             "P1",
             "P2"
           ]
+        },
+        "customRowLength": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1668,6 +1711,28 @@
         },
         "legacy": {
           "type": "boolean"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sound": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sound"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1733,6 +1798,11 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
+        "syncoPitch": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
         "syncoStyle": {
           "type": "string",
           "enum": [
@@ -1741,6 +1811,9 @@
           ]
         },
         "syncoPlayModifierSound": {
+          "type": "boolean"
+        },
+        "syncoPlayModifierOffSound": {
           "type": "boolean"
         }
       },
@@ -1947,8 +2020,29 @@
         "skipshot": {
           "type": "boolean"
         },
+        "hold": {
+          "type": "boolean"
+        },
+        "holdCue": {
+          "type": "string",
+          "enum": [
+            "Auto",
+            "Early",
+            "Late"
+          ]
+        },
         "subdivTickOverride": {
           "type": "number"
+        },
+        "sound": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sound"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "squareSound": {
           "type": "boolean"
@@ -2044,13 +2138,16 @@
           "$ref": "#/definitions/SetSpeedEvent"
         },
         {
-          "$ref": "#/definitions/FlashEvent"
-        },
-        {
           "$ref": "#/definitions/CustomFlashEvent"
         },
         {
+          "$ref": "#/definitions/FlashEvent"
+        },
+        {
           "$ref": "#/definitions/MoveCameraEvent"
+        },
+        {
+          "$ref": "#/definitions/PulseCameraEvent"
         },
         {
           "$ref": "#/definitions/HideRowEvent"
@@ -2068,6 +2165,9 @@
           "$ref": "#/definitions/ChangeCharacterEvent"
         },
         {
+          "$ref": "#/definitions/SpinningRowsEvent"
+        },
+        {
           "$ref": "#/definitions/PaintRowsEvent"
         },
         {
@@ -2080,16 +2180,10 @@
           "$ref": "#/definitions/ShakeScreenEvent"
         },
         {
-          "$ref": "#/definitions/FlipScreenEvent"
-        },
-        {
           "$ref": "#/definitions/InvertColorsEvent"
         },
         {
-          "$ref": "#/definitions/PulseCameraEvent"
-        },
-        {
-          "$ref": "#/definitions/TextExplosionEvent"
+          "$ref": "#/definitions/FlipScreenEvent"
         },
         {
           "$ref": "#/definitions/ShowDialogueEvent"
@@ -2104,13 +2198,16 @@
           "$ref": "#/definitions/AdvanceFloatingTextEvent"
         },
         {
+          "$ref": "#/definitions/TextExplosionEvent"
+        },
+        {
           "$ref": "#/definitions/ChangePlayersRowsEvent"
         },
         {
           "$ref": "#/definitions/FinishLevelEvent"
         },
         {
-          "$ref": "#/definitions/CommentEvent"
+          "$ref": "#/definitions/StutterEvent"
         },
         {
           "$ref": "#/definitions/ShowHandsEvent"
@@ -2125,23 +2222,33 @@
           "$ref": "#/definitions/TagActionEvent"
         },
         {
-          "$ref": "#/definitions/SetPlayStyleEvent"
-        },
-        {
-          "$ref": "#/definitions/StutterEvent"
-        },
-        {
           "$ref": "#/definitions/CallCustomMethodEvent"
         },
         {
-          "$ref": "#/definitions/WindowDanceEvent"
+          "$ref": "#/definitions/SetPlayStyleEvent"
         },
         {
-          "$ref": "#/definitions/ResizeWindowEvent"
+          "$ref": "#/definitions/CommentEvent"
         }
       ]
     },
     "SetThemeEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SetOrdinaryThemeEvent"
+        },
+        {
+          "$ref": "#/definitions/SetVariableThemeEvent"
+        },
+        {
+          "$ref": "#/definitions/SetPositionableThemeEvent"
+        },
+        {
+          "$ref": "#/definitions/SetVariablePositionableThemeEvent"
+        }
+      ]
+    },
+    "SetOrdinaryThemeEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -2186,59 +2293,105 @@
           "type": "string",
           "enum": [
             "None",
-            "Intimate",
             "IntimateSimple",
-            "InsomniacDay",
             "InsomniacNight",
             "Matrix",
             "NeonMuseum",
-            "CrossesStraight",
             "CrossesFalling",
-            "CubesFalling",
             "CubesFallingNiceBlue",
             "CubesFallingWithBlueBloomAndCrossesAndMatrix",
             "OrientalTechno",
             "Kaleidoscope",
             "PoliticiansRally",
-            "Rooftop",
             "RooftopSummer",
             "RooftopAutumn",
             "BackAlley",
-            "Sky",
             "NightSky",
             "HallOfMirrors",
-            "CoffeeShop",
             "CoffeeShopNight",
-            "Garden",
             "GardenNight",
-            "TrainDay",
-            "TrainNight",
-            "DesertDay",
-            "DesertNight",
-            "HospitalWard",
             "HospitalWardNight",
-            "PaigeOffice",
-            "Basement",
-            "ColeWardNight",
             "ColeWardSunrise",
             "BoyWard",
             "GirlWard",
-            "Skyline",
             "SkylineBlue",
-            "FloatingHeart",
             "FloatingHeartWithCubes",
-            "FloatingHeartBroken",
             "FloatingHeartBrokenWithCubes",
             "ZenGarden",
             "Space",
             "Tutorial",
             "Vaporwave",
-            "RollerDisco",
-            "Stadium",
             "StadiumStormy",
-            "AthleteWard",
-            "AthleteWardNight",
             "ProceduralTree"
+          ]
+        },
+        "skipPaintEffects": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "SetVariableThemeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetTheme"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Intimate",
+            "InsomniacDay",
+            "CrossesStraight",
+            "CubesFalling",
+            "Rooftop",
+            "Sky",
+            "CoffeeShop",
+            "Garden",
+            "ColeWardNight",
+            "Skyline",
+            "FloatingHeart",
+            "FloatingHeartBroken",
+            "Stadium"
           ]
         },
         "variant": {
@@ -2251,7 +2404,201 @@
         }
       },
       "required": [
-        "type"
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "SetPositionableThemeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetTheme"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "TrainNight",
+            "DesertNight",
+            "PaigeOffice",
+            "Basement",
+            "RollerDisco",
+            "AthleteWardNight",
+            "Airport",
+            "RecordsRoom",
+            "AbandonedWard"
+          ]
+        },
+        "enablePosition": {
+          "type": "boolean"
+        },
+        "positionX": {
+          "type": "number"
+        },
+        "positionDuration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "positionEase": {
+          "$ref": "#/definitions/Easing"
+        },
+        "skipPaintEffects": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "Easing": {
+      "type": "string",
+      "enum": [
+        "Unset",
+        "Linear",
+        "InSine",
+        "OutSine",
+        "InOutSine",
+        "InQuad",
+        "OutQuad",
+        "InOutQuad",
+        "InCubic",
+        "OutCubic",
+        "InOutCubic",
+        "InQuart",
+        "OutQuart",
+        "InOutQuart",
+        "InQuint",
+        "OutQuint",
+        "InOutQuint",
+        "InExpo",
+        "OutExpo",
+        "InOutExpo",
+        "InCirc",
+        "OutCirc",
+        "InOutCirc",
+        "InElastic",
+        "OutElastic",
+        "InOutElastic",
+        "InBack",
+        "OutBack",
+        "InOutBack",
+        "InBounce",
+        "OutBounce",
+        "InOutBounce"
+      ]
+    },
+    "SetVariablePositionableThemeEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetTheme"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "TrainDay",
+            "DesertDay",
+            "HospitalWard",
+            "AthleteWard"
+          ]
+        },
+        "variant": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "enablePosition": {
+          "type": "boolean"
+        },
+        "positionX": {
+          "type": "number"
+        },
+        "positionDuration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "positionEase": {
+          "$ref": "#/definitions/Easing"
+        },
+        "skipPaintEffects": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
       ],
       "additionalProperties": false
     },
@@ -2327,22 +2674,21 @@
         "preset": {
           "type": "string",
           "enum": [
-            "SilhouettesOnHBeat",
             "Vignette",
             "VignetteFlicker",
             "ColourfulShockwaves",
             "BassDropOnHit",
+            "SilhouettesOnHBeat",
             "ShakeOnHeartBeat",
             "ShakeOnHit",
             "Tile2",
             "Tile3",
             "Tile4",
             "LightStripVert",
-            "VHS",
-            "ScreenScrollX",
             "ScreenScroll",
-            "ScreenScrollXSansVHS",
+            "ScreenScrollX",
             "ScreenScrollSansVHS",
+            "ScreenScrollXSansVHS",
             "RowGlowWhite",
             "RowOutline",
             "RowShadow",
@@ -2355,10 +2701,10 @@
             "GlitchObstruction",
             "Matrix",
             "MiawMiaw",
-            "Confetti",
             "FallingPetals",
             "FallingPetalsInstant",
             "FallingPetalsSnow",
+            "FallingLeaves",
             "Snow",
             "OrangeBloom",
             "BlueBloom",
@@ -2367,7 +2713,11 @@
             "Sepia",
             "NumbersAbovePulses",
             "Funk",
-            "Balloons"
+            "VHS",
+            "Confetti",
+            "Balloons",
+            "ConfettiBurst",
+            "GlassShatter"
           ]
         },
         "enable": {
@@ -2424,10 +2774,6 @@
         "preset": {
           "type": "string",
           "enum": [
-            "HueShift",
-            "Brightness",
-            "Contrast",
-            "Saturation",
             "Rain",
             "JPEG",
             "Mosaic",
@@ -2436,10 +2782,14 @@
             "Blizzard",
             "Drawing",
             "Aberration",
+            "HueShift",
             "Blur",
             "RadialBlur",
-            "Fisheye",
-            "Dots"
+            "Dots",
+            "Brightness",
+            "Contrast",
+            "Saturation",
+            "Fisheye"
           ]
         },
         "enable": {
@@ -2463,43 +2813,6 @@
         "preset"
       ],
       "additionalProperties": false
-    },
-    "Easing": {
-      "type": "string",
-      "enum": [
-        "Unset",
-        "Linear",
-        "InSine",
-        "OutSine",
-        "InOutSine",
-        "InQuad",
-        "OutQuad",
-        "InOutQuad",
-        "InCubic",
-        "OutCubic",
-        "InOutCubic",
-        "InQuart",
-        "OutQuart",
-        "InOutQuart",
-        "InQuint",
-        "OutQuint",
-        "InOutQuint",
-        "InExpo",
-        "OutExpo",
-        "InOutExpo",
-        "InCirc",
-        "OutCirc",
-        "InOutCirc",
-        "InElastic",
-        "OutElastic",
-        "InOutElastic",
-        "InBack",
-        "OutBack",
-        "InOutBack",
-        "InBounce",
-        "OutBounce",
-        "InOutBounce"
-      ]
     },
     "EnableColoredVFXPresetEvent": {
       "type": "object",
@@ -2779,7 +3092,7 @@
           "type": "boolean",
           "const": true
         },
-        "speed": {
+        "amount": {
           "type": "array",
           "items": [
             {
@@ -2859,22 +3172,21 @@
         "preset": {
           "type": "string",
           "enum": [
-            "SilhouettesOnHBeat",
             "Vignette",
             "VignetteFlicker",
             "ColourfulShockwaves",
             "BassDropOnHit",
+            "SilhouettesOnHBeat",
             "ShakeOnHeartBeat",
             "ShakeOnHit",
             "Tile2",
             "Tile3",
             "Tile4",
             "LightStripVert",
-            "VHS",
-            "ScreenScrollX",
             "ScreenScroll",
-            "ScreenScrollXSansVHS",
+            "ScreenScrollX",
             "ScreenScrollSansVHS",
+            "ScreenScrollXSansVHS",
             "RowGlowWhite",
             "RowOutline",
             "RowShadow",
@@ -2887,10 +3199,10 @@
             "GlitchObstruction",
             "Matrix",
             "MiawMiaw",
-            "Confetti",
             "FallingPetals",
             "FallingPetalsInstant",
             "FallingPetalsSnow",
+            "FallingLeaves",
             "Snow",
             "OrangeBloom",
             "BlueBloom",
@@ -2899,11 +3211,11 @@
             "Sepia",
             "NumbersAbovePulses",
             "Funk",
+            "VHS",
+            "Confetti",
             "Balloons",
-            "HueShift",
-            "Brightness",
-            "Contrast",
-            "Saturation",
+            "ConfettiBurst",
+            "GlassShatter",
             "Rain",
             "JPEG",
             "Mosaic",
@@ -2912,10 +3224,14 @@
             "Blizzard",
             "Drawing",
             "Aberration",
+            "HueShift",
             "Blur",
             "RadialBlur",
-            "Fisheye",
             "Dots",
+            "Brightness",
+            "Contrast",
+            "Saturation",
+            "Fisheye",
             "Diamonds",
             "Tutorial",
             "WavyRows",
@@ -3272,61 +3588,6 @@
       ],
       "additionalProperties": false
     },
-    "FlashEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "Flash"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "duration": {
-          "type": "string",
-          "enum": [
-            "Short",
-            "Medium",
-            "Long"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
     "CustomFlashEvent": {
       "type": "object",
       "properties": {
@@ -3420,6 +3681,61 @@
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "FlashEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "Flash"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "duration": {
+          "type": "string",
+          "enum": [
+            "Short",
+            "Medium",
+            "Long"
+          ]
         }
       },
       "required": [
@@ -3529,6 +3845,72 @@
         },
         "real": {
           "type": "boolean"
+        },
+        "window": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PulseCameraEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "PulseCamera"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "strength": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "count": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "frequency": {
+          "type": "number",
+          "minimum": 0
         }
       },
       "required": [
@@ -3711,6 +4093,28 @@
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "accelerationDuration": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decelerationDuration": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -3795,6 +4199,28 @@
             "Instant",
             "None"
           ]
+        },
+        "sortingLayerName": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortingLayer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sortingOrder": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -3802,6 +4228,14 @@
         "row"
       ],
       "additionalProperties": false
+    },
+    "SortingLayer": {
+      "type": "string",
+      "enum": [
+        "Default",
+        "Background",
+        "Foreground"
+      ]
     },
     "PlayExpressionEvent": {
       "type": "object",
@@ -3906,6 +4340,9 @@
         "character": {
           "type": "string"
         },
+        "customCharacter": {
+          "type": "string"
+        },
         "transition": {
           "type": "string",
           "enum": [
@@ -3913,6 +4350,92 @@
             "Instant",
             "Full"
           ]
+        }
+      },
+      "required": [
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "SpinningRowsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SpinningRows"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Connect",
+            "Disconnect",
+            "Rotate",
+            "ConstantRotation",
+            "WavyRotation",
+            "Merge",
+            "Split"
+          ]
+        },
+        "toRow": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "angle": {
+          "type": "number"
+        },
+        "amplitude": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "frequency": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "doEffects": {
+          "type": "boolean"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -3977,6 +4500,18 @@
           "type": "integer",
           "minimum": -2147483648,
           "maximum": 2147483647
+        },
+        "borderPulse": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "borderPulseMin": {
+          "type": "number"
+        },
+        "borderPulseMax": {
+          "type": "number"
         },
         "tint": {
           "type": "boolean"
@@ -4216,6 +4751,56 @@
       ],
       "additionalProperties": false
     },
+    "InvertColorsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "InvertColors"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
     "FlipScreenEvent": {
       "type": "object",
       "properties": {
@@ -4280,192 +4865,6 @@
         },
         "flipY": {
           "type": "boolean"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "InvertColorsEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "InvertColors"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "enable": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "PulseCameraEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "PulseCamera"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "strength": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "count": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "frequency": {
-          "type": "number",
-          "minimum": 0
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "TextExplosionEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "TextExplosion"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "text": {
-          "type": "string"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "mode": {
-          "type": "string",
-          "enum": [
-            "OneColor",
-            "Random"
-          ]
-        },
-        "direction": {
-          "type": "string",
-          "enum": [
-            "Left",
-            "Right"
-          ]
-        },
-        "speed": {
-          "type": "number",
-          "minimum": 1,
-          "maximum": 1000
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -4795,6 +5194,81 @@
       ],
       "additionalProperties": false
     },
+    "TextExplosionEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "TextExplosion"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "text": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "OneColor",
+            "Random"
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "Left",
+            "Right"
+          ]
+        },
+        "speed": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
     "ChangePlayersRowsEvent": {
       "type": "object",
       "properties": {
@@ -4902,17 +5376,7 @@
       ],
       "additionalProperties": false
     },
-    "CommentEvent": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/OrdinaryCommentEvent"
-        },
-        {
-          "$ref": "#/definitions/SpriteCommentEvent"
-        }
-      ]
-    },
-    "OrdinaryCommentEvent": {
+    "StutterEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -4931,7 +5395,7 @@
         },
         "type": {
           "type": "string",
-          "const": "Comment"
+          "const": "Stutter"
         },
         "if": {
           "$ref": "#/definitions/ConditionExpression"
@@ -4945,85 +5409,37 @@
         "active": {
           "type": "boolean"
         },
-        "text": {
-          "type": "string"
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
         },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "show": {
-          "type": "boolean"
-        },
-        "tab": {
+        "action": {
           "type": "string",
           "enum": [
-            "Song",
-            "Actions",
-            "Rooms"
+            "Add",
+            "Cancel"
           ]
-        }
-      },
-      "required": [
-        "type",
-        "text"
-      ],
-      "additionalProperties": false
-    },
-    "SpriteCommentEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
         },
-        "beat": {
+        "sourceBeat": {
           "type": "number",
           "minimum": 1
         },
-        "y": {
+        "length": {
+          "type": "number",
+          "minimum": 0
+        },
+        "loops": {
           "type": "integer",
           "minimum": -2147483648,
           "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "Comment"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "text": {
-          "type": "string"
-        },
-        "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
-        },
-        "show": {
-          "type": "boolean"
-        },
-        "tab": {
-          "type": "string",
-          "const": "Sprites"
-        },
-        "target": {
-          "type": "string"
         }
       },
       "required": [
-        "type",
-        "text",
-        "tab",
-        "target"
+        "type"
       ],
       "additionalProperties": false
     },
@@ -5162,6 +5578,18 @@
         "borderColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
+        "borderPulse": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "borderPulseMin": {
+          "type": "number"
+        },
+        "borderPulseMax": {
+          "type": "number"
+        },
         "tint": {
           "type": "boolean"
         },
@@ -5293,6 +5721,61 @@
       ],
       "additionalProperties": false
     },
+    "CallCustomMethodEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "CallCustomMethod"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "methodName": {
+          "type": "string"
+        },
+        "executionTime": {
+          "type": "string",
+          "enum": [
+            "OnPrebar",
+            "OnBar"
+          ]
+        },
+        "sortOffset": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "type",
+        "methodName"
+      ],
+      "additionalProperties": false
+    },
     "SetPlayStyleEvent": {
       "type": "object",
       "properties": {
@@ -5356,74 +5839,17 @@
       ],
       "additionalProperties": false
     },
-    "StutterEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
+    "CommentEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/OrdinaryCommentEvent"
         },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "Stutter"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "action": {
-          "type": "string",
-          "enum": [
-            "Add",
-            "Cancel"
-          ]
-        },
-        "sourceBeat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "length": {
-          "type": "number",
-          "minimum": 0
-        },
-        "loops": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
+        {
+          "$ref": "#/definitions/SpriteCommentEvent"
         }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
+      ]
     },
-    "CallCustomMethodEvent": {
+    "OrdinaryCommentEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -5442,7 +5868,7 @@
         },
         "type": {
           "type": "string",
-          "const": "CallCustomMethod"
+          "const": "Comment"
         },
         "if": {
           "$ref": "#/definitions/ConditionExpression"
@@ -5456,29 +5882,32 @@
         "active": {
           "type": "boolean"
         },
-        "methodName": {
+        "text": {
           "type": "string"
         },
-        "executionTime": {
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "tab": {
           "type": "string",
           "enum": [
-            "OnPrebar",
-            "OnBar"
+            "Song",
+            "Actions",
+            "Rooms",
+            "Windows"
           ]
-        },
-        "sortOffset": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
         }
       },
       "required": [
         "type",
-        "methodName"
+        "text"
       ],
       "additionalProperties": false
     },
-    "WindowDanceEvent": {
+    "SpriteCommentEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -5490,14 +5919,9 @@
           "type": "number",
           "minimum": 1
         },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
         "type": {
           "type": "string",
-          "const": "NewWindowDance"
+          "const": "Comment"
         },
         "if": {
           "$ref": "#/definitions/ConditionExpression"
@@ -5511,211 +5935,28 @@
         "active": {
           "type": "boolean"
         },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "preset": {
-          "type": "string",
-          "enum": [
-            "Move",
-            "Sway",
-            "Wrap",
-            "Ellipse",
-            "ShakePer"
-          ]
-        },
-        "samePresetBehavior": {
-          "type": "string",
-          "enum": [
-            "Keep",
-            "Reset"
-          ]
-        },
-        "position": {
-          "type": "array",
-          "items": [
-            {
-              "type": [
-                "number",
-                "null"
-              ]
-            },
-            {
-              "type": [
-                "number",
-                "null"
-              ]
-            }
-          ]
-        },
-        "reference": {
-          "type": "string",
-          "enum": [
-            "Center",
-            "Edge"
-          ]
-        },
-        "speed": {
-          "type": "number"
-        },
-        "useCircle": {
-          "type": "boolean"
-        },
-        "amplitude": {
-          "type": "number"
-        },
-        "amplitudeVector": {
-          "type": "array",
-          "items": [
-            {
-              "type": [
-                "number",
-                "null"
-              ]
-            },
-            {
-              "type": [
-                "number",
-                "null"
-              ]
-            }
-          ]
-        },
-        "angle": {
-          "type": "number"
-        },
-        "frequency": {
-          "type": "number"
-        },
-        "period": {
-          "type": "number"
-        },
-        "subEase": {
-          "$ref": "#/definitions/Easing"
-        },
-        "easeType": {
-          "type": "string",
-          "enum": [
-            "Repeat",
-            "Mirror"
-          ]
-        },
-        "easingDuration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        },
-        "usePosition": {
-          "type": "string",
-          "enum": [
-            "New",
-            "Current"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "ResizeWindowEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "WindowResize"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
+        "text": {
           "type": "string"
         },
-        "runTag": {
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "show": {
           "type": "boolean"
         },
-        "active": {
-          "type": "boolean"
+        "tab": {
+          "type": "string",
+          "const": "Sprites"
         },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "scale": {
-          "anyOf": [
-            {
-              "type": "array",
-              "items": [
-                {
-                  "$ref": "#/definitions/Expression"
-                },
-                {
-                  "$ref": "#/definitions/Expression"
-                }
-              ]
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "pivot": {
-          "anyOf": [
-            {
-              "type": "array",
-              "items": [
-                {
-                  "type": [
-                    "number",
-                    "null"
-                  ]
-                },
-                {
-                  "type": [
-                    "number",
-                    "null"
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
+        "target": {
+          "type": "string"
         }
       },
       "required": [
-        "type"
+        "type",
+        "text",
+        "tab",
+        "target"
       ],
       "additionalProperties": false
     },
@@ -5895,6 +6136,18 @@
         "borderColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
+        "borderPulse": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "borderPulseMin": {
+          "type": "number"
+        },
+        "borderPulseMax": {
+          "type": "number"
+        },
         "tint": {
           "type": "boolean"
         },
@@ -6061,6 +6314,16 @@
               "type": "integer",
               "minimum": -2147483648,
               "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sortingLayerName": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortingLayer"
             },
             {
               "type": "null"
@@ -6755,6 +7018,676 @@
       "required": [
         "type",
         "cornerPositions"
+      ],
+      "additionalProperties": false
+    },
+    "WindowEvent": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/WindowDanceEvent"
+        },
+        {
+          "$ref": "#/definitions/ResizeWindowEvent"
+        },
+        {
+          "$ref": "#/definitions/SetWindowContentEvent"
+        },
+        {
+          "$ref": "#/definitions/ReorderWindowsEvent"
+        },
+        {
+          "$ref": "#/definitions/HideWindowEvent"
+        },
+        {
+          "$ref": "#/definitions/SetMainWindowEvent"
+        },
+        {
+          "$ref": "#/definitions/RenameWindowEvent"
+        },
+        {
+          "$ref": "#/definitions/SetDesktopColorEvent"
+        }
+      ]
+    },
+    "WindowDanceEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "NewWindowDance"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Move",
+            "Sway",
+            "Wrap",
+            "Ellipse",
+            "ShakePer"
+          ]
+        },
+        "samePresetBehavior": {
+          "type": "string",
+          "enum": [
+            "Keep",
+            "Reset"
+          ]
+        },
+        "position": {
+          "type": "array",
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "enum": [
+            "Center",
+            "Edge"
+          ]
+        },
+        "speed": {
+          "type": "number"
+        },
+        "useCircle": {
+          "type": "boolean"
+        },
+        "amplitude": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "amplitudeVector": {
+          "type": "array",
+          "items": [
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          ]
+        },
+        "angle": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "frequency": {
+          "type": "number"
+        },
+        "period": {
+          "type": "number"
+        },
+        "subEase": {
+          "$ref": "#/definitions/Easing"
+        },
+        "easeType": {
+          "type": "string",
+          "enum": [
+            "Repeat",
+            "Mirror"
+          ]
+        },
+        "easingDuration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "tab": {
+          "type": "string",
+          "enum": [
+            "Actions",
+            "Windows"
+          ]
+        },
+        "usePosition": {
+          "type": "string",
+          "enum": [
+            "New",
+            "Current"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ResizeWindowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "WindowResize"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "$ref": "#/definitions/Expression"
+                },
+                {
+                  "$ref": "#/definitions/Expression"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "zoomMode": {
+          "type": "string",
+          "enum": [
+            "Fill",
+            "Fit",
+            "None"
+          ]
+        },
+        "pivotMode": {
+          "type": "string",
+          "enum": [
+            "Default",
+            "AnchorEdge"
+          ]
+        },
+        "pivot": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "anchorType": {
+          "type": "string",
+          "enum": [
+            "None",
+            "LeftEdge",
+            "RightEdge",
+            "BottomEdge",
+            "TopEdge"
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetWindowContentEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetWindowContent"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "contentMode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "OnTop",
+                "Room"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "roomIndex": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "position": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -1000,
+                      "maximum": 1000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -1000,
+                      "maximum": 1000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "zoom": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "angle": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ReorderWindowsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "ReorderWindows"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "HideWindowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "HideWindow"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "transparent": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "frameless": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetMainWindowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetMainWindow"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "RenameWindowEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "RenameWindow"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Set",
+            "Append",
+            "Reset"
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "SetDesktopColorEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "DesktopColor"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "startColor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "endColor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type"
       ],
       "additionalProperties": false
     },

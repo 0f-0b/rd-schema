@@ -5,6 +5,7 @@ export type Clip = {
   loop: "yes" | "onBeat" | "no";
   fps: number;
   pivotOffset?: [number, number] | undefined;
+  reflectionOffset?: number | undefined;
   portraitOffset?: [number, number] | undefined;
   portraitSize?: [number, number] | undefined;
   portraitScale?: number | undefined;
@@ -17,7 +18,9 @@ export type Character = {
   clips: Clip[];
   rowPreviewOffset?: [number, number] | undefined;
   rowPreviewFrame?: number | undefined;
+  rowPreviewScale?: number | undefined;
   pivotOffset?: [number, number] | undefined;
+  reflectionOffset?: number | undefined;
   portraitOffset?: [number, number] | undefined;
   portraitSize?: [number, number] | undefined;
   portraitScale?: number | undefined;

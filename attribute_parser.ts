@@ -249,6 +249,11 @@ export const NarrationCategory = z.enum([
   "Subtitles",
 ]).meta({ id: "NarrationCategory" });
 export const Player = z.enum(["P1", "P2", "CPU"]).meta({ id: "Player" });
+export const SortingLayer = z.enum([
+  "Default",
+  "Background",
+  "Foreground",
+]).meta({ id: "SortingLayer" });
 export const RowType = z.enum(["Classic", "Oneshot"]).meta({ id: "RowType" });
 export const Easing = z.enum([
   "Unset",
@@ -467,7 +472,10 @@ const makeAutoPropertyValue = (
             "Instant",
             "GatherNoCeil",
             "GatherAndCeil",
+            "Disabled",
           ]);
+        case "\0HoldCueType":
+          return z.enum(["Auto", "Early", "Late"]);
         case "\0MaskType":
           return z.enum(["Image", "Room", "Color", "None"]);
         case "\0MoveRowTarget":
@@ -505,6 +513,14 @@ const makeAutoPropertyValue = (
           ]);
         case "\0PanelSide":
           return z.enum(["Bottom", "Top"]);
+        case "\0PivotAnchorType":
+          return z.enum([
+            "None",
+            "LeftEdge",
+            "RightEdge",
+            "BottomEdge",
+            "TopEdge",
+          ]);
         case "\0PlayStyleChange":
           return z.enum([
             "Normal",
@@ -523,65 +539,11 @@ const makeAutoPropertyValue = (
           return z.enum(["Left", "Right"]);
         case "\0RDPlayer":
           return z.enum([...Player.options, "NoChange"]);
+        case "\0RDSortingLayer":
+          return SortingLayer;
         case "\0RDTheme":
-          return z.enum([
-            "None",
-            "Intimate",
-            "IntimateSimple",
-            "InsomniacDay",
-            "InsomniacNight",
-            "Matrix",
-            "NeonMuseum",
-            "CrossesStraight",
-            "CrossesFalling",
-            "CubesFalling",
-            "CubesFallingNiceBlue",
-            "CubesFallingWithBlueBloomAndCrossesAndMatrix",
-            "OrientalTechno",
-            "Kaleidoscope",
-            "PoliticiansRally",
-            "Rooftop",
-            "RooftopSummer",
-            "RooftopAutumn",
-            "BackAlley",
-            "Sky",
-            "NightSky",
-            "HallOfMirrors",
-            "CoffeeShop",
-            "CoffeeShopNight",
-            "Garden",
-            "GardenNight",
-            "TrainDay",
-            "TrainNight",
-            "DesertDay",
-            "DesertNight",
-            "HospitalWard",
-            "HospitalWardNight",
-            "PaigeOffice",
-            "Basement",
-            "ColeWardNight",
-            "ColeWardSunrise",
-            "BoyWard",
-            "GirlWard",
-            "Skyline",
-            "SkylineBlue",
-            "FloatingHeart",
-            "FloatingHeartWithCubes",
-            "FloatingHeartBroken",
-            "FloatingHeartBrokenWithCubes",
-            "ZenGarden",
-            "Space",
-            "Tutorial",
-            "Vaporwave",
-            "RollerDisco",
-            "Stadium",
-            "StadiumStormy",
-            "AthleteWard",
-            "AthleteWardNight",
-            "ProceduralTree",
-          ]);
         case "\0RDThemeFX":
-          return z.literal("THIS SHOULD NOT APPEAR IN THE OUTPUT");
+          return z.unknown();
         case "\0ReferenceType":
           return z.enum(["Center", "Edge"]);
         case "\0RoomSelectType":
@@ -650,14 +612,15 @@ const makeAutoPropertyValue = (
             "IanCountEnglishFast",
             "IanCountEnglishCalm",
             "IanCountEnglishSlow",
-            "BirdCount",
-            "OwlCount",
             "WhistleCount",
-            "JyiCountLegacy",
+            "BirdCount",
             "ParrotCount",
+            "OwlCount",
             "OrioleCount",
             "WrenCount",
             "CanaryCount",
+            "SpearCount",
+            "JyiCountLegacy",
             "Custom",
           ]);
         case "RDLevelEditor\0CustomSoundType":
@@ -716,6 +679,8 @@ const makeAutoPropertyValue = (
             "SayReadyGetSetGo",
             "JustSayReady",
           ]);
+        case "RDLevelEditor\0PivotMode":
+          return z.enum(["Default", "AnchorEdge"]);
         case "RDLevelEditor\0PlayerMode":
           return z.enum(["OnePlayer", "TwoPlayers", "OneOrTwoPlayers"]);
         case "RDLevelEditor\0PulseAction":
@@ -726,8 +691,24 @@ const makeAutoPropertyValue = (
           return z.enum(["Short", "Medium", "Long"]);
         case "RDLevelEditor\0SoundDataStruct":
           return Sound;
+        case "RDLevelEditor\0SpinningRowsAction":
+          return z.enum([
+            "Connect",
+            "Disconnect",
+            "Rotate",
+            "ConstantRotation",
+            "WavyRotation",
+            "Merge",
+            "Split",
+          ]);
         case "RDLevelEditor\0StrengthLevel":
           return Strength;
+        case "RDLevelEditor\0WindowContentMode":
+          return z.enum(["OnTop", "Room"]);
+        case "RDLevelEditor\0WindowNameAction":
+          return z.enum(["Set", "Append", "Reset"]);
+        case "RDLevelEditor\0ZoomMode":
+          return z.enum(["Fill", "Fit", "None"]);
         case "UnityEngine\0SystemLanguage":
           return Language;
         case "UnityEngine\0TextAnchor":
