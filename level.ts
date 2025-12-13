@@ -842,8 +842,9 @@ export const WindowDanceEvent = mergeShapesToObject(
     usePosition: z.enum(["New", "Current"]).optional(),
   },
 ).meta({ id: "WindowDanceEvent" });
-export const ResizeWindowEvent = z.object(
+export const ResizeWindowEvent = mergeShapesToObject(
   makeEventAutoProperties("WindowResize"),
+  { tab: z.enum(["Actions", "Windows"]).optional() },
 ).meta({ id: "ResizeWindowEvent" });
 export const SetWindowContentEvent = z.object(
   makeEventAutoProperties("SetWindowContent"),

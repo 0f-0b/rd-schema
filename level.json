@@ -7305,6 +7305,13 @@
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "tab": {
+          "type": "string",
+          "enum": [
+            "Actions",
+            "Windows"
+          ]
         }
       },
       "required": [

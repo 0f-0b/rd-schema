@@ -1905,6 +1905,7 @@ export type ResizeWindowEvent = {
     | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
+  tab?: ("Actions" | "Windows") | undefined;
 };
 export type SetWindowContentEvent = {
   bar?: number | undefined;
