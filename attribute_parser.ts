@@ -1,8 +1,6 @@
 import PE from "pe-struct";
 import { z, type ZodType } from "zod";
 
-import { requireEnv } from "./env.ts";
-
 const clampInts = false;
 const decoder = new TextDecoder(undefined, { fatal: true, ignoreBOM: true });
 
@@ -81,7 +79,15 @@ class DataReader {
   }
 }
 
-const assemblyPath = requireEnv("RD_ASSEMBLY_PATH");
+const assemblyPath = Deno.env.get("RD_ASSEMBLY_PATH");
+if (assemblyPath === undefined) {
+  console.error(
+    "%cerror%c: Missing 'RD_ASSEMBLY_PATH' environment variable. Please set it to the absolute path of the 'Assembly-CSharp.dll' file under the game directory and rerun this script.",
+    "color: red; font-weight: bold",
+    "",
+  );
+  Deno.exit(1);
+}
 const assembly = PE.load(Deno.readFileSync(assemblyPath).slice().buffer);
 const stringsHeap = new DataView(
   assembly.data.buffer,

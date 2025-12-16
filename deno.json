@@ -22,7 +22,7 @@
     }
   },
   "tasks": {
-    "cache": "deno cache --unstable-raw-imports --allow-import=jsr.io:443 scripts/generate_dts.ts scripts/generate_json_schemas.ts",
-    "lint": "deno fmt --check && deno lint && deno check --unstable-raw-imports --all --allow-import=jsr.io:443 scripts/generate_dts.ts && deno check --all --allow-import=jsr.io:443 scripts/generate_json_schemas.ts"
+    "cache": "deno cache --unstable-raw-imports --allow-import=jsr.io:443 generate.ts",
+    "lint": "deno fmt --check && deno lint && deno check --unstable-raw-imports --all --allow-import=jsr.io:443 generate.ts"
   }
 }
