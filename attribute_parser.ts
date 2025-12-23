@@ -581,6 +581,8 @@ const makeAutoPropertyValue = (
           return z.enum(["Left", "Right"]);
         case "\0TextExplosionMode":
           return z.enum(["OneColor", "Random"]);
+        case "\0TextFont":
+          return z.enum(["Default", "Pixel", "Vector", "Flash"]);
         case "\0TextureFilter":
           return FilterMode;
         case "\0TilingType":

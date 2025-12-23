@@ -1385,6 +1385,7 @@ export type FloatingTextEvent = {
   color?: ColorOrPaletteIndex | undefined;
   outlineColor?: ColorOrPaletteIndex | undefined;
   textPosition?: [number, number] | undefined;
+  font?: ("Default" | "Pixel" | "Vector" | "Flash") | undefined;
   size?: number | undefined;
   angle?: number | undefined;
   showChildren?: boolean | undefined;

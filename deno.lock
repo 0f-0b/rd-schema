@@ -2,7 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@dprint/formatter@0.4": "0.4.1",
-    "jsr:@zod/zod@4.1.13": "4.1.13",
+    "jsr:@zod/zod@4.2.1": "4.2.1",
     "npm:@dprint/typescript@0.95": "0.95.13",
     "npm:pe-struct@0.9.4": "0.9.4",
     "npm:type-fest@5": "5.3.1"
@@ -11,8 +11,8 @@
     "@dprint/formatter@0.4.1": {
       "integrity": "96449ab83aa9f72df98caa5030d3f4a921c5c29d9b0e0d0da83d79e2024a9637"
     },
-    "@zod/zod@4.1.13": {
-      "integrity": "fef799152d630583b248645fcac03abedd13e39fd2b752d9466b905d73619bfd"
+    "@zod/zod@4.2.1": {
+      "integrity": "693a557fccaf73bfcbcd132ca286929f3343cda9efb56e9780985aa41d229b38"
     }
   },
   "npm": {
@@ -36,7 +36,7 @@
     "dependencies": [
       "jsr:@dprint/formatter@0.4",
       "jsr:@std/path@1",
-      "jsr:@zod/zod@4.1.13",
+      "jsr:@zod/zod@4.2.1",
       "npm:@dprint/typescript@0.95",
       "npm:pe-struct@0.9.4",
       "npm:type-fest@5"

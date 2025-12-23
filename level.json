@@ -5096,6 +5096,15 @@
             }
           ]
         },
+        "font": {
+          "type": "string",
+          "enum": [
+            "Default",
+            "Pixel",
+            "Vector",
+            "Flash"
+          ]
+        },
         "size": {
           "type": "integer",
           "minimum": -2147483648,
