@@ -420,6 +420,8 @@ const makeAutoPropertyValue = (
           return z.enum(["Smooth", "Instant", "None"]);
         case "\0ColorOrPalette":
           return ColorOrPaletteIndex;
+        case "\0ConditionalEffectType":
+          return z.enum(["Flashy", "Narration"]);
         case "\0ContentMode":
           return ContentMode;
         case "\0EasingType":
@@ -543,6 +545,17 @@ const makeAutoPropertyValue = (
           ]);
         case "\0PortraitSide":
           return z.enum(["Left", "Right"]);
+        case "\0RDHeartType":
+          return z.enum([
+            "Default",
+            "Infected",
+            "Cracked",
+            "SplitLeft",
+            "SplitRight",
+            "Halloween",
+            "Unbeatable",
+            "None",
+          ]);
         case "\0RDPlayer":
           return z.enum([...Player.options, "NoChange"]);
         case "\0RDSortingLayer":

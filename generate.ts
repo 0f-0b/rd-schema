@@ -2,7 +2,7 @@
 
 import { createFromBuffer } from "@dprint/formatter";
 import tsPlugin from "@dprint/typescript/plugin.wasm" with { type: "bytes" };
-import { globalRegistry, type ZodType } from "zod";
+import { globalRegistry, z, type ZodType } from "zod";
 
 import { Character } from "./character.ts";
 import { Level } from "./level.ts";
@@ -22,13 +22,12 @@ function generateDts(path: string, root: ZodType): undefined {
 }
 
 function generateJsonSchema(path: string, root: ZodType): undefined {
-  const schema = root.clone().toJSONSchema({
+  const schema = z.lazy(() => root).meta({
+    $id: `https://0f-0b.github.io/rd-schema/${path}`,
+  }).toJSONSchema({
     target: "draft-07",
     override: (ctx) => {
       const schema = ctx.jsonSchema;
-      if (ctx.path.length === 0) {
-        schema.$id = `https://0f-0b.github.io/rd-schema/${path}`;
-      }
       if (schema.allOf?.length === 1) {
         Object.assign(schema, schema.allOf[0]);
         delete schema.allOf;

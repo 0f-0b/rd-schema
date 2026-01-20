@@ -370,6 +370,7 @@ export type SetCountingSoundEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   row: number;
+  enabled?: boolean | undefined;
   voiceSource?:
     | (
       | "JyiCount"
@@ -400,10 +401,9 @@ export type SetCountingSoundEvent = {
       | "Custom"
     )
     | undefined;
-  sounds?: Sound[] | undefined;
-  enabled?: boolean | undefined;
   volume?: number | undefined;
   subdivOffset?: number | undefined;
+  sounds?: Sound[] | undefined;
 };
 export type NarrationCategory =
   | "Fallback"
@@ -780,6 +780,7 @@ export type EnableOrdinaryVFXPresetEvent = {
       | "Balloons"
       | "ConfettiBurst"
       | "GlassShatter"
+      | "Scanlines"
     )
     | undefined;
   enable?: true | undefined;
@@ -810,7 +811,9 @@ export type EnableEaseableVFXPresetEvent = {
     | "Brightness"
     | "Contrast"
     | "Saturation"
-    | "Fisheye";
+    | "Fisheye"
+    | "HeatDistortion"
+    | "VHSRewind";
   enable?: true | undefined;
   intensity?: number | undefined;
   duration?: number | undefined;
@@ -827,7 +830,7 @@ export type EnableColoredVFXPresetEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  preset: "Diamonds" | "Tutorial";
+  preset: "Diamonds" | "Tutorial" | "Embers";
   enable?: true | undefined;
   intensity?: number | undefined;
   color?: ColorOrPaletteIndex | undefined;
@@ -879,7 +882,7 @@ export type EnableScreenVFXPresetEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  preset: "TileN" | "CustomScreenScroll";
+  preset: "TileN" | "CustomScreenScroll" | "Pixelate";
   enable?: true | undefined;
   amount?: [(number | null), (number | null)] | undefined;
   duration?: number | undefined;
@@ -943,6 +946,7 @@ export type DisableVFXPresetEvent = {
       | "Balloons"
       | "ConfettiBurst"
       | "GlassShatter"
+      | "Scanlines"
       | "Rain"
       | "JPEG"
       | "Mosaic"
@@ -959,12 +963,16 @@ export type DisableVFXPresetEvent = {
       | "Contrast"
       | "Saturation"
       | "Fisheye"
+      | "HeatDistortion"
+      | "VHSRewind"
       | "Diamonds"
       | "Tutorial"
+      | "Embers"
       | "WavyRows"
       | "Bloom"
       | "TileN"
       | "CustomScreenScroll"
+      | "Pixelate"
     )
     | undefined;
   enable: false;
@@ -1075,6 +1083,7 @@ export type CustomFlashEvent = {
   background?: boolean | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
+  reducedStrength?: (number | null) | undefined;
 };
 export type FlashEvent = {
   bar?: number | undefined;
@@ -1257,7 +1266,23 @@ export type PaintRowsEvent = {
   opacity?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
-  effect?: ("None" | "Electric") | undefined;
+  effect?: (("None" | "Electric") | null) | undefined;
+  heart?:
+    | (
+      | (
+        | "Default"
+        | "Infected"
+        | "Cracked"
+        | "SplitLeft"
+        | "SplitRight"
+        | "Halloween"
+        | "Unbeatable"
+        | "None"
+      )
+      | null
+    )
+    | undefined;
+  heartTransition?: boolean | undefined;
 };
 export type Strength = "Low" | "Medium" | "High";
 export type BassDropEvent = {
@@ -2057,6 +2082,13 @@ export type PlayerModeConditional = {
   id: number;
   twoPlayerMode?: boolean | undefined;
 };
+export type AccessibilityConditional = {
+  type: "Accessibility";
+  tag?: string | undefined;
+  name: string;
+  id: number;
+  effectType?: ("Flashy" | "Narration") | undefined;
+};
 export type NarrationConditional = {
   type: "Narration";
   tag?: string | undefined;
@@ -2070,6 +2102,7 @@ export type Conditional =
   | TimesExecutedConditional
   | LanguageConditional
   | PlayerModeConditional
+  | AccessibilityConditional
   | NarrationConditional;
 export type Bookmark = { bar: number; beat: number; color: number };
 export type Color = string;

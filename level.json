@@ -1425,6 +1425,9 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
+        "enabled": {
+          "type": "boolean"
+        },
         "voiceSource": {
           "type": "string",
           "enum": [
@@ -1456,15 +1459,6 @@
             "Custom"
           ]
         },
-        "sounds": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Sound"
-          }
-        },
-        "enabled": {
-          "type": "boolean"
-        },
         "volume": {
           "type": "integer",
           "minimum": -2147483648,
@@ -1472,6 +1466,12 @@
         },
         "subdivOffset": {
           "type": "number"
+        },
+        "sounds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Sound"
+          }
         }
       },
       "required": [
@@ -2717,7 +2717,8 @@
             "Confetti",
             "Balloons",
             "ConfettiBurst",
-            "GlassShatter"
+            "GlassShatter",
+            "Scanlines"
           ]
         },
         "enable": {
@@ -2789,7 +2790,9 @@
             "Brightness",
             "Contrast",
             "Saturation",
-            "Fisheye"
+            "Fisheye",
+            "HeatDistortion",
+            "VHSRewind"
           ]
         },
         "enable": {
@@ -2859,7 +2862,8 @@
           "type": "string",
           "enum": [
             "Diamonds",
-            "Tutorial"
+            "Tutorial",
+            "Embers"
           ]
         },
         "enable": {
@@ -3085,7 +3089,8 @@
           "type": "string",
           "enum": [
             "TileN",
-            "CustomScreenScroll"
+            "CustomScreenScroll",
+            "Pixelate"
           ]
         },
         "enable": {
@@ -3216,6 +3221,7 @@
             "Balloons",
             "ConfettiBurst",
             "GlassShatter",
+            "Scanlines",
             "Rain",
             "JPEG",
             "Mosaic",
@@ -3232,12 +3238,16 @@
             "Contrast",
             "Saturation",
             "Fisheye",
+            "HeatDistortion",
+            "VHSRewind",
             "Diamonds",
             "Tutorial",
+            "Embers",
             "WavyRows",
             "Bloom",
             "TileN",
-            "CustomScreenScroll"
+            "CustomScreenScroll",
+            "Pixelate"
           ]
         },
         "enable": {
@@ -3681,6 +3691,18 @@
         },
         "ease": {
           "$ref": "#/definitions/Easing"
+        },
+        "reducedStrength": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -4537,11 +4559,41 @@
           "$ref": "#/definitions/Easing"
         },
         "effect": {
-          "type": "string",
-          "enum": [
-            "None",
-            "Electric"
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "None",
+                "Electric"
+              ]
+            },
+            {
+              "type": "null"
+            }
           ]
+        },
+        "heart": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "Default",
+                "Infected",
+                "Cracked",
+                "SplitLeft",
+                "SplitRight",
+                "Halloween",
+                "Unbeatable",
+                "None"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "heartTransition": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -7725,6 +7777,9 @@
           "$ref": "#/definitions/PlayerModeConditional"
         },
         {
+          "$ref": "#/definitions/AccessibilityConditional"
+        },
+        {
           "$ref": "#/definitions/NarrationConditional"
         }
       ]
@@ -7897,6 +7952,39 @@
         },
         "twoPlayerMode": {
           "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "AccessibilityConditional": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Accessibility"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "effectType": {
+          "type": "string",
+          "enum": [
+            "Flashy",
+            "Narration"
+          ]
         }
       },
       "required": [

@@ -448,6 +448,7 @@ export const OrdinaryVFXPreset = z.enum([
   "Balloons",
   "ConfettiBurst",
   "GlassShatter",
+  "Scanlines",
 ]);
 export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -480,6 +481,8 @@ export const EaseableVFXPreset = z.enum([
   "Contrast",
   "Saturation",
   "Fisheye",
+  "HeatDistortion",
+  "VHSRewind",
 ]);
 export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -492,7 +495,7 @@ export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
     speedPerc: [],
   },
 ).meta({ id: "EnableEaseableVFXPresetEvent" });
-export const ColoredVFXPreset = z.enum(["Diamonds", "Tutorial"]);
+export const ColoredVFXPreset = z.enum(["Diamonds", "Tutorial", "Embers"]);
 export const EnableColoredVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
   {
@@ -524,7 +527,11 @@ export const EnableBloomVFXPresetEvent = mergeShapesToObject(
     speedPerc: [],
   },
 ).meta({ id: "EnableBloomVFXPresetEvent" });
-export const ScreenVFXPreset = z.enum(["TileN", "CustomScreenScroll"]);
+export const ScreenVFXPreset = z.enum([
+  "TileN",
+  "CustomScreenScroll",
+  "Pixelate",
+]);
 export const EnableScreenVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
   {
@@ -899,6 +906,9 @@ export const LanguageConditional = mergeShapesToObject(
 export const PlayerModeConditional = z.object(
   makeConditionalAutoProperties("PlayerMode"),
 ).meta({ id: "PlayerModeConditional" });
+export const AccessibilityConditional = z.object(
+  makeConditionalAutoProperties("Accessibility"),
+).meta({ id: "AccessibilityConditional" });
 export const NarrationConditional = z.object(
   makeConditionalAutoProperties("Narration"),
 ).meta({ id: "NarrationConditional" });
@@ -908,6 +918,7 @@ export const Conditional = z.union([
   TimesExecutedConditional,
   LanguageConditional,
   PlayerModeConditional,
+  AccessibilityConditional,
   NarrationConditional,
 ]).meta({ id: "Conditional" });
 export const Bookmark = z.object({

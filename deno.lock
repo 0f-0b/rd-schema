@@ -2,17 +2,17 @@
   "version": "5",
   "specifiers": {
     "jsr:@dprint/formatter@0.4": "0.4.1",
-    "jsr:@zod/zod@4.2.1": "4.2.1",
+    "jsr:@zod/zod@4.3.5": "4.3.5",
     "npm:@dprint/typescript@0.95": "0.95.13",
     "npm:pe-struct@0.9.4": "0.9.4",
-    "npm:type-fest@5": "5.3.1"
+    "npm:type-fest@5": "5.4.1"
   },
   "jsr": {
     "@dprint/formatter@0.4.1": {
       "integrity": "96449ab83aa9f72df98caa5030d3f4a921c5c29d9b0e0d0da83d79e2024a9637"
     },
-    "@zod/zod@4.2.1": {
-      "integrity": "693a557fccaf73bfcbcd132ca286929f3343cda9efb56e9780985aa41d229b38"
+    "@zod/zod@4.3.5": {
+      "integrity": "3d14553f025d6e3d1a836b9c56e366bbce27d942301e8c7c1ac4c365df5f8085"
     }
   },
   "npm": {
@@ -25,8 +25,8 @@
     "tagged-tag@1.0.0": {
       "integrity": "sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng=="
     },
-    "type-fest@5.3.1": {
-      "integrity": "sha512-VCn+LMHbd4t6sF3wfU/+HKT63C9OoyrSIf4b+vtWHpt2U7/4InZG467YDNMFMR70DdHjAdpPWmw2lzRdg0Xqqg==",
+    "type-fest@5.4.1": {
+      "integrity": "sha512-xygQcmneDyzsEuKZrFbRMne5HDqMs++aFzefrJTgEIKjQ3rekM+RPfFCVq2Gp1VIDqddoYeppCj4Pcb+RZW0GQ==",
       "dependencies": [
         "tagged-tag"
       ]
@@ -36,7 +36,7 @@
     "dependencies": [
       "jsr:@dprint/formatter@0.4",
       "jsr:@std/path@1",
-      "jsr:@zod/zod@4.2.1",
+      "jsr:@zod/zod@4.3.5",
       "npm:@dprint/typescript@0.95",
       "npm:pe-struct@0.9.4",
       "npm:type-fest@5"
