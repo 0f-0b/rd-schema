@@ -1254,19 +1254,20 @@ export type PaintRowsEvent = {
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   row: number;
-  border?: Border | undefined;
+  border?: (Border | null) | undefined;
   borderColor?: ColorOrPaletteIndex | undefined;
   borderOpacity?: number | undefined;
   borderPulse?: (boolean | null) | undefined;
   borderPulseMin?: number | undefined;
   borderPulseMax?: number | undefined;
-  tint?: boolean | undefined;
+  tint?: (boolean | null) | undefined;
   tintColor?: ColorOrPaletteIndex | undefined;
   tintOpacity?: number | undefined;
-  opacity?: number | undefined;
+  opacity?: (number | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   effect?: (("None" | "Electric") | null) | undefined;
+  effectSound?: boolean | undefined;
   heart?:
     | (
       | (
@@ -1529,14 +1530,14 @@ export type PaintHandsEvent = {
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   hands?: Hands | undefined;
-  border?: Border | undefined;
+  border?: (Border | null) | undefined;
   borderColor?: ColorOrPaletteIndex | undefined;
   borderPulse?: (boolean | null) | undefined;
   borderPulseMin?: number | undefined;
   borderPulseMax?: number | undefined;
-  tint?: boolean | undefined;
+  tint?: (boolean | null) | undefined;
   tintColor?: ColorOrPaletteIndex | undefined;
-  opacity?: number | undefined;
+  opacity?: (number | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -1698,14 +1699,14 @@ export type PaintSpriteEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   target: string;
-  border?: Border | undefined;
+  border?: (Border | null) | undefined;
   borderColor?: ColorOrPaletteIndex | undefined;
   borderPulse?: (boolean | null) | undefined;
   borderPulseMin?: number | undefined;
   borderPulseMax?: number | undefined;
-  tint?: boolean | undefined;
+  tint?: (boolean | null) | undefined;
   tintColor?: ColorOrPaletteIndex | undefined;
-  opacity?: number | undefined;
+  opacity?: (number | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   borderOpacity?: number | undefined;

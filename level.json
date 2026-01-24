@@ -4513,7 +4513,14 @@
           "maximum": 2147483647
         },
         "border": {
-          "$ref": "#/definitions/Border"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Border"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "borderColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -4536,7 +4543,10 @@
           "type": "number"
         },
         "tint": {
-          "type": "boolean"
+          "type": [
+            "boolean",
+            "null"
+          ]
         },
         "tintColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -4547,9 +4557,16 @@
           "maximum": 2147483647
         },
         "opacity": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "duration": {
           "type": "number",
@@ -4571,6 +4588,9 @@
               "type": "null"
             }
           ]
+        },
+        "effectSound": {
+          "type": "boolean"
         },
         "heart": {
           "anyOf": [
@@ -5634,7 +5654,14 @@
           "$ref": "#/definitions/Hands"
         },
         "border": {
-          "$ref": "#/definitions/Border"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Border"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "borderColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -5652,15 +5679,25 @@
           "type": "number"
         },
         "tint": {
-          "type": "boolean"
+          "type": [
+            "boolean",
+            "null"
+          ]
         },
         "tintColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "opacity": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "duration": {
           "type": "number",
@@ -6192,7 +6229,14 @@
           "type": "string"
         },
         "border": {
-          "$ref": "#/definitions/Border"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Border"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "borderColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -6210,15 +6254,25 @@
           "type": "number"
         },
         "tint": {
-          "type": "boolean"
+          "type": [
+            "boolean",
+            "null"
+          ]
         },
         "tintColor": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "opacity": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "duration": {
           "type": "number",
