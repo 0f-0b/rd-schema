@@ -3,9 +3,9 @@
   "specifiers": {
     "jsr:@dprint/formatter@0.4": "0.4.1",
     "jsr:@zod/zod@4.3.6": "4.3.6",
-    "npm:@dprint/typescript@0.95": "0.95.13",
+    "npm:@dprint/typescript@0.95": "0.95.15",
     "npm:pe-struct@0.9.4": "0.9.4",
-    "npm:type-fest@5": "5.4.2"
+    "npm:type-fest@5": "5.4.4"
   },
   "jsr": {
     "@dprint/formatter@0.4.1": {
@@ -16,8 +16,8 @@
     }
   },
   "npm": {
-    "@dprint/typescript@0.95.13": {
-      "integrity": "sha512-lzhaiENYcsLOo+qJHzwWbZ/Ne+67eDGLwhU52Z0AnW6gHeCN1EZ8DDe5gI/f/Fvk2Jd2wlnmoyrsrYnkg/SDgw=="
+    "@dprint/typescript@0.95.15": {
+      "integrity": "sha512-PQGYicsjlv7Eq+5BzpI04Ow2N9xeHkjr9O1TG3lDebK2B48IvXFQz0RwO4OhkKj22o7YLcjVIFM6WL7zVuM2ng=="
     },
     "pe-struct@0.9.4": {
       "integrity": "sha512-aGFWx9K+n1yl16YnRS6nkOnKNPF3jjxvKsLZeq4lSuvFNVrmlhgoArIHFIopXyA/zyxQA4tDljPPHFjHMvcSKA=="
@@ -25,8 +25,8 @@
     "tagged-tag@1.0.0": {
       "integrity": "sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng=="
     },
-    "type-fest@5.4.2": {
-      "integrity": "sha512-FLEenlVYf7Zcd34ISMLo3ZzRE1gRjY1nMDTp+bQRBiPsaKyIW8K3Zr99ioHDUgA9OGuGGJPyYpNcffGmBhJfGg==",
+    "type-fest@5.4.4": {
+      "integrity": "sha512-JnTrzGu+zPV3aXIUhnyWJj4z/wigMsdYajGLIYakqyOW1nPllzXEJee0QQbHj+CTIQtXGlAjuK0UY+2xTyjVAw==",
       "dependencies": [
         "tagged-tag"
       ]

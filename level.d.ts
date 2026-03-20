@@ -118,7 +118,6 @@ export type PlaySoundEvent = {
   customSoundType?:
     | ("CueSound" | "MusicSound" | "BeatSound" | "HitSound" | "OtherSound")
     | undefined;
-  isCustom?: boolean | undefined;
   filename?: string | undefined;
   offset?: number | undefined;
   volume?: number | undefined;
@@ -304,7 +303,7 @@ export type GameSoundType =
   | "FreezeshotSound"
   | "BurnshotSound"
   | "Skipshot";
-export type SetSingleGameSoundEvent = {
+export type SetGameSoundEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
   y?: number | undefined;
@@ -314,23 +313,15 @@ export type SetSingleGameSoundEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   soundType?: GameSoundType | undefined;
-  filename?: string | undefined;
-  volume?: number | undefined;
-  pitch?: number | undefined;
-  pan?: number | undefined;
-  offset?: number | undefined;
-};
-export type SetGameSoundGroupEvent = {
-  bar?: number | undefined;
-  beat?: number | undefined;
-  y?: number | undefined;
-  type: "SetGameSound";
-  if?: ConditionExpression | undefined;
-  tag?: string | undefined;
-  runTag?: boolean | undefined;
-  active?: boolean | undefined;
-  soundType?: GameSoundType | undefined;
-  soundSubtypes: {
+  sounds?: {
+    filename: string;
+    volume?: number | undefined;
+    pitch?: number | undefined;
+    pan?: number | undefined;
+    offset?: number | undefined;
+    used?: boolean | undefined;
+  }[] | undefined;
+  soundSubtypes?: {
     groupSubtype?: GameSoundType | undefined;
     used?: boolean | undefined;
     filename?: string | undefined;
@@ -338,11 +329,13 @@ export type SetGameSoundGroupEvent = {
     pitch?: number | undefined;
     pan?: number | undefined;
     offset?: number | undefined;
-  }[];
+  }[] | undefined;
+  filename?: string | undefined;
+  volume?: number | undefined;
+  pitch?: number | undefined;
+  pan?: number | undefined;
+  offset?: number | undefined;
 };
-export type SetGameSoundEvent =
-  | SetSingleGameSoundEvent
-  | SetGameSoundGroupEvent;
 export type SetBeatSoundEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
@@ -803,11 +796,9 @@ export type EnableEaseableVFXPresetEvent = {
     | "ScreenWaves"
     | "Grain"
     | "Blizzard"
-    | "Drawing"
     | "Aberration"
     | "HueShift"
     | "Blur"
-    | "RadialBlur"
     | "Dots"
     | "Brightness"
     | "Contrast"
@@ -816,7 +807,43 @@ export type EnableEaseableVFXPresetEvent = {
     | "HeatDistortion"
     | "VHSRewind";
   enable?: true | undefined;
-  intensity?: number | undefined;
+  intensity?: (number | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+};
+export type EnableRadialBlurVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "RadialBlur";
+  enable?: true | undefined;
+  intensity?: (number | null) | undefined;
+  amount?: ([(number | null), (number | null)] | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+  floatX?: number | undefined;
+  floatY?: number | undefined;
+};
+export type EnableWavyRowsVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "WavyRows";
+  enable?: true | undefined;
+  intensity?: (number | null) | undefined;
+  speedPerc?: (number | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -833,25 +860,8 @@ export type EnableColoredVFXPresetEvent = {
   rooms?: number[] | undefined;
   preset: "Diamonds" | "Tutorial" | "Embers";
   enable?: true | undefined;
-  intensity?: number | undefined;
-  color?: ColorOrPaletteIndex | undefined;
-  duration?: number | undefined;
-  ease?: Easing | undefined;
-};
-export type EnableWavyRowsVFXPresetEvent = {
-  bar?: number | undefined;
-  beat?: number | undefined;
-  y?: number | undefined;
-  type: "SetVFXPreset";
-  if?: ConditionExpression | undefined;
-  tag?: string | undefined;
-  runTag?: boolean | undefined;
-  active?: boolean | undefined;
-  rooms?: number[] | undefined;
-  preset: "WavyRows";
-  enable?: true | undefined;
-  intensity?: number | undefined;
-  speedPerc?: number | undefined;
+  intensity?: (number | null) | undefined;
+  color?: (ColorOrPaletteIndex | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -867,9 +877,45 @@ export type EnableBloomVFXPresetEvent = {
   rooms?: number[] | undefined;
   preset: "Bloom";
   enable?: true | undefined;
-  threshold?: number | undefined;
-  intensity?: number | undefined;
-  color?: ColorOrPaletteIndex | undefined;
+  threshold?: (number | null) | undefined;
+  intensity?: (number | null) | undefined;
+  color?: (ColorOrPaletteIndex | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+};
+export type EnableEyesVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "EyesBig" | "EyesSmall";
+  enable?: true | undefined;
+  intensity?: (number | null) | undefined;
+  color?: (ColorOrPaletteIndex | null) | undefined;
+  xySpeed?: ([(number | null), (number | null)] | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+};
+export type EnableDrawingVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "Drawing";
+  enable?: true | undefined;
+  intensity?: (number | null) | undefined;
+  color?: (ColorOrPaletteIndex | null) | undefined;
+  speedPerc?: (number | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
@@ -885,7 +931,26 @@ export type EnableScreenVFXPresetEvent = {
   rooms?: number[] | undefined;
   preset: "TileN" | "CustomScreenScroll" | "Pixelate";
   enable?: true | undefined;
-  amount?: [(number | null), (number | null)] | undefined;
+  amount?: ([(number | null), (number | null)] | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+  floatX?: number | undefined;
+  floatY?: number | undefined;
+};
+export type EnableScreenScrollVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "CustomScreenScroll";
+  enable?: true | undefined;
+  amount?: ([(number | null), (number | null)] | null) | undefined;
+  xySpeed?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   floatX?: number | undefined;
@@ -954,11 +1019,9 @@ export type DisableVFXPresetEvent = {
       | "ScreenWaves"
       | "Grain"
       | "Blizzard"
-      | "Drawing"
       | "Aberration"
       | "HueShift"
       | "Blur"
-      | "RadialBlur"
       | "Dots"
       | "Brightness"
       | "Contrast"
@@ -966,11 +1029,15 @@ export type DisableVFXPresetEvent = {
       | "Fisheye"
       | "HeatDistortion"
       | "VHSRewind"
+      | "RadialBlur"
+      | "WavyRows"
       | "Diamonds"
       | "Tutorial"
       | "Embers"
-      | "WavyRows"
       | "Bloom"
+      | "EyesBig"
+      | "EyesSmall"
+      | "Drawing"
       | "TileN"
       | "CustomScreenScroll"
       | "Pixelate"
@@ -993,10 +1060,14 @@ export type DisableAllVFXPresetEvent = {
 export type SetVFXPresetEvent =
   | EnableOrdinaryVFXPresetEvent
   | EnableEaseableVFXPresetEvent
-  | EnableColoredVFXPresetEvent
+  | EnableRadialBlurVFXPresetEvent
   | EnableWavyRowsVFXPresetEvent
+  | EnableColoredVFXPresetEvent
   | EnableBloomVFXPresetEvent
+  | EnableEyesVFXPresetEvent
+  | EnableDrawingVFXPresetEvent
   | EnableScreenVFXPresetEvent
+  | EnableScreenScrollVFXPresetEvent
   | DisableVFXPresetEvent
   | DisableAllVFXPresetEvent;
 export type ImageSequence = string[] | string;

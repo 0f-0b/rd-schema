@@ -660,9 +660,6 @@
             "OtherSound"
           ]
         },
-        "isCustom": {
-          "type": "boolean"
-        },
         "filename": {
           "type": "string"
         },
@@ -1101,16 +1098,6 @@
       "additionalProperties": false
     },
     "SetGameSoundEvent": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SetSingleGameSoundEvent"
-        },
-        {
-          "$ref": "#/definitions/SetGameSoundGroupEvent"
-        }
-      ]
-    },
-    "SetSingleGameSoundEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -1145,6 +1132,82 @@
         },
         "soundType": {
           "$ref": "#/definitions/GameSoundType"
+        },
+        "sounds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "filename": {
+                "type": "string"
+              },
+              "volume": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "pitch": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "pan": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "offset": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "used": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "filename"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "soundSubtypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "groupSubtype": {
+                "$ref": "#/definitions/GameSoundType"
+              },
+              "used": {
+                "type": "boolean"
+              },
+              "filename": {
+                "type": "string"
+              },
+              "volume": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "pitch": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "pan": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "offset": {
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              }
+            },
+            "additionalProperties": false
+          }
         },
         "filename": {
           "type": "string"
@@ -1227,87 +1290,6 @@
         "BurnshotSound",
         "Skipshot"
       ]
-    },
-    "SetGameSoundGroupEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "SetGameSound"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "soundType": {
-          "$ref": "#/definitions/GameSoundType"
-        },
-        "soundSubtypes": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "groupSubtype": {
-                "$ref": "#/definitions/GameSoundType"
-              },
-              "used": {
-                "type": "boolean"
-              },
-              "filename": {
-                "type": "string"
-              },
-              "volume": {
-                "type": "integer",
-                "minimum": -2147483648,
-                "maximum": 2147483647
-              },
-              "pitch": {
-                "type": "integer",
-                "minimum": -2147483648,
-                "maximum": 2147483647
-              },
-              "pan": {
-                "type": "integer",
-                "minimum": -2147483648,
-                "maximum": 2147483647
-              },
-              "offset": {
-                "type": "integer",
-                "minimum": -2147483648,
-                "maximum": 2147483647
-              }
-            },
-            "additionalProperties": false
-          }
-        }
-      },
-      "required": [
-        "type",
-        "soundSubtypes"
-      ],
-      "additionalProperties": false
     },
     "SetBeatSoundEvent": {
       "type": "object",
@@ -2612,16 +2594,28 @@
           "$ref": "#/definitions/EnableEaseableVFXPresetEvent"
         },
         {
-          "$ref": "#/definitions/EnableColoredVFXPresetEvent"
+          "$ref": "#/definitions/EnableRadialBlurVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/EnableWavyRowsVFXPresetEvent"
         },
         {
+          "$ref": "#/definitions/EnableColoredVFXPresetEvent"
+        },
+        {
           "$ref": "#/definitions/EnableBloomVFXPresetEvent"
         },
         {
+          "$ref": "#/definitions/EnableEyesVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableDrawingVFXPresetEvent"
+        },
+        {
           "$ref": "#/definitions/EnableScreenVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableScreenScrollVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/DisableVFXPresetEvent"
@@ -2782,11 +2776,9 @@
             "ScreenWaves",
             "Grain",
             "Blizzard",
-            "Drawing",
             "Aberration",
             "HueShift",
             "Blur",
-            "RadialBlur",
             "Dots",
             "Brightness",
             "Contrast",
@@ -2801,9 +2793,210 @@
           "const": true
         },
         "intensity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "EnableRadialBlurVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
           "type": "number",
-          "minimum": -9999,
-          "maximum": 9999
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "RadialBlur"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "floatX": {
+          "type": "number"
+        },
+        "floatY": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "EnableWavyRowsVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "WavyRows"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "speedPerc": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "duration": {
           "type": "number"
@@ -2872,12 +3065,26 @@
           "const": true
         },
         "intensity": {
-          "type": "number",
-          "minimum": -9999,
-          "maximum": 9999
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "duration": {
           "type": "number"
@@ -2895,80 +3102,6 @@
     "ColorOrPaletteIndex": {
       "type": "string",
       "pattern": "^(?:(?:[0-9A-Fa-f]{2}){3,4}|pal\\d+)$"
-    },
-    "EnableWavyRowsVFXPresetEvent": {
-      "type": "object",
-      "properties": {
-        "bar": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 2147483647
-        },
-        "beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "y": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
-        },
-        "type": {
-          "type": "string",
-          "const": "SetVFXPreset"
-        },
-        "if": {
-          "$ref": "#/definitions/ConditionExpression"
-        },
-        "tag": {
-          "type": "string"
-        },
-        "runTag": {
-          "type": "boolean"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
-        },
-        "preset": {
-          "type": "string",
-          "enum": [
-            "WavyRows"
-          ]
-        },
-        "enable": {
-          "type": "boolean",
-          "const": true
-        },
-        "intensity": {
-          "type": "number",
-          "minimum": -9999,
-          "maximum": 9999
-        },
-        "speedPerc": {
-          "type": "number",
-          "minimum": -9999,
-          "maximum": 9999
-        },
-        "duration": {
-          "type": "number"
-        },
-        "ease": {
-          "$ref": "#/definitions/Easing"
-        }
-      },
-      "required": [
-        "type",
-        "preset"
-      ],
-      "additionalProperties": false
     },
     "EnableBloomVFXPresetEvent": {
       "type": "object",
@@ -3022,15 +3155,241 @@
           "const": true
         },
         "threshold": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "intensity": {
-          "type": "number",
-          "minimum": -9999,
-          "maximum": 9999
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "color": {
-          "$ref": "#/definitions/ColorOrPaletteIndex"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "EnableEyesVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "EyesBig",
+            "EyesSmall"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "xySpeed": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "EnableDrawingVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Drawing"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "speedPerc": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "duration": {
           "type": "number"
@@ -3099,19 +3458,144 @@
           "const": true
         },
         "amount": {
-          "type": "array",
-          "items": [
+          "anyOf": [
             {
-              "type": [
-                "number",
-                "null"
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
             },
             {
-              "type": [
-                "number",
-                "null"
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "floatX": {
+          "type": "number"
+        },
+        "floatY": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "EnableScreenScrollVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "CustomScreenScroll"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "xySpeed": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
             }
           ]
         },
@@ -3229,11 +3713,9 @@
             "ScreenWaves",
             "Grain",
             "Blizzard",
-            "Drawing",
             "Aberration",
             "HueShift",
             "Blur",
-            "RadialBlur",
             "Dots",
             "Brightness",
             "Contrast",
@@ -3241,11 +3723,15 @@
             "Fisheye",
             "HeatDistortion",
             "VHSRewind",
+            "RadialBlur",
+            "WavyRows",
             "Diamonds",
             "Tutorial",
             "Embers",
-            "WavyRows",
             "Bloom",
+            "EyesBig",
+            "EyesSmall",
+            "Drawing",
             "TileN",
             "CustomScreenScroll",
             "Pixelate"

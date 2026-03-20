@@ -200,19 +200,10 @@ export const SetHeartExplosionIntervalEvent = z.object(
 export const SayReadyGetSetGoEvent = z.object(
   makeEventAutoProperties("SayReadyGetSetGo"),
 ).meta({ id: "SayReadyGetSetGoEvent" });
-export const SetSingleGameSoundEvent = mergeShapesToObject(
+export const SetGameSoundEvent = mergeShapesToObject(
   makeEventAutoProperties("SetGameSound"),
   {
-    filename: z.string().optional(),
-    volume: z.int32().optional(),
-    pitch: z.int32().optional(),
-    pan: z.int32().optional(),
-    offset: z.int32().optional(),
-  },
-).meta({ id: "SetSingleGameSoundEvent" });
-export const SetGameSoundGroupEvent = mergeShapesToObject(
-  makeEventAutoProperties("SetGameSound"),
-  {
+    sounds: [Sound.extend({ used: z.boolean().optional() }).array().optional()],
     soundSubtypes: z.object({
       groupSubtype: GameSoundType.optional(),
       used: z.boolean().optional(),
@@ -221,13 +212,14 @@ export const SetGameSoundGroupEvent = mergeShapesToObject(
       pitch: z.int32().optional(),
       pan: z.int32().optional(),
       offset: z.int32().optional(),
-    }).array(),
+    }).array().optional(),
+    filename: z.string().optional(),
+    volume: z.int32().optional(),
+    pitch: z.int32().optional(),
+    pan: z.int32().optional(),
+    offset: z.int32().optional(),
   },
-).meta({ id: "SetGameSoundGroupEvent" });
-export const SetGameSoundEvent = z.union([
-  SetSingleGameSoundEvent,
-  SetGameSoundGroupEvent,
-]).meta({ id: "SetGameSoundEvent" });
+).meta({ id: "SetGameSoundEvent" });
 export const SetBeatSoundEvent = mergeShapesToObject(
   makeEventAutoProperties("SetBeatSound"),
   makeLegacySoundProperties(),
@@ -460,6 +452,7 @@ export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     amount: [],
+    xySpeed: [],
     speedPerc: [],
     duration: [],
     ease: [],
@@ -472,11 +465,9 @@ export const EaseableVFXPreset = z.enum([
   "ScreenWaves",
   "Grain",
   "Blizzard",
-  "Drawing",
   "Aberration",
   "HueShift",
   "Blur",
-  "RadialBlur",
   "Dots",
   "Brightness",
   "Contrast",
@@ -493,20 +484,24 @@ export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     color: [],
     amount: [],
+    xySpeed: [],
     speedPerc: [],
   },
 ).meta({ id: "EnableEaseableVFXPresetEvent" });
-export const ColoredVFXPreset = z.enum(["Diamonds", "Tutorial", "Embers"]);
-export const EnableColoredVFXPresetEvent = mergeShapesToObject(
+export const RadialBlurVFXPreset = z.enum(["RadialBlur"]);
+export const EnableRadialBlurVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
   {
-    preset: [ColoredVFXPreset],
+    preset: [RadialBlurVFXPreset],
     enable: [z.literal(true).optional()],
     threshold: [],
-    amount: [],
+    color: [],
+    floatX: z.number().optional(),
+    floatY: z.number().optional(),
+    xySpeed: [],
     speedPerc: [],
   },
-).meta({ id: "EnableColoredVFXPresetEvent" });
+).meta({ id: "EnableRadialBlurVFXPresetEvent" });
 export const WavyRowsVFXPreset = z.enum(["WavyRows"]);
 export const EnableWavyRowsVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -516,8 +511,21 @@ export const EnableWavyRowsVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     color: [],
     amount: [],
+    xySpeed: [],
   },
 ).meta({ id: "EnableWavyRowsVFXPresetEvent" });
+export const ColoredVFXPreset = z.enum(["Diamonds", "Tutorial", "Embers"]);
+export const EnableColoredVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [ColoredVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    amount: [],
+    xySpeed: [],
+    speedPerc: [],
+  },
+).meta({ id: "EnableColoredVFXPresetEvent" });
 export const BloomVFXPreset = z.enum(["Bloom"]);
 export const EnableBloomVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -525,9 +533,32 @@ export const EnableBloomVFXPresetEvent = mergeShapesToObject(
     preset: [BloomVFXPreset],
     enable: [z.literal(true).optional()],
     amount: [],
+    xySpeed: [],
     speedPerc: [],
   },
 ).meta({ id: "EnableBloomVFXPresetEvent" });
+export const EyesVFXPreset = z.enum(["EyesBig", "EyesSmall"]);
+export const EnableEyesVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [EyesVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    amount: [],
+    speedPerc: [],
+  },
+).meta({ id: "EnableEyesVFXPresetEvent" });
+export const DrawingVFXPreset = z.enum(["Drawing"]);
+export const EnableDrawingVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [DrawingVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    amount: [],
+    xySpeed: [],
+  },
+).meta({ id: "EnableDrawingVFXPresetEvent" });
 export const ScreenVFXPreset = z.enum([
   "TileN",
   "CustomScreenScroll",
@@ -543,9 +574,24 @@ export const EnableScreenVFXPresetEvent = mergeShapesToObject(
     color: [],
     floatX: z.number().optional(),
     floatY: z.number().optional(),
+    xySpeed: [],
     speedPerc: [],
   },
 ).meta({ id: "EnableScreenVFXPresetEvent" });
+export const ScreenScrollVFXPreset = z.enum(["CustomScreenScroll"]);
+export const EnableScreenScrollVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [ScreenScrollVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    intensity: [],
+    color: [],
+    floatX: z.number().optional(),
+    floatY: z.number().optional(),
+    speedPerc: [],
+  },
+).meta({ id: "EnableScreenScrollVFXPresetEvent" });
 export const DisableVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
   {
@@ -553,10 +599,14 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
       z.enum([
         ...OrdinaryVFXPreset.options,
         ...EaseableVFXPreset.options,
-        ...ColoredVFXPreset.options,
+        ...RadialBlurVFXPreset.options,
         ...WavyRowsVFXPreset.options,
+        ...ColoredVFXPreset.options,
         ...BloomVFXPreset.options,
+        ...EyesVFXPreset.options,
+        ...DrawingVFXPreset.options,
         ...ScreenVFXPreset.options,
+        ...ScreenScrollVFXPreset.options,
       ]).optional(),
     ],
     enable: [z.literal(false)],
@@ -564,6 +614,7 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     amount: [],
+    xySpeed: [],
     speedPerc: [],
     duration: [],
     ease: [],
@@ -578,6 +629,7 @@ export const DisableAllVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     amount: [],
+    xySpeed: [],
     speedPerc: [],
     duration: [],
     ease: [],
@@ -586,10 +638,14 @@ export const DisableAllVFXPresetEvent = mergeShapesToObject(
 export const SetVFXPresetEvent = z.union([
   EnableOrdinaryVFXPresetEvent,
   EnableEaseableVFXPresetEvent,
-  EnableColoredVFXPresetEvent,
+  EnableRadialBlurVFXPresetEvent,
   EnableWavyRowsVFXPresetEvent,
+  EnableColoredVFXPresetEvent,
   EnableBloomVFXPresetEvent,
+  EnableEyesVFXPresetEvent,
+  EnableDrawingVFXPresetEvent,
   EnableScreenVFXPresetEvent,
+  EnableScreenScrollVFXPresetEvent,
   DisableVFXPresetEvent,
   DisableAllVFXPresetEvent,
 ]).meta({ id: "SetVFXPresetEvent" });
