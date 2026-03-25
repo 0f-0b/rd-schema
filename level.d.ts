@@ -1636,7 +1636,15 @@ export type TagActionEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   Action?:
-    | ("Run" | "RunAll" | "Enable" | "Disable" | "EnableAll" | "DisableAll")
+    | (
+      | "Run"
+      | "RunAll"
+      | "RunRandom"
+      | "Enable"
+      | "Disable"
+      | "EnableAll"
+      | "DisableAll"
+    )
     | undefined;
   Tag: string;
 };

@@ -585,6 +585,7 @@ const makeAutoPropertyValue = (
           return z.enum([
             "Run",
             "RunAll",
+            "RunRandom",
             "Enable",
             "Disable",
             "EnableAll",

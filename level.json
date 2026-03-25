@@ -6290,6 +6290,7 @@
           "enum": [
             "Run",
             "RunAll",
+            "RunRandom",
             "Enable",
             "Disable",
             "EnableAll",
