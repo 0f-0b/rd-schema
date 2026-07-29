@@ -266,15 +266,15 @@ export const AddClassicBeatEvent = mergeShapesToObject(
 ).meta({ id: "AddClassicBeatEvent" });
 export const SetBeatModifiersEvent = mergeShapesToObject(
   makeEventAutoProperties("SetRowXs"),
-  { pattern: [z.string().regex(/^[-xudbr]{6}$/).optional()] },
+  { pattern: [z.string().regex(/^[-xudbrs]{6}$/).optional()] },
 ).meta({ id: "SetBeatModifiersEvent" });
 export const AddFreeTimeBeatEvent = mergeShapesToObject(
   makeEventAutoProperties("AddFreeTimeBeat"),
-  { pulse: [z.int32().min(0).max(6).optional()] },
+  { pulse: [z.int32().min(-1).max(6).optional()] },
 ).meta({ id: "AddFreeTimeBeatEvent" });
 export const PulseFreeTimeBeatEvent = mergeShapesToObject(
   makeEventAutoProperties("PulseFreeTimeBeat"),
-  { customPulse: [z.int32().min(0).max(6).optional()] },
+  { customPulse: [z.int32().min(-1).max(6).optional()] },
 ).meta({ id: "PulseFreeTimeBeatEvent" });
 export const AddOneshotBeatEvent = mergeShapesToObject(
   makeEventAutoProperties("AddOneshotBeat"),

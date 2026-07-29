@@ -1841,7 +1841,7 @@
         },
         "pattern": {
           "type": "string",
-          "pattern": "^[-xudbr]{6}$"
+          "pattern": "^[-xudbrs]{6}$"
         },
         "syncoBeat": {
           "type": "integer",
@@ -1923,7 +1923,7 @@
         },
         "pulse": {
           "type": "integer",
-          "minimum": 0,
+          "minimum": -1,
           "maximum": 6
         },
         "hold": {
@@ -1985,7 +1985,7 @@
         },
         "customPulse": {
           "type": "integer",
-          "minimum": 0,
+          "minimum": -1,
           "maximum": 6
         },
         "hold": {
