@@ -332,8 +332,22 @@
       ]
     },
     "Decoration": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Sprite"
+        },
+        {
+          "$ref": "#/definitions/Text"
+        }
+      ]
+    },
+    "Sprite": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "const": "Sprite"
+        },
         "if": {
           "$ref": "#/definitions/ConditionExpression"
         },
@@ -359,28 +373,28 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
-        "visible": {
-          "type": "boolean"
-        },
-        "preview": {
-          "type": "boolean"
-        },
-        "id": {
-          "type": "string"
-        },
         "filename": {
           "type": "string"
         },
         "character": {
           "type": "string"
         },
+        "visible": {
+          "type": "boolean"
+        },
+        "preview": {
+          "type": "boolean"
+        },
+        "filter": {
+          "$ref": "#/definitions/FilterMode"
+        },
+        "id": {
+          "type": "string"
+        },
         "depth": {
           "type": "integer",
           "minimum": -2147483648,
           "maximum": 2147483647
-        },
-        "filter": {
-          "$ref": "#/definitions/FilterMode"
         }
       },
       "required": [
@@ -393,6 +407,70 @@
       "enum": [
         "NearestNeighbor",
         "Bilinear"
+      ]
+    },
+    "Text": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Text"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "row": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "decoName": {
+          "type": "string"
+        },
+        "font": {
+          "type": "string"
+        },
+        "sortingLayer": {
+          "$ref": "#/definitions/SortingLayer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
+    },
+    "SortingLayer": {
+      "type": "string",
+      "enum": [
+        "Default",
+        "Background",
+        "Foreground"
       ]
     },
     "Event": {
@@ -1044,14 +1122,14 @@
             "SayGetSetGo",
             "SayReaDyGetSetOne",
             "SayGetSetOne",
+            "JustSayAnd",
+            "JustSayStop",
+            "JustSayAndStop",
             "JustSayRea",
             "JustSayDy",
             "JustSayGet",
             "JustSaySet",
-            "JustSayAnd",
             "JustSayGo",
-            "JustSayStop",
-            "JustSayAndStop",
             "SaySwitch",
             "SayWatch",
             "SayListen",
@@ -1905,13 +1983,13 @@
             "Remove"
           ]
         },
-        "hold": {
-          "type": "number"
-        },
         "customPulse": {
           "type": "integer",
           "minimum": 0,
           "maximum": 6
+        },
+        "hold": {
+          "type": "number"
         }
       },
       "required": [
@@ -2075,25 +2153,52 @@
           "maximum": 2147483647
         },
         "waveType": {
-          "type": "string",
-          "enum": [
-            "BoomAndRush",
-            "Ball",
-            "Spring",
-            "Spike",
-            "SpikeHuge",
-            "Single"
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "BoomAndRush",
+                "Ball",
+                "Spring",
+                "Spike",
+                "SpikeHuge",
+                "Single"
+              ]
+            },
+            {
+              "type": "null"
+            }
           ]
         },
         "height": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "width": {
-          "type": "integer",
-          "minimum": -2147483648,
-          "maximum": 2147483647
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wobble": {
+          "type": [
+            "boolean",
+            "null"
+          ]
         }
       },
       "required": [
@@ -2187,6 +2292,9 @@
         },
         {
           "$ref": "#/definitions/FinishLevelEvent"
+        },
+        {
+          "$ref": "#/definitions/GoToLevelEvent"
         },
         {
           "$ref": "#/definitions/StutterEvent"
@@ -2612,10 +2720,16 @@
           "$ref": "#/definitions/EnableDrawingVFXPresetEvent"
         },
         {
-          "$ref": "#/definitions/EnableScreenVFXPresetEvent"
+          "$ref": "#/definitions/EnableScreenTileVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/EnableScreenScrollVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnableHeatDistortionVFXPresetEvent"
+        },
+        {
+          "$ref": "#/definitions/EnablePixelateVFXPresetEvent"
         },
         {
           "$ref": "#/definitions/DisableVFXPresetEvent"
@@ -2784,7 +2898,6 @@
             "Contrast",
             "Saturation",
             "Fisheye",
-            "HeatDistortion",
             "VHSRewind"
           ]
         },
@@ -2904,17 +3017,35 @@
             }
           ]
         },
+        "position": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "duration": {
           "type": "number"
         },
         "ease": {
           "$ref": "#/definitions/Easing"
-        },
-        "floatX": {
-          "type": "number"
-        },
-        "floatY": {
-          "type": "number"
         }
       },
       "required": [
@@ -3269,6 +3400,30 @@
             }
           ]
         },
+        "position": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "xySpeed": {
           "anyOf": [
             {
@@ -3404,7 +3559,7 @@
       ],
       "additionalProperties": false
     },
-    "EnableScreenVFXPresetEvent": {
+    "EnableScreenTileVFXPresetEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -3448,9 +3603,7 @@
         "preset": {
           "type": "string",
           "enum": [
-            "TileN",
-            "CustomScreenScroll",
-            "Pixelate"
+            "TileN"
           ]
         },
         "enable": {
@@ -3458,6 +3611,30 @@
           "const": true
         },
         "amount": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "position": {
           "anyOf": [
             {
               "type": "array",
@@ -3618,6 +3795,200 @@
       ],
       "additionalProperties": false
     },
+    "EnableHeatDistortionVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "HeatDistortion"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -9999,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "position": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
+    "EnablePixelateVFXPresetEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "SetVFXPreset"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "Pixelate"
+          ]
+        },
+        "enable": {
+          "type": "boolean",
+          "const": true
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number"
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
+        },
+        "floatX": {
+          "type": "number"
+        },
+        "floatY": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "preset"
+      ],
+      "additionalProperties": false
+    },
     "DisableVFXPresetEvent": {
       "type": "object",
       "properties": {
@@ -3721,7 +4092,6 @@
             "Contrast",
             "Saturation",
             "Fisheye",
-            "HeatDistortion",
             "VHSRewind",
             "RadialBlur",
             "WavyRows",
@@ -3734,6 +4104,7 @@
             "Drawing",
             "TileN",
             "CustomScreenScroll",
+            "HeatDistortion",
             "Pixelate"
           ]
         },
@@ -4738,14 +5109,6 @@
       ],
       "additionalProperties": false
     },
-    "SortingLayer": {
-      "type": "string",
-      "enum": [
-        "Default",
-        "Background",
-        "Foreground"
-      ]
-    },
     "PlayExpressionEvent": {
       "type": "object",
       "properties": {
@@ -5629,14 +5992,14 @@
           "minimum": -2147483648,
           "maximum": 2147483647
         },
-        "text": {
+        "font": {
           "type": "string"
         },
-        "times": {
-          "type": [
-            "string",
-            "null"
-          ]
+        "showChildren": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
         },
         "color": {
           "$ref": "#/definitions/ColorOrPaletteIndex"
@@ -5645,23 +6008,27 @@
           "$ref": "#/definitions/ColorOrPaletteIndex"
         },
         "textPosition": {
-          "type": "array",
-          "items": [
+          "anyOf": [
             {
-              "type": "number"
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
             },
             {
-              "type": "number"
+              "type": "null"
             }
-          ]
-        },
-        "font": {
-          "type": "string",
-          "enum": [
-            "Default",
-            "Pixel",
-            "Vector",
-            "Flash"
           ]
         },
         "size": {
@@ -5670,10 +6037,10 @@
           "maximum": 2147483647
         },
         "angle": {
-          "type": "number"
-        },
-        "showChildren": {
-          "type": "boolean"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "fadeOutRate": {
           "type": "number",
@@ -5683,7 +6050,8 @@
           "type": "string",
           "enum": [
             "FadeOut",
-            "HideAbruptly"
+            "HideAbruptly",
+            "Never"
           ]
         },
         "anchor": {
@@ -5705,6 +6073,12 @@
         },
         "narrationCategory": {
           "$ref": "#/definitions/NarrationCategory"
+        },
+        "times": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -5936,6 +6310,71 @@
           "type": "boolean"
         },
         "active": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "GoToLevelEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "GoToLevel"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "LoadImmediately",
+            "SetNext",
+            "LoadNext"
+          ]
+        },
+        "rdlevel": {
+          "type": "string"
+        },
+        "skippable": {
+          "type": "boolean"
+        },
+        "fadeOut": {
+          "type": "boolean"
+        },
+        "startImmediately": {
+          "type": "boolean"
+        },
+        "keepMistakes": {
+          "type": "boolean"
+        },
+        "dontUpdateRestart": {
           "type": "boolean"
         }
       },
@@ -6549,7 +6988,7 @@
     "DecorationEvent": {
       "anyOf": [
         {
-          "$ref": "#/definitions/MoveSpriteEvent"
+          "$ref": "#/definitions/MoveDecorationEvent"
         },
         {
           "$ref": "#/definitions/PaintSpriteEvent"
@@ -6561,17 +7000,29 @@
           "$ref": "#/definitions/HideSpriteEvent"
         },
         {
-          "$ref": "#/definitions/ReorderSpriteEvent"
+          "$ref": "#/definitions/ReorderDecorationEvent"
         },
         {
           "$ref": "#/definitions/TileSpriteEvent"
         },
         {
           "$ref": "#/definitions/BlendSpriteEvent"
+        },
+        {
+          "$ref": "#/definitions/SetTextEvent"
+        },
+        {
+          "$ref": "#/definitions/AdvanceTextEvent"
+        },
+        {
+          "$ref": "#/definitions/SetFontEvent"
+        },
+        {
+          "$ref": "#/definitions/PaintTextEvent"
         }
       ]
     },
-    "MoveSpriteEvent": {
+    "MoveDecorationEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -6868,7 +7319,7 @@
       ],
       "additionalProperties": false
     },
-    "ReorderSpriteEvent": {
+    "ReorderDecorationEvent": {
       "type": "object",
       "properties": {
         "bar": {
@@ -6882,7 +7333,10 @@
         },
         "type": {
           "type": "string",
-          "const": "ReorderSprite"
+          "enum": [
+            "ReorderDecoration",
+            "ReorderSprite"
+          ]
         },
         "if": {
           "$ref": "#/definitions/ConditionExpression"
@@ -7103,6 +7557,288 @@
             "Multiply",
             "Invert"
           ]
+        }
+      },
+      "required": [
+        "type",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "SetTextEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "SetText"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "outlineColor": {
+          "$ref": "#/definitions/ColorOrPaletteIndex"
+        },
+        "textPosition": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "angle": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "fadeOutRate": {
+          "type": "number",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "FadeOut",
+            "HideAbruptly",
+            "Never"
+          ]
+        },
+        "anchor": {
+          "type": "string",
+          "enum": [
+            "UpperLeft",
+            "UpperCenter",
+            "UpperRight",
+            "MiddleLeft",
+            "MiddleCenter",
+            "MiddleRight",
+            "LowerLeft",
+            "LowerCenter",
+            "LowerRight"
+          ]
+        },
+        "narrate": {
+          "type": "boolean"
+        },
+        "narrationCategory": {
+          "$ref": "#/definitions/NarrationCategory"
+        }
+      },
+      "required": [
+        "type",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "AdvanceTextEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "AdvanceTextDecoration"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "fadeOutDuration": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "SetFontEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "SetFont"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "font": {
+          "type": "string"
+        },
+        "bold": {
+          "type": "boolean"
+        },
+        "italic": {
+          "type": "boolean"
+        },
+        "underline": {
+          "type": "boolean"
+        },
+        "wrappingWidth": {
+          "type": "number"
+        },
+        "characterSpacing": {
+          "type": "number"
+        },
+        "outlineWidth": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "PaintTextEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "TintText"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "borderColor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tintColor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorOrPaletteIndex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ease": {
+          "$ref": "#/definitions/Easing"
         }
       },
       "required": [
@@ -8269,6 +9005,9 @@
         "active": {
           "type": "boolean"
         },
+        "custom": {
+          "type": "boolean"
+        },
         "startColor": {
           "anyOf": [
             {
@@ -8288,6 +9027,11 @@
               "type": "null"
             }
           ]
+        },
+        "brightness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 200
         },
         "duration": {
           "type": "number"

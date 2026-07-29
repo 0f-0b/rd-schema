@@ -142,9 +142,14 @@ export const Row = mergeShapesToObject(
     pulseSoundOffset: z.int32().optional(),
   },
 ).meta({ id: "Row" });
-export const Decoration = z.object(
-  makeEventAutoProperties("MakeSprite", true),
-).meta({ id: "Decoration" });
+export const Sprite = mergeShapesToObject(
+  makeEventAutoProperties("Sprite", true),
+  { type: [z.literal("Sprite").optional()] },
+).meta({ id: "Sprite" });
+export const Text = z.object(
+  makeEventAutoProperties("Text", true),
+).meta({ id: "Text" });
+export const Decoration = z.union([Sprite, Text]).meta({ id: "Decoration" });
 const makeLegacySoundProperties = (prefix?: string) => {
   const filenameKey = prefix === undefined ? "filename" : `${prefix}Filename`;
   const soundKey = prefix === undefined ? "sound" : `${prefix}Sound`;
@@ -446,12 +451,13 @@ export const OrdinaryVFXPreset = z.enum([
 export const EnableOrdinaryVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
   {
-    enable: [z.literal(true).optional()],
     preset: [OrdinaryVFXPreset.optional()],
+    enable: [z.literal(true).optional()],
     threshold: [],
     intensity: [],
     color: [],
     amount: [],
+    position: [],
     xySpeed: [],
     speedPerc: [],
     duration: [],
@@ -473,7 +479,6 @@ export const EaseableVFXPreset = z.enum([
   "Contrast",
   "Saturation",
   "Fisheye",
-  "HeatDistortion",
   "VHSRewind",
 ]);
 export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
@@ -484,6 +489,7 @@ export const EnableEaseableVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     color: [],
     amount: [],
+    position: [],
     xySpeed: [],
     speedPerc: [],
   },
@@ -496,8 +502,6 @@ export const EnableRadialBlurVFXPresetEvent = mergeShapesToObject(
     enable: [z.literal(true).optional()],
     threshold: [],
     color: [],
-    floatX: z.number().optional(),
-    floatY: z.number().optional(),
     xySpeed: [],
     speedPerc: [],
   },
@@ -511,6 +515,7 @@ export const EnableWavyRowsVFXPresetEvent = mergeShapesToObject(
     threshold: [],
     color: [],
     amount: [],
+    position: [],
     xySpeed: [],
   },
 ).meta({ id: "EnableWavyRowsVFXPresetEvent" });
@@ -522,6 +527,7 @@ export const EnableColoredVFXPresetEvent = mergeShapesToObject(
     enable: [z.literal(true).optional()],
     threshold: [],
     amount: [],
+    position: [],
     xySpeed: [],
     speedPerc: [],
   },
@@ -533,6 +539,7 @@ export const EnableBloomVFXPresetEvent = mergeShapesToObject(
     preset: [BloomVFXPreset],
     enable: [z.literal(true).optional()],
     amount: [],
+    position: [],
     xySpeed: [],
     speedPerc: [],
   },
@@ -556,18 +563,15 @@ export const EnableDrawingVFXPresetEvent = mergeShapesToObject(
     enable: [z.literal(true).optional()],
     threshold: [],
     amount: [],
+    position: [],
     xySpeed: [],
   },
 ).meta({ id: "EnableDrawingVFXPresetEvent" });
-export const ScreenVFXPreset = z.enum([
-  "TileN",
-  "CustomScreenScroll",
-  "Pixelate",
-]);
-export const EnableScreenVFXPresetEvent = mergeShapesToObject(
+export const ScreenTileVFXPreset = z.enum(["TileN"]);
+export const EnableScreenTileVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
   {
-    preset: [ScreenVFXPreset],
+    preset: [ScreenTileVFXPreset],
     enable: [z.literal(true).optional()],
     threshold: [],
     intensity: [],
@@ -577,7 +581,7 @@ export const EnableScreenVFXPresetEvent = mergeShapesToObject(
     xySpeed: [],
     speedPerc: [],
   },
-).meta({ id: "EnableScreenVFXPresetEvent" });
+).meta({ id: "EnableScreenTileVFXPresetEvent" });
 export const ScreenScrollVFXPreset = z.enum(["CustomScreenScroll"]);
 export const EnableScreenScrollVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
@@ -589,9 +593,39 @@ export const EnableScreenScrollVFXPresetEvent = mergeShapesToObject(
     color: [],
     floatX: z.number().optional(),
     floatY: z.number().optional(),
+    position: [],
     speedPerc: [],
   },
 ).meta({ id: "EnableScreenScrollVFXPresetEvent" });
+export const HeatDistortionVFXPreset = z.enum(["HeatDistortion"]);
+export const EnableHeatDistortionVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [HeatDistortionVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    color: [],
+    amount: [],
+    xySpeed: [],
+    speedPerc: [],
+  },
+).meta({ id: "EnableHeatDistortionVFXPresetEvent" });
+export const PixelateVFXPreset = z.enum(["Pixelate"]);
+export const EnablePixelateVFXPresetEvent = mergeShapesToObject(
+  makeEventAutoProperties("SetVFXPreset"),
+  {
+    preset: [PixelateVFXPreset],
+    enable: [z.literal(true).optional()],
+    threshold: [],
+    intensity: [],
+    color: [],
+    floatX: z.number().optional(),
+    floatY: z.number().optional(),
+    position: [],
+    xySpeed: [],
+    speedPerc: [],
+  },
+).meta({ id: "EnablePixelateVFXPresetEvent" });
 export const DisableVFXPresetEvent = mergeShapesToObject(
   makeEventAutoProperties("SetVFXPreset"),
   {
@@ -605,8 +639,10 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
         ...BloomVFXPreset.options,
         ...EyesVFXPreset.options,
         ...DrawingVFXPreset.options,
-        ...ScreenVFXPreset.options,
+        ...ScreenTileVFXPreset.options,
         ...ScreenScrollVFXPreset.options,
+        ...HeatDistortionVFXPreset.options,
+        ...PixelateVFXPreset.options,
       ]).optional(),
     ],
     enable: [z.literal(false)],
@@ -614,6 +650,7 @@ export const DisableVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     amount: [],
+    position: [],
     xySpeed: [],
     speedPerc: [],
     duration: [],
@@ -629,6 +666,7 @@ export const DisableAllVFXPresetEvent = mergeShapesToObject(
     intensity: [],
     color: [],
     amount: [],
+    position: [],
     xySpeed: [],
     speedPerc: [],
     duration: [],
@@ -644,8 +682,10 @@ export const SetVFXPresetEvent = z.union([
   EnableBloomVFXPresetEvent,
   EnableEyesVFXPresetEvent,
   EnableDrawingVFXPresetEvent,
-  EnableScreenVFXPresetEvent,
+  EnableScreenTileVFXPresetEvent,
   EnableScreenScrollVFXPresetEvent,
+  EnableHeatDistortionVFXPresetEvent,
+  EnablePixelateVFXPresetEvent,
   DisableVFXPresetEvent,
   DisableAllVFXPresetEvent,
 ]).meta({ id: "SetVFXPresetEvent" });
@@ -755,6 +795,9 @@ export const ChangePlayersRowsEvent = z.object(
 export const FinishLevelEvent = z.object(
   makeEventAutoProperties("FinishLevel"),
 ).meta({ id: "FinishLevelEvent" });
+export const GoToLevelEvent = z.object(
+  makeEventAutoProperties("GoToLevel"),
+).meta({ id: "GoToLevelEvent" });
 export const StutterEvent = z.object(
   makeEventAutoProperties("Stutter"),
 ).meta({ id: "StutterEvent" });
@@ -822,6 +865,7 @@ export const ActionEvent = z.union([
   TextExplosionEvent,
   ChangePlayersRowsEvent,
   FinishLevelEvent,
+  GoToLevelEvent,
   StutterEvent,
   ShowHandsEvent,
   PaintHandsEvent,
@@ -831,9 +875,9 @@ export const ActionEvent = z.union([
   SetPlayStyleEvent,
   CommentEvent,
 ]).meta({ id: "ActionEvent" });
-export const MoveSpriteEvent = z.object(
+export const MoveDecorationEvent = z.object(
   makeEventAutoProperties("Move"),
-).meta({ id: "MoveSpriteEvent" });
+).meta({ id: "MoveDecorationEvent" });
 export const PaintSpriteEvent = mergeShapesToObject(
   makeEventAutoProperties("Tint"),
   { borderOpacity: z.int32().optional(), tintOpacity: z.int32().optional() },
@@ -844,23 +888,40 @@ export const PlayAnimationEvent = z.object(
 export const HideSpriteEvent = z.object(
   makeEventAutoProperties("SetVisible"),
 ).meta({ id: "HideSpriteEvent" });
-export const ReorderSpriteEvent = z.object(
-  makeEventAutoProperties("ReorderSprite"),
-).meta({ id: "ReorderSpriteEvent" });
+export const ReorderDecorationEvent = mergeShapesToObject(
+  makeEventAutoProperties("ReorderDecoration"),
+  { type: [z.enum(["ReorderDecoration", "ReorderSprite"])] },
+).meta({ id: "ReorderDecorationEvent" });
 export const TileSpriteEvent = z.object(
   makeEventAutoProperties("Tile"),
 ).meta({ id: "TileSpriteEvent" });
 export const BlendSpriteEvent = z.object(
   makeEventAutoProperties("Blend"),
 ).meta({ id: "BlendSpriteEvent" });
+export const SetTextEvent = z.object(
+  makeEventAutoProperties("SetText"),
+).meta({ id: "SetTextEvent" });
+export const AdvanceTextEvent = z.object(
+  makeEventAutoProperties("AdvanceTextDecoration"),
+).meta({ id: "AdvanceTextEvent" });
+export const SetFontEvent = z.object(
+  makeEventAutoProperties("SetFont"),
+).meta({ id: "SetFontEvent" });
+export const PaintTextEvent = z.object(
+  makeEventAutoProperties("TintText"),
+).meta({ id: "PaintTextEvent" });
 export const DecorationEvent = z.union([
-  MoveSpriteEvent,
+  MoveDecorationEvent,
   PaintSpriteEvent,
   PlayAnimationEvent,
   HideSpriteEvent,
-  ReorderSpriteEvent,
+  ReorderDecorationEvent,
   TileSpriteEvent,
   BlendSpriteEvent,
+  SetTextEvent,
+  AdvanceTextEvent,
+  SetFontEvent,
+  PaintTextEvent,
 ]).meta({ id: "DecorationEvent" });
 export const ShowRoomsHorizontallyEvent = z.object(
   makeEventAutoProperties("ShowRooms"),

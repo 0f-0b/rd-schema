@@ -1,23 +1,23 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@dprint/formatter@0.4": "0.4.1",
-    "jsr:@zod/zod@4.3.6": "4.3.6",
-    "npm:@dprint/typescript@0.95": "0.95.15",
+    "jsr:@dprint/formatter@0.5": "0.5.1",
+    "jsr:@zod/zod@4.4.3": "4.4.3",
+    "npm:@dprint/typescript@0.96": "0.96.1",
     "npm:pe-struct@0.9.4": "0.9.4",
-    "npm:type-fest@5": "5.5.0"
+    "npm:type-fest@5": "5.8.0"
   },
   "jsr": {
-    "@dprint/formatter@0.4.1": {
-      "integrity": "96449ab83aa9f72df98caa5030d3f4a921c5c29d9b0e0d0da83d79e2024a9637"
+    "@dprint/formatter@0.5.1": {
+      "integrity": "082007b652f6d6b9046b87b9ff643380d82ebb4deb4844b0b3486b5e2db2ce80"
     },
-    "@zod/zod@4.3.6": {
-      "integrity": "7144e5e11f8ffc3cf6e2fca624f6597a8762898aac9868cc8938e9398b96ffe4"
+    "@zod/zod@4.4.3": {
+      "integrity": "4712ac0967efaa718b37c36eaffb4e1d4457e1a266aef6efb3ab36f54a6fefe4"
     }
   },
   "npm": {
-    "@dprint/typescript@0.95.15": {
-      "integrity": "sha512-PQGYicsjlv7Eq+5BzpI04Ow2N9xeHkjr9O1TG3lDebK2B48IvXFQz0RwO4OhkKj22o7YLcjVIFM6WL7zVuM2ng=="
+    "@dprint/typescript@0.96.1": {
+      "integrity": "sha512-mz/nINSFQh1R5i2Qy90SWOCCK4SgNGRkNhCZba7LYmUkE4Zi8/45p8l8pqc9yN1fb4XY5Muhrzdh5Q3jFsYimw=="
     },
     "pe-struct@0.9.4": {
       "integrity": "sha512-aGFWx9K+n1yl16YnRS6nkOnKNPF3jjxvKsLZeq4lSuvFNVrmlhgoArIHFIopXyA/zyxQA4tDljPPHFjHMvcSKA=="
@@ -25,8 +25,8 @@
     "tagged-tag@1.0.0": {
       "integrity": "sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng=="
     },
-    "type-fest@5.5.0": {
-      "integrity": "sha512-PlBfpQwiUvGViBNX84Yxwjsdhd1TUlXr6zjX7eoirtCPIr08NAmxwa+fcYBTeRQxHo9YC9wwF3m9i700sHma8g==",
+    "type-fest@5.8.0": {
+      "integrity": "sha512-YGYEVz3Fm5iy/AybuA0oyNFq7H4CgQNfRp/qfe8nurE1kuCeNm3/vfm9X4Mtl+qLyaKJUh5xrFZwogr41SMjYA==",
       "dependencies": [
         "tagged-tag"
       ]
@@ -34,10 +34,10 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@dprint/formatter@0.4",
+      "jsr:@dprint/formatter@0.5",
       "jsr:@std/path@1",
-      "jsr:@zod/zod@4.3.6",
-      "npm:@dprint/typescript@0.95",
+      "jsr:@zod/zod@4.4.3",
+      "npm:@dprint/typescript@0.96",
       "npm:pe-struct@0.9.4",
       "npm:type-fest@5"
     ]

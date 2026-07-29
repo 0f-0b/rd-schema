@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import PE from "pe-struct";
 import { z, type ZodType } from "zod";
 
@@ -198,6 +199,9 @@ const getCustomAttribute = (
   }
   return reader;
 };
+const levelEventBaseTypeDefIndex = getTypeDefIndexByFullName(
+  "RDLevelEditor\0LevelEvent_Base",
+);
 const levelEventInfoType = getCtorIndexByFullName("\0LevelEventInfoAttribute");
 const jsonPropertyType = getCtorIndexByFullName("\0JsonPropertyAttribute");
 const intInfoType = getCtorIndexByFullName("\0IntInfoAttribute");
@@ -464,6 +468,8 @@ const makeAutoPropertyValue = (
           return Expression;
         case "\0FloatExpression2":
           return z.tuple([Expression, Expression]);
+        case "\0FloatingTextMode":
+          return z.enum(["FadeOut", "HideAbruptly", "Never"]);
         case "\0FreezeBurnMode":
           return z.enum(["Freezeshot", "Burnshot"]);
         case "\0GameSoundType":
@@ -653,8 +659,6 @@ const makeAutoPropertyValue = (
             "HitSound",
             "OtherSound",
           ]);
-        case "RDLevelEditor\0FloatingTextMode":
-          return z.enum(["FadeOut", "HideAbruptly"]);
         case "RDLevelEditor\0GameVoiceSource":
           return z.enum([
             "Nurse",
@@ -667,6 +671,8 @@ const makeAutoPropertyValue = (
             "NoneBottom",
             "NoneTop",
           ]);
+        case "RDLevelEditor\0GoToLevelAction":
+          return z.enum(["LoadImmediately", "SetNext", "LoadNext"]);
         case "RDLevelEditor\0LevelEventExecutionTime":
           return z.enum(["OnPrebar", "OnBar"]);
         case "RDLevelEditor\0NarrateSkipBeats":
@@ -677,14 +683,14 @@ const makeAutoPropertyValue = (
             "SayGetSetGo",
             "SayReaDyGetSetOne",
             "SayGetSetOne",
+            "JustSayAnd",
+            "JustSayStop",
+            "JustSayAndStop",
             "JustSayRea",
             "JustSayDy",
             "JustSayGet",
             "JustSaySet",
-            "JustSayAnd",
             "JustSayGo",
-            "JustSayStop",
-            "JustSayAndStop",
             "SaySwitch",
             "SayWatch",
             "SayListen",
@@ -804,11 +810,13 @@ const makeAutoPropertyValue = (
   }
   return null;
 };
-const makeAutoProperties = (typeDefIndex: number) => {
+const makeAutoProperties = (
+  typeDefIndex: number,
+  props: Record<string, ZodType>,
+) => {
   const [propertyStart, propertyEnd] = getPropertyListByTypeDefIndex(
     typeDefIndex,
   );
-  const props: Record<string, ZodType> = {};
   for (
     let propertyIndex = propertyStart;
     propertyIndex < propertyEnd;
@@ -855,7 +863,7 @@ export const makeEventAutoProperties = (
   type: string,
   fixedY?: boolean,
 ): Record<string, ZodType> => {
-  const typeDefIndex = getTypeDefIndexByFullName(
+  let typeDefIndex = getTypeDefIndexByFullName(
     `RDLevelEditor\0LevelEvent_${type}`,
   );
   const levelEventInfo = getCustomAttribute(
@@ -876,7 +884,7 @@ export const makeEventAutoProperties = (
   const hasY = !fixedY && !hasTarget;
   const hasRow = defaultRow !== -10;
   const hasRooms = roomsUsage !== 0;
-  return {
+  const props = {
     ...hasBar ? { bar: z.int32().min(1).optional() } : null,
     ...hasBeat ? { beat: z.number().min(1).optional() } : null,
     ...hasY ? { y: z.int32().optional() } : null,
@@ -888,8 +896,14 @@ export const makeEventAutoProperties = (
     ...hasRooms ? { rooms: z.int32().array().optional() } : null,
     ...hasRow ? { row: z.int32() } : null,
     ...hasTarget ? { target: z.string() } : null,
-    ...makeAutoProperties(typeDefIndex),
   };
+  while (typeDefIndex !== levelEventBaseTypeDefIndex) {
+    makeAutoProperties(typeDefIndex, props);
+    const typeDef = typeDefTable[typeDefIndex];
+    assert(typeDef.Extends.tid === PE.MdTableIndex.TypeDef);
+    typeDefIndex = typeDef.Extends.rid - 1;
+  }
+  return props;
 };
 export const makeConditionalAutoProperties = (
   type: string,
@@ -897,11 +911,12 @@ export const makeConditionalAutoProperties = (
   const typeDefIndex = getTypeDefIndexByFullName(
     `RDLevelEditor\0Conditional_${type}`,
   );
-  return {
+  const props = {
     type: z.literal(type),
     tag: z.string().optional(),
     name: z.string(),
     id: z.int32(),
-    ...makeAutoProperties(typeDefIndex),
   };
+  makeAutoProperties(typeDefIndex, props);
+  return props;
 };

@@ -54,21 +54,38 @@ export type Row = {
   pulseSoundOffset?: number | undefined;
 };
 export type FilterMode = "NearestNeighbor" | "Bilinear";
-export type Decoration = {
+export type Sprite = {
+  type?: "Sprite" | undefined;
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   row: number;
-  visible?: boolean | undefined;
-  preview?: boolean | undefined;
-  id?: string | undefined;
   filename?: string | undefined;
   character?: string | undefined;
-  depth?: number | undefined;
+  visible?: boolean | undefined;
+  preview?: boolean | undefined;
   filter?: FilterMode | undefined;
+  id?: string | undefined;
+  depth?: number | undefined;
 };
+export type SortingLayer = "Default" | "Background" | "Foreground";
+export type Text = {
+  type: "Text";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  row: number;
+  decoName?: string | undefined;
+  font?: string | undefined;
+  sortingLayer?: SortingLayer | undefined;
+  id?: string | undefined;
+  depth?: number | undefined;
+};
+export type Decoration = Sprite | Text;
 export type Sound = {
   filename: string;
   volume?: number | undefined;
@@ -213,14 +230,14 @@ export type SayReadyGetSetGoEvent = {
       | "SayGetSetGo"
       | "SayReaDyGetSetOne"
       | "SayGetSetOne"
+      | "JustSayAnd"
+      | "JustSayStop"
+      | "JustSayAndStop"
       | "JustSayRea"
       | "JustSayDy"
       | "JustSayGet"
       | "JustSaySet"
-      | "JustSayAnd"
       | "JustSayGo"
-      | "JustSayStop"
-      | "JustSayAndStop"
       | "SaySwitch"
       | "SayWatch"
       | "SayListen"
@@ -513,8 +530,8 @@ export type PulseFreeTimeBeatEvent = {
   active?: boolean | undefined;
   row: number;
   action?: ("Increment" | "Decrement" | "Custom" | "Remove") | undefined;
-  hold?: number | undefined;
   customPulse?: number | undefined;
+  hold?: number | undefined;
 };
 export type AddOneshotBeatEvent = {
   bar?: number | undefined;
@@ -552,10 +569,14 @@ export type SetOneshotWaveEvent = {
   active?: boolean | undefined;
   row: number;
   waveType?:
-    | ("BoomAndRush" | "Ball" | "Spring" | "Spike" | "SpikeHuge" | "Single")
+    | (
+      | ("BoomAndRush" | "Ball" | "Spring" | "Spike" | "SpikeHuge" | "Single")
+      | null
+    )
     | undefined;
-  height?: number | undefined;
-  width?: number | undefined;
+  height?: (number | null) | undefined;
+  width?: (number | null) | undefined;
+  wobble?: (boolean | null) | undefined;
 };
 export type RowEvent =
   | AddClassicBeatEvent
@@ -804,7 +825,6 @@ export type EnableEaseableVFXPresetEvent = {
     | "Contrast"
     | "Saturation"
     | "Fisheye"
-    | "HeatDistortion"
     | "VHSRewind";
   enable?: true | undefined;
   intensity?: (number | null) | undefined;
@@ -825,10 +845,9 @@ export type EnableRadialBlurVFXPresetEvent = {
   enable?: true | undefined;
   intensity?: (number | null) | undefined;
   amount?: ([(number | null), (number | null)] | null) | undefined;
+  position?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
-  floatX?: number | undefined;
-  floatY?: number | undefined;
 };
 export type EnableWavyRowsVFXPresetEvent = {
   bar?: number | undefined;
@@ -897,6 +916,7 @@ export type EnableEyesVFXPresetEvent = {
   enable?: true | undefined;
   intensity?: (number | null) | undefined;
   color?: (ColorOrPaletteIndex | null) | undefined;
+  position?: ([(number | null), (number | null)] | null) | undefined;
   xySpeed?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
@@ -919,7 +939,7 @@ export type EnableDrawingVFXPresetEvent = {
   duration?: number | undefined;
   ease?: Easing | undefined;
 };
-export type EnableScreenVFXPresetEvent = {
+export type EnableScreenTileVFXPresetEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
   y?: number | undefined;
@@ -929,9 +949,10 @@ export type EnableScreenVFXPresetEvent = {
   runTag?: boolean | undefined;
   active?: boolean | undefined;
   rooms?: number[] | undefined;
-  preset: "TileN" | "CustomScreenScroll" | "Pixelate";
+  preset: "TileN";
   enable?: true | undefined;
   amount?: ([(number | null), (number | null)] | null) | undefined;
+  position?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   floatX?: number | undefined;
@@ -951,6 +972,41 @@ export type EnableScreenScrollVFXPresetEvent = {
   enable?: true | undefined;
   amount?: ([(number | null), (number | null)] | null) | undefined;
   xySpeed?: ([(number | null), (number | null)] | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+  floatX?: number | undefined;
+  floatY?: number | undefined;
+};
+export type EnableHeatDistortionVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "HeatDistortion";
+  enable?: true | undefined;
+  intensity?: (number | null) | undefined;
+  position?: ([(number | null), (number | null)] | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+};
+export type EnablePixelateVFXPresetEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "SetVFXPreset";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  rooms?: number[] | undefined;
+  preset: "Pixelate";
+  enable?: true | undefined;
+  amount?: ([(number | null), (number | null)] | null) | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
   floatX?: number | undefined;
@@ -1027,7 +1083,6 @@ export type DisableVFXPresetEvent = {
       | "Contrast"
       | "Saturation"
       | "Fisheye"
-      | "HeatDistortion"
       | "VHSRewind"
       | "RadialBlur"
       | "WavyRows"
@@ -1040,6 +1095,7 @@ export type DisableVFXPresetEvent = {
       | "Drawing"
       | "TileN"
       | "CustomScreenScroll"
+      | "HeatDistortion"
       | "Pixelate"
     )
     | undefined;
@@ -1066,8 +1122,10 @@ export type SetVFXPresetEvent =
   | EnableBloomVFXPresetEvent
   | EnableEyesVFXPresetEvent
   | EnableDrawingVFXPresetEvent
-  | EnableScreenVFXPresetEvent
+  | EnableScreenTileVFXPresetEvent
   | EnableScreenScrollVFXPresetEvent
+  | EnableHeatDistortionVFXPresetEvent
+  | EnablePixelateVFXPresetEvent
   | DisableVFXPresetEvent
   | DisableAllVFXPresetEvent;
 export type ImageSequence = string[] | string;
@@ -1238,7 +1296,6 @@ export type MoveRowEvent = {
   accelerationDuration?: (number | null) | undefined;
   decelerationDuration?: (number | null) | undefined;
 };
-export type SortingLayer = "Default" | "Background" | "Foreground";
 export type ReorderRowEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
@@ -1478,17 +1535,16 @@ export type FloatingTextEvent = {
   active?: boolean | undefined;
   rooms?: number[] | undefined;
   id?: number | undefined;
+  font?: string | undefined;
+  showChildren?: boolean | undefined;
   text?: string | undefined;
-  times?: (string | null) | undefined;
   color?: ColorOrPaletteIndex | undefined;
   outlineColor?: ColorOrPaletteIndex | undefined;
-  textPosition?: [number, number] | undefined;
-  font?: ("Default" | "Pixel" | "Vector" | "Flash") | undefined;
+  textPosition?: ([(number | null), (number | null)] | null) | undefined;
   size?: number | undefined;
-  angle?: number | undefined;
-  showChildren?: boolean | undefined;
+  angle?: (number | null) | undefined;
   fadeOutRate?: number | undefined;
-  mode?: ("FadeOut" | "HideAbruptly") | undefined;
+  mode?: ("FadeOut" | "HideAbruptly" | "Never") | undefined;
   anchor?:
     | (
       | "UpperLeft"
@@ -1504,6 +1560,7 @@ export type FloatingTextEvent = {
     | undefined;
   narrate?: boolean | undefined;
   narrationCategory?: NarrationCategory | undefined;
+  times?: (string | null) | undefined;
 };
 export type AdvanceFloatingTextEvent = {
   bar?: number | undefined;
@@ -1557,6 +1614,23 @@ export type FinishLevelEvent = {
   tag?: string | undefined;
   runTag?: boolean | undefined;
   active?: boolean | undefined;
+};
+export type GoToLevelEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "GoToLevel";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  action?: ("LoadImmediately" | "SetNext" | "LoadNext") | undefined;
+  rdlevel?: string | undefined;
+  skippable?: boolean | undefined;
+  fadeOut?: boolean | undefined;
+  startImmediately?: boolean | undefined;
+  keepMistakes?: boolean | undefined;
+  dontUpdateRestart?: boolean | undefined;
 };
 export type StutterEvent = {
   bar?: number | undefined;
@@ -1746,6 +1820,7 @@ export type ActionEvent =
   | TextExplosionEvent
   | ChangePlayersRowsEvent
   | FinishLevelEvent
+  | GoToLevelEvent
   | StutterEvent
   | ShowHandsEvent
   | PaintHandsEvent
@@ -1754,7 +1829,7 @@ export type ActionEvent =
   | CallCustomMethodEvent
   | SetPlayStyleEvent
   | CommentEvent;
-export type MoveSpriteEvent = {
+export type MoveDecorationEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
   type: "Move";
@@ -1814,10 +1889,10 @@ export type HideSpriteEvent = {
   target: string;
   visible?: boolean | undefined;
 };
-export type ReorderSpriteEvent = {
+export type ReorderDecorationEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
-  type: "ReorderSprite";
+  type: "ReorderDecoration" | "ReorderSprite";
   if?: ConditionExpression | undefined;
   tag?: string | undefined;
   runTag?: boolean | undefined;
@@ -1855,14 +1930,93 @@ export type BlendSpriteEvent = {
   target: string;
   blendType?: ("None" | "Additive" | "Multiply" | "Invert") | undefined;
 };
+export type SetTextEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  type: "SetText";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  target: string;
+  text?: string | undefined;
+  color?: ColorOrPaletteIndex | undefined;
+  outlineColor?: ColorOrPaletteIndex | undefined;
+  textPosition?: ([(number | null), (number | null)] | null) | undefined;
+  size?: number | undefined;
+  angle?: (number | null) | undefined;
+  fadeOutRate?: number | undefined;
+  mode?: ("FadeOut" | "HideAbruptly" | "Never") | undefined;
+  anchor?:
+    | (
+      | "UpperLeft"
+      | "UpperCenter"
+      | "UpperRight"
+      | "MiddleLeft"
+      | "MiddleCenter"
+      | "MiddleRight"
+      | "LowerLeft"
+      | "LowerCenter"
+      | "LowerRight"
+    )
+    | undefined;
+  narrate?: boolean | undefined;
+  narrationCategory?: NarrationCategory | undefined;
+};
+export type AdvanceTextEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  type: "AdvanceTextDecoration";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  target: string;
+  fadeOutDuration?: (number | null) | undefined;
+};
+export type SetFontEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  type: "SetFont";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  target: string;
+  font?: string | undefined;
+  bold?: boolean | undefined;
+  italic?: boolean | undefined;
+  underline?: boolean | undefined;
+  wrappingWidth?: number | undefined;
+  characterSpacing?: number | undefined;
+  outlineWidth?: number | undefined;
+};
+export type PaintTextEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  type: "TintText";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  target: string;
+  borderColor?: (ColorOrPaletteIndex | null) | undefined;
+  tintColor?: (ColorOrPaletteIndex | null) | undefined;
+  duration?: number | undefined;
+  ease?: Easing | undefined;
+};
 export type DecorationEvent =
-  | MoveSpriteEvent
+  | MoveDecorationEvent
   | PaintSpriteEvent
   | PlayAnimationEvent
   | HideSpriteEvent
-  | ReorderSpriteEvent
+  | ReorderDecorationEvent
   | TileSpriteEvent
-  | BlendSpriteEvent;
+  | BlendSpriteEvent
+  | SetTextEvent
+  | AdvanceTextEvent
+  | SetFontEvent
+  | PaintTextEvent;
 export type ShowRoomsHorizontallyEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
@@ -2086,8 +2240,10 @@ export type SetDesktopColorEvent = {
   tag?: string | undefined;
   runTag?: boolean | undefined;
   active?: boolean | undefined;
+  custom?: boolean | undefined;
   startColor?: (ColorOrPaletteIndex | null) | undefined;
   endColor?: (ColorOrPaletteIndex | null) | undefined;
+  brightness?: number | undefined;
   duration?: number | undefined;
   ease?: Easing | undefined;
 };

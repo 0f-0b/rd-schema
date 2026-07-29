@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --unstable-raw-imports --allow-import=jsr.io:443 --allow-read --allow-write=character.d.ts,character.json,level.d.ts,level.json --allow-env=RD_ASSEMBLY_PATH
+#!/usr/bin/env -S deno run --allow-import=jsr.io:443 --allow-read --allow-write=character.d.ts,character.json,level.d.ts,level.json --allow-env=RD_ASSEMBLY_PATH
 
 import { createFromBuffer } from "@dprint/formatter";
 import tsPlugin from "@dprint/typescript/plugin.wasm" with { type: "bytes" };
@@ -43,11 +43,6 @@ function generateJsonSchema(path: string, root: ZodType): undefined {
       }
     },
   });
-  if (schema.definitions) {
-    for (const def of Object.values(schema.definitions)) {
-      delete def.id;
-    }
-  }
   Deno.writeTextFileSync(path, JSON.stringify(schema, undefined, 2) + "\n");
 }
 
