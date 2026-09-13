@@ -352,6 +352,11 @@ export const GameSoundType = z.enum([
   "FreezeshotSound",
   "BurnshotSound",
   "Skipshot",
+  "HoldshotSound",
+  "HoldshotSoundCue",
+  "HoldshotSoundClapStart",
+  "HoldshotSoundClapLongEnd",
+  "HoldshotSoundClapShortEnd",
 ]).meta({ id: "GameSoundType" });
 export const Strength = z.enum([
   "Low",
@@ -675,6 +680,10 @@ const makeAutoPropertyValue = (
           return z.enum(["LoadImmediately", "SetNext", "LoadNext"]);
         case "RDLevelEditor\0LevelEventExecutionTime":
           return z.enum(["OnPrebar", "OnBar"]);
+        case "RDLevelEditor\0LinkRowsAction":
+          return z.enum(["Link", "Unlink"]);
+        case "RDLevelEditor\0LinkRowsBeatBehavior":
+          return z.enum(["CopyBeats", "ReactToBeats", "DontCopy"]);
         case "RDLevelEditor\0NarrateSkipBeats":
           return z.enum(["On", "Custom", "Off"]);
         case "RDLevelEditor\0OneshotPhraseToSay":

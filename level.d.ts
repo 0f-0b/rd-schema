@@ -319,7 +319,12 @@ export type GameSoundType =
   | "PulseSoundHoldP2"
   | "FreezeshotSound"
   | "BurnshotSound"
-  | "Skipshot";
+  | "Skipshot"
+  | "HoldshotSound"
+  | "HoldshotSoundCue"
+  | "HoldshotSoundClapStart"
+  | "HoldshotSoundClapLongEnd"
+  | "HoldshotSoundClapShortEnd";
 export type SetGameSoundEvent = {
   bar?: number | undefined;
   beat?: number | undefined;
@@ -1273,6 +1278,7 @@ export type HideRowEvent = {
     | (("Visible" | "Hidden" | "OnlyCharacter" | "OnlyRow") | boolean)
     | undefined;
   transition?: ("Smooth" | "Instant" | "Full") | undefined;
+  shake?: boolean | undefined;
 };
 export type Expression = number | string | null;
 export type MoveRowEvent = {
@@ -1413,6 +1419,23 @@ export type PaintRowsEvent = {
     )
     | undefined;
   heartTransition?: boolean | undefined;
+};
+export type LinkRowsEvent = {
+  bar?: number | undefined;
+  beat?: number | undefined;
+  y?: number | undefined;
+  type: "LinkRows";
+  if?: ConditionExpression | undefined;
+  tag?: string | undefined;
+  runTag?: boolean | undefined;
+  active?: boolean | undefined;
+  row: number;
+  sourceRow?: number | undefined;
+  action?: ("Link" | "Unlink") | undefined;
+  beatBehavior?: ("CopyBeats" | "ReactToBeats" | "DontCopy") | undefined;
+  muteBeatsounds?: boolean | undefined;
+  normalizeMistakeWeight?: boolean | undefined;
+  copyPaintEffects?: boolean | undefined;
 };
 export type Strength = "Low" | "Medium" | "High";
 export type BassDropEvent = {
@@ -1808,6 +1831,7 @@ export type ActionEvent =
   | ChangeCharacterEvent
   | SpinningRowsEvent
   | PaintRowsEvent
+  | LinkRowsEvent
   | BassDropEvent
   | CustomShakeEvent
   | ShakeScreenEvent

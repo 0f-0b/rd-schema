@@ -745,6 +745,9 @@ export const SpinningRowsEvent = z.object(
 export const PaintRowsEvent = z.object(
   makeEventAutoProperties("TintRows"),
 ).meta({ id: "PaintRowsEvent" });
+export const LinkRowsEvent = z.object(
+  makeEventAutoProperties("LinkRows"),
+).meta({ id: "LinkRowsEvent" });
 export const BassDropEvent = z.object(
   makeEventAutoProperties("BassDrop"),
 ).meta({ id: "BassDropEvent" });
@@ -853,6 +856,7 @@ export const ActionEvent = z.union([
   ChangeCharacterEvent,
   SpinningRowsEvent,
   PaintRowsEvent,
+  LinkRowsEvent,
   BassDropEvent,
   CustomShakeEvent,
   ShakeScreenEvent,

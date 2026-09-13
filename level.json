@@ -1366,7 +1366,12 @@
         "PulseSoundHoldP2",
         "FreezeshotSound",
         "BurnshotSound",
-        "Skipshot"
+        "Skipshot",
+        "HoldshotSound",
+        "HoldshotSoundCue",
+        "HoldshotSoundClapStart",
+        "HoldshotSoundClapLongEnd",
+        "HoldshotSoundClapShortEnd"
       ]
     },
     "SetBeatSoundEvent": {
@@ -2256,6 +2261,9 @@
         },
         {
           "$ref": "#/definitions/PaintRowsEvent"
+        },
+        {
+          "$ref": "#/definitions/LinkRowsEvent"
         },
         {
           "$ref": "#/definitions/BassDropEvent"
@@ -4859,6 +4867,9 @@
             "Instant",
             "Full"
           ]
+        },
+        "shake": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -5479,6 +5490,80 @@
         "Outline",
         "Glow"
       ]
+    },
+    "LinkRowsEvent": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "type": {
+          "type": "string",
+          "const": "LinkRows"
+        },
+        "if": {
+          "$ref": "#/definitions/ConditionExpression"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "runTag": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "sourceRow": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "Link",
+            "Unlink"
+          ]
+        },
+        "beatBehavior": {
+          "type": "string",
+          "enum": [
+            "CopyBeats",
+            "ReactToBeats",
+            "DontCopy"
+          ]
+        },
+        "muteBeatsounds": {
+          "type": "boolean"
+        },
+        "normalizeMistakeWeight": {
+          "type": "boolean"
+        },
+        "copyPaintEffects": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "row"
+      ],
+      "additionalProperties": false
     },
     "BassDropEvent": {
       "type": "object",
