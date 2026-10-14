@@ -1,12 +1,12 @@
 {
   "unstable": ["raw-imports"],
   "imports": {
-    "@dprint/formatter": "jsr:@dprint/formatter@^0.5.0",
+    "@dprint/formatter": "jsr:@dprint/formatter@^0.6.0",
     "@dprint/typescript": "npm:@dprint/typescript@^0.96.0",
     "@std/path": "jsr:@std/path@^1.0.0",
     "pe-struct": "npm:pe-struct@0.9.4",
     "type-fest": "npm:type-fest@^5.0.0",
-    "zod": "jsr:@zod/zod@4.4.3"
+    "zod": "jsr:@zod/zod@4.5.4"
   },
   "compilerOptions": {
     "exactOptionalPropertyTypes": true

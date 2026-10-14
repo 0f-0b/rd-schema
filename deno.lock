@@ -1,18 +1,18 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@dprint/formatter@0.5": "0.5.1",
-    "jsr:@zod/zod@4.4.3": "4.4.3",
+    "jsr:@dprint/formatter@0.6": "0.6.0",
+    "jsr:@zod/zod@4.5.4": "4.5.4",
     "npm:@dprint/typescript@0.96": "0.96.1",
     "npm:pe-struct@0.9.4": "0.9.4",
-    "npm:type-fest@5": "5.9.0"
+    "npm:type-fest@5": "5.10.0"
   },
   "jsr": {
-    "@dprint/formatter@0.5.1": {
-      "integrity": "082007b652f6d6b9046b87b9ff643380d82ebb4deb4844b0b3486b5e2db2ce80"
+    "@dprint/formatter@0.6.0": {
+      "integrity": "5dbc82694d60b969817ebee572eb0a3cd2cb41c000c4d9f09804d334d70923db"
     },
-    "@zod/zod@4.4.3": {
-      "integrity": "4712ac0967efaa718b37c36eaffb4e1d4457e1a266aef6efb3ab36f54a6fefe4"
+    "@zod/zod@4.5.4": {
+      "integrity": "bf0da80e42232d5f9f485d37b5c980e0d88f07fe04b9b1f2bd9012c008404df4"
     }
   },
   "npm": {
@@ -25,8 +25,8 @@
     "tagged-tag@1.0.0": {
       "integrity": "sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng=="
     },
-    "type-fest@5.9.0": {
-      "integrity": "sha512-yANm3Jr3GiJ1qgJlxGAVxTOIcEOk1rhQHamlXtnrCK7EHP4HeM9OGxtMg/W7HFdrVzw/ZWJKGVIJusVH85sLtw==",
+    "type-fest@5.10.0": {
+      "integrity": "sha512-NoSdpq/WEiAg5sjmBkmV/hfxv6HJH4NqPNrqjtSO5CwRmpsDfaf4begxW34KdJykH/l1yHtwBWQkCRdoXO8mPA==",
       "dependencies": [
         "tagged-tag"
       ]
@@ -34,9 +34,9 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@dprint/formatter@0.5",
+      "jsr:@dprint/formatter@0.6",
       "jsr:@std/path@1",
-      "jsr:@zod/zod@4.4.3",
+      "jsr:@zod/zod@4.5.4",
       "npm:@dprint/typescript@0.96",
       "npm:pe-struct@0.9.4",
       "npm:type-fest@5"

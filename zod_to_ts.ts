@@ -68,6 +68,8 @@ export function zodToTs(
         }
         return `[${items.join(", ")}]`;
       }
+      case "record":
+        return `Record<${emit(def.keyType)}, ${emit(def.valueType)}>`;
       case "literal":
         return union(def.values.map(literal));
       case "enum":

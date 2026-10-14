@@ -29,7 +29,10 @@
               "minimum": -2147483648,
               "maximum": 2147483647
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "clips": {
           "type": "array",
@@ -46,7 +49,10 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "rowPreviewFrame": {
           "type": "integer",
@@ -65,7 +71,10 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "reflectionOffset": {
           "type": "number"
@@ -79,7 +88,10 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "portraitSize": {
           "type": "array",
@@ -90,7 +102,10 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "portraitScale": {
           "type": "number"
@@ -116,6 +131,43 @@
             "maximum": 2147483647
           }
         },
+        "events": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^-?\\d+$"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": ":"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "changeExpressionPrefix": {
+                    "type": "string"
+                  },
+                  "changeCharacter": {
+                    "type": "string"
+                  },
+                  "playClip": {
+                    "type": "string"
+                  },
+                  "playExpression": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "endEvent": {
+          "type": "string",
+          "pattern": ":"
+        },
         "loopStart": {
           "type": "integer",
           "minimum": -2147483648,
@@ -125,6 +177,7 @@
           "type": "string",
           "enum": [
             "yes",
+            "freeze",
             "onBeat",
             "no"
           ]
@@ -141,7 +194,10 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "reflectionOffset": {
           "type": "number"
@@ -155,7 +211,10 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "portraitSize": {
           "type": "array",
@@ -166,7 +225,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "portraitName": {
+          "type": "string"
         },
         "portraitScale": {
           "type": "number"
@@ -175,8 +240,7 @@
       "required": [
         "name",
         "frames",
-        "loop",
-        "fps"
+        "loop"
       ],
       "additionalProperties": false
     }

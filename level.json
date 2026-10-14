@@ -3018,7 +3018,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3042,7 +3045,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3425,7 +3431,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3449,7 +3458,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3635,7 +3647,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3659,7 +3674,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3753,7 +3771,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3777,7 +3798,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3883,7 +3907,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -3971,7 +3998,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -4261,7 +4291,10 @@
                 "null"
               ]
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "duration": {
           "type": "number",
@@ -4389,7 +4422,10 @@
                 "null"
               ]
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "duration": {
           "type": "number",
@@ -4701,7 +4737,10 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -4938,7 +4977,10 @@
                 {
                   "$ref": "#/definitions/Expression"
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -4956,7 +4998,10 @@
                 {
                   "$ref": "#/definitions/Expression"
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -6109,7 +6154,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -7149,7 +7197,10 @@
                 {
                   "$ref": "#/definitions/Expression"
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -7167,7 +7218,10 @@
                 {
                   "$ref": "#/definitions/Expression"
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -7201,7 +7255,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -7527,7 +7584,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -7551,7 +7611,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -7575,7 +7638,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -7707,7 +7773,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -8080,7 +8149,10 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -8104,7 +8176,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -8140,7 +8215,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -8538,7 +8616,10 @@
                 "null"
               ]
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "reference": {
           "type": "string",
@@ -8574,7 +8655,10 @@
                 "null"
               ]
             }
-          ]
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
         },
         "angle": {
           "type": [
@@ -8668,7 +8752,10 @@
                 {
                   "$ref": "#/definitions/Expression"
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -8707,7 +8794,10 @@
                     "null"
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
@@ -8824,7 +8914,10 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
             },
             {
               "type": "null"
